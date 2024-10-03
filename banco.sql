@@ -1,3 +1,5 @@
+drop schema sgrp;
+
 create schema sgrp;
 CREATE TABLE sgrp.usuario(
     codigo int not null auto_increment primary key,
@@ -40,11 +42,11 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`usuario_perfil` (
 ENGINE = InnoDB;
 
 
-insert into `sgrp`.`usuario_perfil`(codigo_usuario, codigo_perfil) values(1, 1);
-insert into `sgrp`.`usuario_perfil`(codigo_usuario, codigo_perfil) values(2, 2);
-insert into `sgrp`.`usuario_perfil`(codigo_usuario, codigo_perfil) values(3, 4);
-insert into `sgrp`.`usuario_perfil`(codigo_usuario, codigo_perfil) values(4, 3);
-insert into `sgrp`.`usuario_perfil`(codigo_usuario, codigo_perfil) values(4, 4);
+insert into `sgrp`.`usuario_perfil`(codigo_perfil, codigo_usuario) values(1, 1);
+insert into `sgrp`.`usuario_perfil`(codigo_perfil, codigo_usuario) values(2, 2);
+insert into `sgrp`.`usuario_perfil`(codigo_perfil, codigo_usuario) values(3, 4);
+insert into `sgrp`.`usuario_perfil`(codigo_perfil, codigo_usuario) values(4, 3);
+insert into `sgrp`.`usuario_perfil`(codigo_perfil, codigo_usuario) values(4, 4);
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`categoria_recurso` (
   `codigo` INT NOT NULL auto_increment,
