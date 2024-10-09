@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permissão</title>
+
+</head>
+<body>
+
+  <header>
+    <h1>Permissão de Recurso</h1>
+  </header>
+
+     <section> <!--Inicio Section-->
+     
+          <form action="">
+              <input type="hidden" name="codigorecurso" value="{{codigorecurso}}">
+              <p>Recurso: {{nomerecurso}}</p>
+
+              <div>
+                <label for="">Perfil com Acesso: </label>
+                <select name="" id="">
+                  {{perfis}}
+                </select>
+              </div>
+
+              <div>
+                <label for="#">Horário:</label>
+                <input type="time" name="" id="">
+                a
+                <input type="time" name="" id="">
+              </div>
+              
+          
+              <div>
+                  <label for="">Dia da Semana</label>
+                  <input type="checkbox" name="" id="">D
+                  <input type="checkbox" name="" id="">S
+                  <input type="checkbox" name="" id="">T
+                  <input type="checkbox" name="" id="">Q
+                  <input type="checkbox" name="" id="">Q
+                  <input type="checkbox" name="" id="">S
+                  <input type="checkbox" name="" id="">S
+              </div>
+              <label for="">Data Inicial:</label>
+              <input type="date" name="#" id="#">
+              <label for="">Data Final:</label>
+              <input type="date" name="#" id="#">
+              
+
+              
+              
+          </form>
+
+            <div>
+              <input type="button" value="Salvar">
+            </div>
+
+          <table border="1">
+            <tr>
+                <th>Nome</th>
+                <th>Horário</th>
+                <th>Ação</th>
+            </tr>
+            
+          </table>
+          {{permissoes}}
+          <a href="cRecursos.php"><input type="button" value="Voltar"></a>
+     </section>  
+    
+    <script src="script.js"></script>
+</body>
+</html>
