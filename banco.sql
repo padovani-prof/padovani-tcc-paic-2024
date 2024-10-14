@@ -108,3 +108,49 @@ insert into `sgrp`.`acesso_recurso`(codigo_recurso, codigo_perfil, hr_inicial, h
     values(4, 3, '08:00', '18:00', 'NSNSSNS', '2024-09-25', '2024-10-01');
 insert into `sgrp`.`acesso_recurso`(codigo_recurso, codigo_perfil, hr_inicial, hr_final, dias_semana, dt_inicial, dt_final) 
     values(5, 4, '08:00', '18:00', 'NSNSSNS', '2024-09-25', null);
+    
+CREATE TABLE IF NOT EXISTS `sgrp`.`checklist` (
+  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `item` VARCHAR(50) NOT NULL,
+  `codigo_recurso` INT NOT NULL,
+  PRIMARY KEY (`codigo`),
+  CONSTRAINT `fk_checklist_recurso1`
+    FOREIGN KEY (`codigo_recurso`)
+    REFERENCES `sgrp`.`recurso` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`checklist` (item, codigo_recurso) values ('Mochila', 1);
+insert into `sgrp`.`checklist` (item, codigo_recurso) values ('Cabo HDMI', 1);
+insert into `sgrp`.`checklist` (item, codigo_recurso) values ('Cabo de Força', 1);
+insert into `sgrp`.`checklist` (item, codigo_recurso) values ('Controle', 1);
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`periodo` (
+  `codigo` INT NOT NULL auto_increment,
+  `nome` VARCHAR(10) NOT NULL,
+  `dt_inicial` DATE NOT NULL,
+  `dt_final` DATE NOT NULL,
+  PRIMARY KEY (`codigo`))
+ENGINE = InnoDB;
+
+insert into `sgrp`.`periodo` (nome, dt_inicial, dt_final) values ('2024/1', '2024-04-04', '2024-07-30');
+insert into `sgrp`.`periodo` (nome, dt_inicial, dt_final) values ('2024/2', '2024-08-21', '2024-12-21');
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`disciplina` (
+  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(150) NOT NULL,
+  `curso` VARCHAR(50) NOT NULL,
+  `codigo_periodo` INT NOT NULL,
+  PRIMARY KEY (`codigo`),
+  CONSTRAINT `fk_disciplina_periodo1`
+    FOREIGN KEY (`codigo_periodo`)
+    REFERENCES `sgrp`.`periodo` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Introdução a Algoritmos', 'Licenciatura em Computação', 1);
+insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Matemática Básica', 'Licenciatura em Computação', 1);
+insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Linguagem Programação', 'Licenciatura em Computação', 2);
+insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Sistemas Digitais', 'Licenciatura em Computação', 2);
