@@ -14,7 +14,7 @@ function logar($email_usu, $senha_usu){
 
     // Consulta o banco 
     $senha_usu = hash('sha256', $senha_usu);
-    $resultado_da_consulta = $connecxao->prepare("select nome from usuario where email = ? and senha = ?");
+    $resultado_da_consulta = $connecxao->prepare("select codigo, nome from usuario where email = ? and senha = ?");
     $resultado_da_consulta->bind_param('ss', $email_usu, $senha_usu);
     $resultado_da_consulta->execute();
     $resultado_da_consulta = $resultado_da_consulta->get_result();
@@ -23,7 +23,10 @@ function logar($email_usu, $senha_usu){
     if ($resultado_da_consulta->num_rows > 0){
 
       # retorna o nome do usuario
-      return $resultado_da_consulta->fetch_assoc()['nome'];
+      $usuario = $resultado_da_consulta->fetch_assoc();
+
+      # retorna o nome do usuario
+      return array($usuario['codigo'], $usuario['nome']);
 
     }
     

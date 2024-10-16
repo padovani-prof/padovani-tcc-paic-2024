@@ -1,6 +1,13 @@
 <?php
 
-if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
+if (isset($_GET['desconectar'])){
+    session_start();
+    session_destroy();
+    $msm = file_get_contents('View/vLogin.php');
+    $msm = str_replace('{{mensagem}}','Desconectado do sistema!',$msm);
+    echo $msm;
+}
+else if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
 
 {
     
@@ -22,8 +29,9 @@ if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
         echo $html;
     } else {
         // Login bem-sucedido, carrega o vMenu.php e insere a saudação
-
-        header("Location: cMenu.php?usuario=$usuario");
+        session_start();
+        $_SESSION['codigo_usuario'] = $usuario[0];
+        header("Location: cMenu.php?usuario=$usuario[1]");
         exit();
        
     }

@@ -50,7 +50,7 @@
         <div>
             <ul>
                 <li><a href="#">Editar Perfil</a></li>
-                <li><a href="#">Sair</a></li>
+                <li><a href="cLogin.php?desconectar=1">Sair</a></li>
             </ul>
         </div>
 
