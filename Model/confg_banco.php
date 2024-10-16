@@ -7,7 +7,7 @@
 
 $servidor = 'localhost'; 
 $usuario = 'root';
-$senha = 'four_cats4';
+$senha = '';
 $banco = 'sgrp';
 
 ?>
