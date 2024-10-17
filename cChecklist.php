@@ -35,7 +35,7 @@ $dados_checlist = cerrega_dados_checklist($codigo);
 
 if (count($dados_checlist) == 0)
 {
-    $dados = 'Não á nem um iten adicionado no momento ';
+    $dados = 'Não há nenhum item adicionado no momento';
 }
 else
 {
