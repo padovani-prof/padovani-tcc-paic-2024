@@ -15,7 +15,7 @@
      <section> <!--Inicio Section-->
         <form action="cNovoRecurso.php">
           <label for="">Nome:</label>
-          <input type="text" name="nome" id="">
+          <input type="text" name="nome" value = "{{campoNome}}" id="">
           <label for="">Descrição: </label>
           <input type="text" name="descricao" value="{{campoDescricao}}" id="">
           <label for="">Categoria</label>
