@@ -2,16 +2,24 @@
 function dias_da_semana($lista_sema)
 {
     $semana = '';
+    $cont = 0;
+
+    
     foreach($lista_sema as $dia)
     {
         if ($dia == NULL)
         {
+            $cont +=1;
             $semana = $semana.'N';
         }
         else
         {
             $semana = $semana.'S';
         }
+    }
+    if ($cont>=7)
+    {
+        $semana = '';
     }
     return $semana;
 }
@@ -22,10 +30,7 @@ function dias_da_semana($lista_sema)
 
 function cadastra_acesso_recurso($cod_re, $codigo_per, $h_ini, $h_fim, $lis_sema, $data_ini, $data_fim , $op)
 {
-    $lis_sema = dias_da_semana($lis_sema);
     
-
-
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 

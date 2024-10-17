@@ -27,37 +27,37 @@
 
               <div>
                 <label for="#">Horário:</label>
-                <input type="time" name="hora_ini" id="">
+                <input type="time" name="hora_ini" value="{{horaInicial}}" id="">
                 a
-                <input type="time" name="hora_fim" id="">
+                <input type="time" name="hora_fim" value="{{horaFinal}}}" id="">
               </div>
               
           
               <div>
                   <label for="">Dia da Semana</label>
-                  <input type="checkbox" name="domi" id="">D
-                  <input type="checkbox" name="segu" id="">S
-                  <input type="checkbox" name="terc" id="">T
-                  <input type="checkbox" name="quar" id="">Q
-                  <input type="checkbox" name="quin" id="">Q
-                  <input type="checkbox" name="sext" id="">S
-                  <input type="checkbox" name="saba" id="">S
+                  <input type="checkbox" name="domi" {{marca1}} id="">D
+                  <input type="checkbox" name="segu" {{marca2}} id="">S
+                  <input type="checkbox" name="terc" {{marca3}} id="">T
+                  <input type="checkbox" name="quar" {{marca4}} id="">Q
+                  <input type="checkbox" name="quin" {{marca5}} id="">Q
+                  <input type="checkbox" name="sext" {{marca6}} id="">S
+                  <input type="checkbox" name="saba" {{marca7}} id="">S
               </div>
               <label for="">Data Inicial:</label>
-              <input type="date" name="data_ini" id="#">
+              <input type="date" name="data_ini" value="{{dataIni}}}" id="#">
               <label for="">Data Final:</label>
-              <input type="date" name="data_fim" id="#">
+              <input type="date" name="data_fim" value="{{dataFinal}}}" id="#">
               
 
               <input type="hidden" name="codi_recurso" value="{{codigo_recurso_atual}}">
 
               <div>
-                <input type="submit" value="Salvar">
+                <input type="submit" name="salvar" value="Salvar">
               </div>
               
           </form>
 
-            
+            <p> {{mensagemAnomalia}} </p>
 
           <table border="1">
             <tr>

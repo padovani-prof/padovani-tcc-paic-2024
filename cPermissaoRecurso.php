@@ -1,32 +1,82 @@
 <?php 
 
+
+
+
 include_once 'Model/mPermissao.php';
+$html = file_get_contents('View/vPermissao.php');
+
+$perfi = '';
+$mensAnom = '';
 
 
-if( isset($_GET['codi_recurso']) and isset($_GET['perfio_usuario']) and isset($_GET['hora_ini']) and isset($_GET['hora_fim']) and isset($_GET['data_ini']))
+if (isset($_GET['salvar']))
 {
-    // salva no banco 
-    $codigo = $_GET['codi_recurso'];
+    $dia_semana = [$_GET['domi'], $_GET['segu'],$_GET['terc'],$_GET['quar'],$_GET['quin'],$_GET['sext'],$_GET['saba']] ;
+
+   
+    $dia_semana =  dias_da_semana($dia_semana);
+
+
+    $codigo =  $_GET['codi_recurso'];
     $perfi = $_GET['perfio_usuario'];
     $h_ini = $_GET['hora_ini'];
     $h_fim = $_GET['hora_fim'];
-    $dia_semana = [$_GET['domi'], $_GET['segu'],$_GET['terc'],$_GET['quar'],$_GET['quin'],$_GET['sext'],$_GET['saba']] ;
     $d_ini = $_GET['data_ini'];
     $d_fim =  $_GET['data_fim'];
 
-    $d = 's';
-    if ($d_fim === '') 
+
+    if((isset($_GET['codi_recurso'])) and isset($_GET['perfio_usuario']) and (!$_GET['hora_ini'] == '') and (!$_GET['hora_fim']== '') and (!$_GET['data_ini']== '' and (!$dia_semana == '')))
     {
-        $d_fim = NULL;
-        $d = 'd';
+        // salva no banco 
+        $d = 's';
+        if ($d_fim === '') 
+        {
+            $d_fim = NULL;
+            $d = 'd';
+        }
+        
+        
+        $mensAnom = 'Permissão de recurso salvo com Sucesso!!'; // salvo co Sucesso
+        cadastra_acesso_recurso($codigo, $perfi, $h_ini, $h_fim,$dia_semana, $d_ini, $d_fim, $d );
+        $perfi = '';  
+        
     }
+    else
+    {
+        // Deixou algun campo vazio
     
-    
-    cadastra_acesso_recurso($codigo, $perfi, $h_ini, $h_fim, $dia_semana, $d_ini, $d_fim, $d );  
-    
+        $semana = str_split($dia_semana);
+
+        $cont = 1;
+        foreach ($semana as $dia) 
+        {
+            if($dia=='S')
+            {
+                $html = str_replace("{{marca$cont}}", ' checked', $html);
+            }
+            $cont ++;
+           
+        }
+
+        $mensAnom = 'Voçê não preecheu algun dos campos necessarios';
+
+        $html = str_replace('{{horaInicial}}', $h_ini, $html);
+        $html = str_replace('{{horaFinal}}}', $h_fim, $html);
+        $html = str_replace('{{dataIni}}}', $d_ini, $html);
+        $html = str_replace('{{dataFinal}}}', $d_fim, $html);
+
+        
+        
+
+        
+    }
 }
+
 else
 {
+    //Açessou  Permissão de Recurso pela primeira / vai apagar
+
     $codigo = $_GET ['codigo'];
 
     if (isset($_GET['apagar']))
@@ -52,7 +102,10 @@ $perfil_nomes = [];
 
 foreach ($perfil_usu as $linha)
 {
-    $usua = $usua. "<option value='".$linha['codigo']."' >".$linha['nome']."</opton>";
+    
+
+
+    $usua = $usua. '<option value="' .$linha['codigo'].'"' . ($linha['codigo'] ==  $perfi? ' selected' : '') . '> '.$linha['nome'].'</option>';
     $perfil_nomes[] = $linha['nome'];
 }
 
@@ -79,7 +132,8 @@ foreach($acessos as $linha)
 $informa = $informa.'<tbody>';
 
 
-$html = file_get_contents('View/vPermissao.php');
+
+$html = str_replace('{{mensagemAnomalia}}', $mensAnom, $html);
 
 $html = str_replace('{{nomerecurso}}', $recurso['nome'], $html);
 $html = str_replace('{{perfis}}', $usua, $html);
