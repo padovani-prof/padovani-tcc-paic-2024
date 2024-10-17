@@ -10,17 +10,9 @@ $Lcategorias = carrega_categorias_recurso();
 $html = file_get_contents('View/vNovoRecurso.php');
 
 
+
+
 // carrega todos as categorias de recurso na teg option 
-$catego = '';
-foreach ($Lcategorias as $dados)
-{
-    if ($dados['codigo'] == '2'){
-        $catego = $catego."<option value='".$dados['codigo']."' selected>".$dados['nome']."</opton>";    
-    }else{
-        $catego = $catego."<option value='".$dados['codigo']."' >".$dados['nome']."</opton>";
-    }
-    
-}
 
 
 
@@ -40,10 +32,29 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
 
     $mensagens = ['Nome do recurso ínvalido', 'Numero maximo de caracter na descrição é 100', 'Categoria ínvalida', 'Recurso cadastrado com Sucesso!!'];
     
-    $retorno =  ($resposta<3)?'erro':'sucesso';
 
     $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
     $html = str_replace('{{retorno}}', $retorno, $html);
+    if($resposta < 3)
+    {
+        $html = str_replace('{{campoNome}}', $nome, $html);
+        $html = str_replace('{{campoDescricao}}', $descre, $html);
+        $retorno =  ($resposta<3)?'erro':'sucesso';
+
+
+
+        
+        
+    }
+    else
+    {
+        $categoria = '1';
+        $html = str_replace('{{campoNome}}','',$html);
+        $html = str_replace('{{campoDescricao}}','', $html);
+        $html = str_replace('{{retorno}}', '', $html);
+    }
+
+    
 
 }
 
@@ -51,9 +62,23 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
 else
 {
     // subistiti coloca essas dados no html e mostra
-    $html = str_replace('{{mensagem}}','',$html);
+    $html = str_replace('{{campoNome}}','',$html);
+    $html = str_replace('{{campoDescricao}}','', $html);
+    $html = str_replace('{{retorno}}', '', $html);
+    $html = str_replace('{{mensagem}}','', $html);
     
 
+}
+
+
+
+
+$catego ='';
+foreach ($Lcategorias as $dados)
+{
+
+    $catego = $catego.'<option value="' .$dados['codigo'].'"' . ($dados['codigo'] == $categoria ? ' selected' : '') . '> '.$dados['nome'].'</option>';
+  
 }
 
 $html = str_replace('{{categoriarecurso}}', $catego, $html);
