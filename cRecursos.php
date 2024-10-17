@@ -3,14 +3,6 @@
 include_once 'Model/mRecurso.php';
 mb_internal_encoding("UTF-8");
 
-// $cod_usuario = esta_conectado();
-// if($cod_usuario ==null)
-// {
-//     header('Location: cLogin.php');
-//     ex
-//     die('');
-// } 
-
 
 if (isset($_GET['codigo_do_recurso']))
 {
@@ -42,7 +34,7 @@ foreach ($recurso as $nome) {
     </tr>';
     
 }
-$recurso = $recurso. '<tbody/>';
+$recursos = $recursos. '<tbody/>';
 
 $html = file_get_contents('View/vRecursos.php');
 $html = str_replace('{{recursos}}', $recursos, $html); // Substitui cada recurso
