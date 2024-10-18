@@ -16,7 +16,7 @@ $html = file_get_contents('View/vNovoRecurso.php');
 
 
 
-
+$categoria = ' ';
 // se a pagina foi requerida pra receber dados e salvar
 if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categoria'])) 
 {
