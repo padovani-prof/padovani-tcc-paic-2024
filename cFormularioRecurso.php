@@ -34,12 +34,14 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
     
 
     $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
+    $retorno =  ($resposta<3)?'erro':'sucesso';
     $html = str_replace('{{retorno}}', $retorno, $html);
+    
     if($resposta < 3)
     {
         $html = str_replace('{{campoNome}}', $nome, $html);
         $html = str_replace('{{campoDescricao}}', $descre, $html);
-        $retorno =  ($resposta<3)?'erro':'sucesso';
+        
 
 
 
