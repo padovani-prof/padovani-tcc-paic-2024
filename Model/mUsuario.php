@@ -61,61 +61,72 @@ function listar_perfil(){
 
 function Validar_usuario($nome, $senha)
 {
-    // retorna se o dado é valido
+    // Validação do nome e senha
+    if (strlen($nome) < 2 || strlen($nome) > 50) {
+        return 0; // Nome inválido
+    }
 
-   if ( strlen($nome) < 2 or strlen($nome) > 50) 
-   {
-        return 0 ; // numero de caracter do nome invalido
-   }
-   
-   if (empty($senha)){
-        return 1;
-   }
-   elseif (strlen($senha) > 50 or strlen($senha) < 3){
-        return 2;
-   }
+    if (empty($senha)) {
+        return 1; // Senha vazia
+    }
 
-   return 3;
-   
-   
+    if (strlen($senha) > 50 || strlen($senha) < 3) {
+        return 2; // Senha inválida
+    }
+
+    return true; // Dados válidos
 }
 
 function insere_usuario($nome, $email, $senha)
 {
-    // insere no banco
+
     include 'confg_banco.php';
-    
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if(!$conecxao->connect_error)
-    {
-        $resulta = $conecxao->query ("INSERT INTO usuario (nome, emial, senha) values ('$nome', '$email', $senha)");
+    if (!$conecxao->connect_error) {
 
-        // Adicionou no banco
+        $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
 
-        return $resulta;
-        
+        // Usar prepared statements para evitar SQL Injection
+        $stmt = $conecxao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $nome, $email, $senha_hash);
+
+        // Executa a query e retorna o resultado
+        if ($stmt->execute()) {
+            return true; // Adicionado com sucesso
+        }
+
+        return false; // Falha ao adicionar
     }
-    // não adicionou no banco
-    return false;
 
+    // Erro de conexão
+    return false;
 }
 
 function cadastrar_usuario($nome, $email, $senha)
 {
-      
-    // ver se os dados estão condisentes retornando true ou false
-    $valido = Validar_usuario($nome, $email, $senha, $conf_senha);
+    // Validação dos dados
+    $valido = Validar_usuario($nome, $senha);
 
-    if ($valido === true )
-
-    {
-        $insere = insere_usuario($nome, $email, $senha);
-        // retorna o dado 4 que foi adicionado com sucesso
-        return 4;
-
+    if ($valido === true) {
+        // Inserção no banco
+        if (insere_usuario($nome, $email, $senha)) {
+            return 3; // Usuário cadastrado com sucesso
+        } else {
+            return 4; // Erro ao cadastrar no banco de dados
+        }
     }
+
+    // Dados inválidos
     return $valido;
 }
 
-?>
+function apagar_usuario($chave_pri)
+{
+   
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    $resulata = $conecxao->query("DELETE from usuario where codigo=$chave_pri");
+
+}

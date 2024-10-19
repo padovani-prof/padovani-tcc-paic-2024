@@ -96,7 +96,7 @@ function cadastrar_recurso($nome, $des, $cCatego)
 
     
     if ($valido === true )
-
+ 
     {
         $insere = insere_no_banco($nome, $descre, $cCatego);
         // retorna o dado 3 que foi adicionado com sucesso
@@ -137,11 +137,8 @@ function apagar_recurso($chave_pri)
     include 'confg_banco.php';
     
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-
     
     $resulata = $conecxao->query("DELETE from recurso where codigo=$chave_pri");
-
-    
 
 }
 

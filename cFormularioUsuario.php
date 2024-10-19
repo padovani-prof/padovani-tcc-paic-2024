@@ -7,35 +7,42 @@
 
     if (isset($_GET["salvar"])) {
         include_once 'Model/mUsuario.php';
-
+ 
         $nome = $_GET['nome'];
         $email = $_GET['email'];
         $senha = $_GET['senha'];
         $conf_senha = $_GET['conf_senha'];
+    
+        if ($senha !== $conf_senha){
+            $html = str_replace('{{mensagem}}', 'As senhas não correspondem', $html );
+            $html = str_replace('{{campoNome}}', $nome, $html);
+            $html = str_replace('{{campoEmail}}', $email, $html);
+            $html = str_replace('{{campoSenha}}', $senha, $html);
+            $html = str_replace('{{campoConfirma}}', $conf_senha, $html);
 
-        // Validação de usuário e senha
-        $resposta = Validar_usuario($nome, $senha);
-        var_dump($resposta);
+        }else{
+        
+            // Validação de usuário e senha
+            $resposta = cadastrar_usuario($nome, $email, $senha);
 
-        // Definindo mensagens para mostrar
-        $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!'];
+            // Definindo mensagens para mostrar
+            $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!'];
 
-        // Substitui as variáveis no HTML
-        $html = str_replace('{{campoNome}}', $nome, $html);
-        $html = str_replace('{{campoEmail}}', $email, $html);
-        $html = str_replace('{{campoSenha}}', $senha, $html);
-        $html = str_replace('{{campoConfirma}}', $conf_senha, $html);
-        $html = str_replace('{{mensagem}}', $men[$resposta], $html); 
+            // Substitui as variáveis no HTML
+            $html = str_replace('{{campoNome}}', $nome, $html);
+            $html = str_replace('{{campoEmail}}', $email, $html);
+            $html = str_replace('{{campoSenha}}', $senha, $html);
+            $html = str_replace('{{campoConfirma}}', $conf_senha, $html);
+            $html = str_replace('{{mensagem}}', $men[$resposta], $html); 
+        }
 
-    } else{
 
+    } else {
         $html = str_replace('{{campoNome}}', '', $html);
         $html = str_replace('{{campoEmail}}', '', $html);
         $html = str_replace('{{campoSenha}}', '', $html);
         $html = str_replace('{{campoConfirma}}', '', $html);
         $html = str_replace('{{mensagem}}', '', $html);
-
-
     }
 
     if (is_array($perfil)) {

@@ -13,7 +13,7 @@ $html = file_get_contents('View/vNovoRecurso.php');
 //<<<<<<< HEAD:cNovoRecurso.php
 //=======
 
-
+ 
 $categoria = ' ';
 //>>>>>>> 120988ccdde0eb8fdebe61331b9c9e8925e9bb7c:cFormularioRecurso.php
 // se a pagina foi requerida pra receber dados e salvar
