@@ -2,19 +2,51 @@
     include_once 'Model/mUsuario.php';  
     $perfil = listar_perfil();
 
-    if (is_array($perfil)){
+    // Primeiro, carregue o HTML
+    $html = file_get_contents('View/vFormularioUsuario.php'); 
 
-        $perfis='';
+    if (isset($_GET["salvar"])) {
+        include_once 'Model/mUsuario.php';
 
-        foreach ($perfil as $linha) {
-            $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['nome'] . "'> " . $linha['nome'] . "<br>"; 
-        }
+        $nome = $_GET['nome'];
+        $email = $_GET['email'];
+        $senha = $_GET['senha'];
+        $conf_senha = $_GET['conf_senha'];
+
+        // Validação de usuário e senha
+        $resposta = Validar_usuario($nome, $senha);
+        var_dump($resposta);
+
+        // Definindo mensagens para mostrar
+        $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!'];
+
+        // Substitui as variáveis no HTML
+        $html = str_replace('{{campoNome}}', $nome, $html);
+        $html = str_replace('{{campoEmail}}', $email, $html);
+        $html = str_replace('{{campoSenha}}', $senha, $html);
+        $html = str_replace('{{campoConfirma}}', $conf_senha, $html);
+        $html = str_replace('{{mensagem}}', $men[$resposta], $html); 
 
     } else{
-        $perfis .= "<input type='checkbox' name='perfis'> Não há nenhum perfil cadastrado <br>";
+
+        $html = str_replace('{{campoNome}}', '', $html);
+        $html = str_replace('{{campoEmail}}', '', $html);
+        $html = str_replace('{{campoSenha}}', '', $html);
+        $html = str_replace('{{campoConfirma}}', '', $html);
+        $html = str_replace('{{mensagem}}', '', $html);
+
+
     }
 
-    $html = file_get_contents('View/vFormularioUsuario.php');
+    if (is_array($perfil)) {
+        $perfis = '';
+        foreach ($perfil as $linha) {
+            $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['codigo'] . "'> " . $linha['nome'] . "<br>"; 
+        }
+    } else {
+        $perfis = "<input type='checkbox' name='perfis'> Não há nenhum perfil cadastrado <br>";
+    }
+
     $html = str_replace('{{perfis}}', $perfis, $html);
     echo $html;
 ?>

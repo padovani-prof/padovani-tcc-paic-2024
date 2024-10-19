@@ -1,5 +1,3 @@
-
-
 <?php 
 
 
@@ -10,12 +8,7 @@ $Lcategorias = carrega_categorias_recurso();
 $html = file_get_contents('View/vNovoRecurso.php');
 
 
-
-
 // carrega todos as categorias de recurso na teg option 
-
-
-
 
 // se a pagina foi requerida pra receber dados e salvar
 if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categoria'])) 
@@ -41,9 +34,6 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
         $html = str_replace('{{campoDescricao}}', $descre, $html);
         $retorno =  ($resposta<3)?'erro':'sucesso';
 
-
-
-        
         
     }
     else
@@ -53,9 +43,6 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
         $html = str_replace('{{campoDescricao}}','', $html);
         $html = str_replace('{{retorno}}', '', $html);
     }
-
-    
-
 }
 
 // A pagina for requerida pela primeira vez vai entra no else
@@ -71,8 +58,6 @@ else
 }
 
 
-
-
 $catego ='';
 foreach ($Lcategorias as $dados)
 {
@@ -86,10 +71,4 @@ echo $html;
 
 
 
-
-
-
-
-
 ?>
-

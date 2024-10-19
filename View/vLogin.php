@@ -23,7 +23,7 @@
         <p>{{mensagem}}</p>
         <form action="cLogin.php">
             E-mail:
-            <input type="txt" name="txtemail" id="txtemail"> <br> <br>
+            <input type="email" name="txtemail" id="txtemail"> <br> <br>
             Senha:
             <input type="password" name="txtsenha" id="txtsenha" >
             

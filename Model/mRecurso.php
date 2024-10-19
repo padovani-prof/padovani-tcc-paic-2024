@@ -2,11 +2,9 @@
 
 function tem_banco($categoria)
 {
-    
-    
+
     # não consegui integra com o config_banco.php
     include 'confg_banco.php';
-
      
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
@@ -83,7 +81,6 @@ function insere_no_banco($nome, $descre, $cCatego)
 
 
 
-
 function cadastrar_recurso($nome, $des, $cCatego)
 {
     
@@ -108,14 +105,6 @@ function cadastrar_recurso($nome, $des, $cCatego)
     }
     return $valido;
 }
-
-
-
-
-
-
-
-
 
 
 function Carregar_recursos()

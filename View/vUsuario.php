@@ -18,9 +18,9 @@
         {{usuarios}}
       </table>
 
-      <div>
-          <a href="Menu_Login/Viel/vMenu.php"><button>Voltar</button></a>
-      </div>
+
+      <a href="cMenu.php"><button>Voltar</button></a>
+      
       <div id="bt-nov-perfil">
           <a href="cFormularioUsuario.php"><button>Novo Usuário</button></a>
       </div>

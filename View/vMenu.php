@@ -26,8 +26,8 @@
     <div id="area-principal">
         <div id="menu-principal">
             <ul>
-                <li><a href="perfil.html">Perfil de Usuário</a></li>
-                <li><a href="">Usuários</a></li>
+                <li><a href="cPerfilUsuario.php">Perfil de Usuário</a></li>
+                <li><a href="cUsuario.php">Usuários</a></li>
                 <li><a href="cRecursos.php">Recursos</a></li>
                 <li><a href="">Categoria do Recurso</a></li>
                 <li><a href="">Registro de retirada / Devolução</a></li>
