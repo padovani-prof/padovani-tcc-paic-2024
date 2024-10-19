@@ -18,7 +18,7 @@ $recurso = Carregar_recursos();
 $recursos = '<tbody>';
 foreach ($recurso as $nome) {
     $recursos = $recursos. '<tr>
-        <td>'. mb_strtoupper($nome["nome"]).'</td>
+        <td>'. $nome["nome"].'</td>
         <td>   </td>                                
         
         

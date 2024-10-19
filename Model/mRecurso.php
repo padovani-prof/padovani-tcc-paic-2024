@@ -33,12 +33,12 @@ function Validar_recurso($nome, $desc, $cCatego)
 {
     // retorna se o dado é valido
 
-   if ( strlen($nome) < 3 or strlen($nome) > 50) 
+   if ( mb_strlen($nome) < 3 or mb_strlen($nome) > 50) 
    {
         return 0 ; // numero de caracter do nome invalido
    }
    
-   if (strlen($desc) > 100 )
+   if (mb_strlen($desc) > 100 )
    {
         return 1; // passou do numero maximo de caracter da descrição
    }
@@ -84,7 +84,7 @@ function insere_no_banco($nome, $descre, $cCatego)
 function cadastrar_recurso($nome, $des, $cCatego)
 {
     
-    $nome = trim(strtoupper($nome));
+    $nome = trim(mb_strtoupper($nome));
     $descre = trim($des);
 
     
