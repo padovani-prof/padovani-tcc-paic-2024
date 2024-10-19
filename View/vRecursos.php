@@ -33,7 +33,7 @@
           <a href="cMenu.php"><input type="button" value="Voltar"></a>
         </div>
         <div id="bt-nov-recurso">
-          <a href="cNovoRecurso.php"><input type="button" value="Novo Recurso"></a>
+          <a href="cFormularioRecurso.php"><input type="button" value="Novo Recurso"></a>
         </div>
         
 

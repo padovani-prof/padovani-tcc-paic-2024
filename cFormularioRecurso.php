@@ -10,6 +10,12 @@ $html = file_get_contents('View/vNovoRecurso.php');
 
 // carrega todos as categorias de recurso na teg option 
 
+//<<<<<<< HEAD:cNovoRecurso.php
+//=======
+
+
+$categoria = ' ';
+//>>>>>>> 120988ccdde0eb8fdebe61331b9c9e8925e9bb7c:cFormularioRecurso.php
 // se a pagina foi requerida pra receber dados e salvar
 if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categoria'])) 
 {
@@ -27,12 +33,14 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
     
 
     $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
+    $retorno =  ($resposta<3)?'erro':'sucesso';
     $html = str_replace('{{retorno}}', $retorno, $html);
+    
     if($resposta < 3)
     {
         $html = str_replace('{{campoNome}}', $nome, $html);
         $html = str_replace('{{campoDescricao}}', $descre, $html);
-        $retorno =  ($resposta<3)?'erro':'sucesso';
+        
 
         
     }

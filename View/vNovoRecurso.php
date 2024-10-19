@@ -13,7 +13,7 @@
      </header>
      
      <section> <!--Inicio Section-->
-        <form action="cNovoRecurso.php">
+        <form action="cFormularioRecurso.php">
           <label for="">Nome:</label>
           <input type="text" name="nome" value = "{{campoNome}}" id="">
           <label for="">Descrição: </label>
