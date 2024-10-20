@@ -1,19 +1,34 @@
 <?php 
 
 
+function apagar_diciplina($chave_pri)
+{
+   
+    include 'confg_banco.php';
+    
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    
+    $resulta = $conecxao->query("DELETE from disciplina where codigo=$chave_pri");
+
+    
+
+}
+
 
 function carrega_disciplina()
 {
-    include_once 'confg_banco.php';
+    include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
 
 
     $resulta = $cone->query('SELECT *  from disciplina ');
 
+    
     $todos_dados = [];
-
     while ($dados = $resulta->fetch_assoc())
     {
+        
         $todos_dados[] = $dados;
     }
 
@@ -26,26 +41,62 @@ function carrega_disciplina()
 
 
 
+function Validar_recurso($nome, $curso)
+{
+    // retorna se o dado é valido
+
+   if (mb_strlen($nome) < 3 or mb_strlen($nome) > 50) 
+   {
+        return 0 ; // numero de caracter do nome invalido
+   }
+   
+   if (mb_strlen($curso) > 100  or (mb_strlen($curso) < 5 ))
+   {
+        return 1; // nome do curso invalido
+   }
+   
+   
+   
+   return true; // recurso valido
+   
+}
+
+
+
 function insere_disciplina($nome, $curso, $codi_pere)
 {
-    include 'confg_banco.php';
+
+    // Trata os dados
+    $nome = mb_strtoupper(trim($nome));
+    $curso = mb_strtoupper(trim($curso));
+    $validar = Validar_recurso($nome, $curso);
+
+
     
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-
-    if(!$conecxao->connect_error)
+    if ($validar === true)
     {
-        $resulta = $conecxao->query ("INSERT INTO disciplina (nome, curso,codigo_periodo ) values ('$nome', '$curso', '$codi_pere')");
+        include 'confg_banco.php';
+    
+        $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-        // Adicionou no banco
+        if(!$conecxao->connect_error)
+        {
+            $resulta = $conecxao->query ("INSERT INTO disciplina (nome, curso,codigo_periodo ) values ('$nome', '$curso', '$codi_pere')");
 
-        return $resulta;
+            // Adicionou no banco
 
-        
+            return 2; // inserido corretamente
+            
+        }
     }
+
+    
     // não adicionou no banco
-    return false;
+    return $validar;
 
 }
+
+
 
 
 
