@@ -36,7 +36,7 @@
                 <li><a href="">Reserva Recurso</a></li>
                 <li><a href="">Ensalamento</a></li>
                 <li><a href="">Cadastrar Período</a></li>
-                <li><a href="">Cadastrar Disciplina</a></li>
+                <li><a href="cDisciplina.php">Cadastrar Disciplina</a></li>
 
 
             </ul>
