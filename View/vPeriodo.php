@@ -22,6 +22,7 @@
     <p id="mensagem-{{retorno}}">{{mensagem}}</p>
         
   </table>
+  <a href="cFormularioPeriodo.php"><input type="button" value="Novo"></a>
   <a href="cPeriodo.php"><input type="button" value="Cancelar"></a>
       
 
