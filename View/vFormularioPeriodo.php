@@ -21,7 +21,7 @@
           <input type="submit" value="Salvar">
         </form>
 
-      <a href="cMenu.php"><input type="button" value="Cancelar"></a>
+      <a href="cPeriodo.php"><input type="button" value="Cancelar"></a>
   </section>
 
 
