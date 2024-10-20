@@ -4,6 +4,9 @@
 
     // Primeiro, carregue o HTML
     $html = file_get_contents('View/vFormularioUsuario.php'); 
+    
+    // Armazena os perfis selecionados
+    $perfis_selecionados = isset($_GET['perfis']) ? $_GET['perfis'] : [];
 
     if (isset($_GET["salvar"])) {
         include_once 'Model/mUsuario.php';
@@ -48,12 +51,12 @@
     if (is_array($perfil)) {
         $perfis = '';
         foreach ($perfil as $linha) {
-            $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['codigo'] . "'> " . $linha['nome'] . "<br>"; 
+            $checked = in_array($linha['codigo'], $perfis_selecionados) ? 'checked' : '';
+            $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['codigo'] . "' $checked> " . $linha['nome'] . "<br>"; 
         }
     } else {
         $perfis = "<input type='checkbox' name='perfis'> Não há nenhum perfil cadastrado <br>";
     }
-
     $html = str_replace('{{perfis}}', $perfis, $html);
     echo $html;
 ?>

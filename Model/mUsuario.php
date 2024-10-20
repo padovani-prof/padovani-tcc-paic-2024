@@ -10,7 +10,7 @@ function listar_usuarios()
     }
 
     // Executa a consulta
-    $resultado = $conexao->query("SELECT nome, email FROM usuario");
+    $resultado = $conexao->query("SELECT * FROM usuario");
 
     // Inicializa um array vazio
     $todos_dados = [];
