@@ -18,11 +18,11 @@
         <label for="">Período: </label>
 
         <select name="periodo" id="txtperiodo">
-          <option value="">
-            {{Período}}
-          </option>
+          
+            {{Periodo}}
+        
         </select>
-        <a href=""><input type="button" value="Salvar"></a>
+        <input type="submit" name="salvar" value="Salvar">
       </form>
       <p id="mensagem-{{retorno}}">{{mensagem}}</p> 
   </section>
