@@ -2,10 +2,23 @@
 
 
 
+function apagar_periodo($chave_pri)
+{
+   
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    
+    $resulta = $conecxao->query("DELETE from periodo where codigo=$chave_pri");
+    return $resulta;
+
+    
+
+}
 
 function carrega_periodo()
 {
-    include_once 'confg_banco.php';
+    include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
 
 
@@ -45,6 +58,11 @@ function insere_periodo($nome, $data_ini, $data_final)
     return false;
 
 }
+
+
+
+
+
 
 
 
