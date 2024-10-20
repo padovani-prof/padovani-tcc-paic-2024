@@ -17,7 +17,7 @@
         <th>Alterar</th>
         <th>Apagar</th>
       </tr>
-          {{Categoria}}
+          {{disciplinas}}
 
       
   </table>
