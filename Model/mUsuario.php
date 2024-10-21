@@ -129,4 +129,4 @@ function apagar_usuario($chave_pri)
     
     $resulata = $conecxao->query("DELETE from usuario where codigo=$chave_pri");
 
-}
+} 

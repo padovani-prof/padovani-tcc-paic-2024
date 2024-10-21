@@ -29,4 +29,64 @@ function listar_perfis()
     return $todos_dados;
 }
 
-?>
+function apagar_perfil($chave_pri)
+{
+   
+    include 'confg_banco.php';
+    
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    
+    $resulta = $conecxao->query("DELETE from perfil_usuario where codigo=$chave_pri");
+
+    
+
+}
+
+function Validar_perfil($nome, $descricao){
+    if (strlen($nome) < 3 or strlen($nome) > 50) 
+   {
+        return 0 ; // numero de caracter do nome invalido
+   }
+   
+   if (strlen($descricao) > 100  or (strlen($descricao) < 5 ))
+   {
+        return 1; // nome do curso invalido
+   }
+   
+   return true; // recurso valido
+}
+
+
+function insere_perfil($nome, $descricao)
+{
+
+    // Trata os dados
+    $validar = Validar_perfil($nome, $descricao);
+
+
+    
+    if ($validar === true)
+    {
+        include 'confg_banco.php';
+    
+        $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+        if(!$conecxao->connect_error)
+        {
+            $resulta = $conecxao->query ("INSERT INTO perfil_usuario (nome, descricao) values ('$nome', '$descricao')");
+
+            // Adicionou no banco
+
+            return 2; // inserido corretamente
+            
+        }
+    }
+
+    // não adicionou no banco
+    return $validar;
+
+}
+
+
+?> 

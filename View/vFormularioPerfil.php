@@ -8,7 +8,7 @@
 <body>
     <section>
         <h1>Perfil Usuario</h1>
-        <form>
+        <form action="cFormularioPerfil.php">
             <label for="nome">Nome:</label>
             <input type="text" name="nome" id="nome" value="{{campoNome}}"> <br>
 
@@ -17,13 +17,13 @@
 
             <h3>Funcionalidades:</h3>
             {{funcionalidades}}
-            <input type="submit" value="Salvar">
+            <input type="submit" name = "salvar" value="Salvar">
         </form>
         
-        <p id="mensagem-{{retorno}}" >{{mensagem}}</p>
+        <p id="mensagem-{{retorno}}">{{mensagem}}</p>
 
         <div>
-            <a href=""><input type="button" value="Voltar"></a>
+            <a href="cPerfilUsuario.php"><input type="button" value="Voltar"></a>
         </div>
     </section>
 </body>

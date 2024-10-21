@@ -97,9 +97,4 @@ function insere_disciplina($nome, $curso, $codi_pere)
 }
 
 
-
-
-
-
-
 ?>

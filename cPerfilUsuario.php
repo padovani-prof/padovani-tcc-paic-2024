@@ -3,6 +3,12 @@
 
     $perfil = listar_perfis();
 
+    if (isset($_GET['codigo_do_perfil'])) {
+
+        $cod_perfil = $_GET['codigo_do_perfil'];
+        apagar_perfil($cod_perfil);
+    }
+
     // Verifica se $perfil é um array antes de usar o foreach
     if (is_array($perfil)) {
         
@@ -14,7 +20,12 @@
                 <td>'.$linha["nome"].'</td>
                 <td>'.$linha["descricao"].'</td>
                 <td><a href="#">alterar</a></td>
-                <td><a href="#">apagar</a></td>
+                <td>
+                    <form action="cPerfilUsuario.php">   
+                        <input type="hidden" name="codigo_do_perfil" value="'. $linha["codigo"] . '"> 
+                        <input type="submit" name="apagar" value="Apagar">
+                    </form> 
+                </td>
             </tr>';
         }
 
