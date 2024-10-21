@@ -2,60 +2,58 @@
 
 include_once 'Model/mCategoria.php';
 
-$Lcategorias = carrega_categorias_recurso();
-$html = file_get_contents('View/vNovaCategoria.php');
 
+$html = file_get_contents('View/vFormularioCategoria.php');
+
+$nome = '';
+$descre = '';
+$retorno = '';
+$mensagem = '';
 
 
 // se a pagina foi requerida pra receber dados e salvar
-if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['ambiente_fisico'])) 
+
+if (isset($_GET['salvar']))
 {
-    // cadastrar recurso
-    $nome = $_GET['nome'];
-    $descre = $_GET['descricao'];
-    $Ambiente = $_GET['ambiente_fisico'];
-
-    
-    $resposta = cadastrar_categoria($nome, $descre, $ambiente);
-
-    $mensagens = ['Nome da categoria ínvalido', 'Numero maximo de caracter na descrição é 100', 'categoria cadastrado com Sucesso!!'];
-    
-
-    $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
-    $html = str_replace('{{retorno}}', $retorno, $html);
-    if($resposta < 3)
+    if (isset($_GET['nome']) and isset($_GET['descricao'])) 
     {
-        $html = str_replace('{{campoNome}}', $nome, $html);
-        $html = str_replace('{{campoDescricao}}', $descre, $html);
-        $retorno =  ($resposta<3)?'erro':'sucesso';
+        // cadastrar recurso
+        $nome = $_GET['nome'];
+        $descre = $_GET['descricao'];
+        $Ambiente = $_GET['ambiente_fisico'];
+        $resposta = insere_categoria_recurso($nome, $descre, $Ambiente);
+        $mensagem = ['Nome da categoria ínvalido', 'Numero maximo de caracter na descrição é 100', 'Categoria cadastrada com Sucesso!!'];
 
+        // respostas
+        $mensagem = $mensagem[$resposta];
+        $retorno =  ($resposta<2)?'erro':'sucesso';
 
 
         
-        
-    }
-    else
-    {
-        $html = str_replace('{{campoNome}}','',$html);
-        $html = str_replace('{{campoDescricao}}','', $html);
-        $html = str_replace('{{retorno}}', '', $html);
-    }
+        if($resposta == 2)
+        {
+            // salvo com sucesso
+            $nome = '';
+            $descre = '';
+            $Ambiente = '';
 
-    
+            
+        }
+    }
 
 }
-
-// A pagina for requerida pela primeira vez vai entra no else
-else
-{
-    // subistiti coloca essas dados no html e mostra
-    $html = str_replace('{{campoNome}}','',$html);
-    $html = str_replace('{{campoDescricao}}','', $html);
-    $html = str_replace('{{retorno}}', '', $html);
-    $html = str_replace('{{mensagem}}','', $html);
+// subistiti coloca essas dados no html e mostra
+$html = str_replace('{{Camponome}}',$nome,$html);
+$html = str_replace('{{Campodescricao}}',$descre, $html);
+$html = str_replace('{{Campoambiente}}', ($Ambiente==='on')?'checked':'', $html); 
+$html = str_replace('{{mensagem}}', $mensagem, $html);
+$html = str_replace('{{resposta}}', $retorno, $html);
     
 
-}
+
+
+
+echo $html;
 
 
 
