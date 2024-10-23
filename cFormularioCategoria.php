@@ -9,6 +9,7 @@ $nome = '';
 $descre = '';
 $retorno = '';
 $mensagem = '';
+$Ambiente = '';
 
 
 // se a pagina foi requerida pra receber dados e salvar

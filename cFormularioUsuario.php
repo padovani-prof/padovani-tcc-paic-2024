@@ -64,16 +64,21 @@ if (isset($_GET["salvar"])) {
 } 
 
 // Gera os checkboxes de perfis, mantendo os selecionados
-if (is_array($perfil)) {
-    $perfis = '';
-    foreach ($perfil as $linha) {
-        $checked = in_array($linha['codigo'], $perfis_selecionados) ? 'checked' : '';
-        $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['codigo'] . "' $checked> " . $linha['nome'] . "<br>"; 
+    if (is_array($perfil)) {
+        $perfis = '';
+        foreach ($perfil as $linha) {
+            $checked = in_array($linha['codigo'], $perfis_selecionados) ? 'checked' : '';
+            $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['codigo'] . "' $checked> " . $linha['nome'] . "<br>"; 
+        }
+    } else {
+        $perfis = "<input type='checkbox' name='perfis'> Não há nenhum perfil cadastrado <br>";
     }
-} else {
-    $perfis = "<input type='checkbox' name='perfis'> Não há nenhum perfil cadastrado <br>";
-}
 
+$html = str_replace('{{campoNome}}', $nome, $html);
+$html = str_replace('{{campoEmail}}', $email, $html);
+$html = str_replace('{{campoSenha}}', $senha, $html);
+$html = str_replace('{{campoConfirma}}', $conf_senha, $html);
+$html = str_replace('{{mensagem}}', $mensagem, $html);
 $html = str_replace('{{perfis}}', $perfis, $html);
 echo $html;
 ?>

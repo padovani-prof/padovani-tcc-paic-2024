@@ -1,7 +1,7 @@
 <?php
 
 include_once 'Model/mRecurso.php';
-mb_internal_encoding("UTF-8");
+//mb_internal_encoding("UTF-8");
 
 
 if (isset($_GET['codigo_do_recurso']))
