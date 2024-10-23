@@ -9,7 +9,7 @@ $nome = '';
 $descre = '';
 $retorno = '';
 $mensagem = '';
-
+$Ambiente = '';
 
 // se a pagina foi requerida pra receber dados e salvar
 
@@ -20,7 +20,7 @@ if (isset($_GET['salvar']))
         // cadastrar recurso
         $nome = $_GET['nome'];
         $descre = $_GET['descricao'];
-        $Ambiente = $_GET['ambiente_fisico'];
+        $Ambiente = (isset($_GET['ambiente_fisico']))?$_GET['ambiente_fisico']:null;
         $resposta = insere_categoria_recurso($nome, $descre, $Ambiente);
         $mensagem = ['Nome da categoria ínvalido', 'Numero maximo de caracter na descrição é 100', 'Categoria cadastrada com Sucesso!!'];
 
@@ -58,4 +58,3 @@ echo $html;
 
 
 ?>
-
