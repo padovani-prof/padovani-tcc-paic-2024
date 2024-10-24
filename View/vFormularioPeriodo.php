@@ -24,7 +24,7 @@
 
         <p>{{mensagem}}</p>
 
-      <a href="cPeriodo.php"><input type="button" value="Cancelar"></a>
+      <a href="cPeriodo.php"><input type="button" value="Voltar"></a>
   </section>
 
 

@@ -9,11 +9,8 @@ $conf_senha = '';
 $perfis_selecionados = [];
 $mensagem = '';
 
-// Primeiro, carregue o HTML
-$html = file_get_contents('View/vFormularioUsuario.php'); 
 
-// Armazena os perfis selecionados
-$perfis_selecionados = isset($_GET['perfis']) ? $_GET['perfis'] : [];
+$html = file_get_contents('View/vFormularioUsuario.php'); 
 
 if (isset($_GET["salvar"])) {
     include_once 'Model/mUsuario.php';
@@ -22,8 +19,12 @@ if (isset($_GET["salvar"])) {
     $email = $_GET['email'];
     $senha = $_GET['senha'];
     $conf_senha = $_GET['conf_senha'];
+    
+    // Captura os perfis selecionados
+    $perfis_selecionados = isset($_GET['perfis']) ? $_GET['perfis'] : [];
+    
 
-    // Validação das senhas
+    // Validação do cadastro
     if (empty($nome)){
         $mensagem = 'O nome é obrigatório';
     } elseif (empty($email)){
@@ -32,15 +33,13 @@ if (isset($_GET["salvar"])) {
         $mensagem = 'A senha é obrigatório';
     } elseif (empty($conf_senha)){
         $mensagem = 'Você esqueceu de confirmar sua senha';
-
-        
     } elseif ($senha !== $conf_senha) {
         $mensagem = 'As senhas não correspondem';
     } elseif (empty($perfis_selecionados)) {
         $mensagem = 'Você deve selecionar pelo menos um perfil!';
     } else {
-        // Validação de usuário e senha
-        $resposta = cadastrar_usuario($nome, $email, $senha);
+
+        $resposta = cadastrar_usuario($nome, $email, $senha, $perfis_selecionados);
 
         if($resposta == 3) {
             $nome = '';

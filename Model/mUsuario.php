@@ -8,11 +8,7 @@ function listar_usuarios()
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-
-    // Executa a consulta
     $resultado = $conexao->query("SELECT * FROM usuario");
-
-    // Inicializa um array vazio
     $todos_dados = [];
 
     // Popula o array com os resultados

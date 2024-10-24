@@ -25,7 +25,7 @@
       
       <p id="mensagen-{{resposta}}" >{{mensagem}}</p>
 
-      <a href="cCategoria.php"><input type="button" value="Cancelar"></a>
+      <a href="cCategoria.php"><input type="button" value="Voltar"></a>
       
   </section>
 

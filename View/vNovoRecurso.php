@@ -28,7 +28,7 @@
 
 
         
-        <a href="cRecursos.php"><input type="button" value="Cancelar"></a>
+        <a href="cRecursos.php"><input type="button" value="Voltar"></a>
         <input type="submit" value="Salvar">
        
 

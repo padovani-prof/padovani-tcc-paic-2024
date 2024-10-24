@@ -45,12 +45,12 @@ function Validar_recurso($nome, $curso)
 {
     // retorna se o dado é valido
 
-   if (mb_strlen($nome) < 3 or mb_strlen($nome) > 50) 
+   if (strlen($nome) < 3 or strlen($nome) > 50) 
    {
         return 0 ; // numero de caracter do nome invalido
    }
    
-   if (mb_strlen($curso) > 100  or (mb_strlen($curso) < 5 ))
+   if (strlen($curso) > 100  or (strlen($curso) < 5 ))
    {
         return 1; // nome do curso invalido
    }
@@ -67,8 +67,8 @@ function insere_disciplina($nome, $curso, $codi_pere)
 {
 
     // Trata os dados
-    $nome = mb_strtoupper(trim($nome));
-    $curso = mb_strtoupper(trim($curso));
+    $nome = strtoupper(trim($nome));
+    $curso = strtoupper(trim($curso));
     $validar = Validar_recurso($nome, $curso);
 
 

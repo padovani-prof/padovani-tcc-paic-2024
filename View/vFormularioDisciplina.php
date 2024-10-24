@@ -27,7 +27,7 @@
       <p id="mensagem-{{retorno}}">{{mensagem}}</p> 
   </section>
     <footer>
-        <a href="cDisciplina.php"><input type="button" value="Cancelar"></a>
+        <a href="cDisciplina.php"><input type="button" value="Voltar"></a>
         
     </footer>
 </body>

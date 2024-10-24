@@ -4,11 +4,11 @@ function Validar_categoria($nome, $desc)
 {
     // retorna se os nomes dos dados são validos é para a inserção
 
-    if (mb_strlen($nome) < 3 or mb_strlen($nome) > 50) {
+    if (strlen($nome) < 3 or strlen($nome) > 50) {
         return 0; // numero de caracter do nome invalido
     }
 
-    if (mb_strlen($desc) > 100) {
+    if (strlen($desc) > 100) {
         return 1; // passou do numero maximo de caracter da descrição
     }
 
@@ -21,7 +21,7 @@ function insere_categoria_recurso($nome, $descre, $ambF)
 {
     // cadastra / retorna um numeros para a mensagem
 
-    $nome = trim(mb_strtoupper($nome));
+    $nome = trim(strtoupper($nome));
     $descre = trim($descre);
 
     $valido = Validar_categoria($nome, $descre);
