@@ -11,10 +11,6 @@ $retorno = '';
 $mensagem = '';
 $Ambiente = '';
 
-//<<<<<<< HEAD
-
-//=======
-//>>>>>>> 9d066070f353532c9af116dbb8919897e112bc8c
 
 // se a pagina foi requerida pra receber dados e salvar
 
