@@ -38,6 +38,8 @@ function carrega_periodo()
 
 
 
+
+
 function insere_periodo($nome, $data_ini, $data_final)
 {
     include 'confg_banco.php';
@@ -46,18 +48,26 @@ function insere_periodo($nome, $data_ini, $data_final)
 
     if(!$conecxao->connect_error)
     {
-        $resulta = $conecxao->query ("INSERT INTO periodo (nome, dt_inicial, dt_final) VALUES ('$nome', '$data_ini', '$data_final');
-");
+        $resulta = $conecxao->query ("SELECT * FROM periodo WHERE nome='$nome'");
+        if ($resulta->num_rows == 0)
+        {
+            $resulta = $conecxao->query ("INSERT INTO periodo (nome, dt_inicial, dt_final) VALUES ('$nome', '$data_ini', '$data_final');");
+            
+            return 0;
+            // salvo
 
-        // Adicionou no banco
-        return $resulta;
+        }
+        else
+        {
+            return 1;
+            // nome repetido
+        }
 
-        
     }
-    // não adicionou no banco
-    return false;
+    
 
 }
+
 
 
 

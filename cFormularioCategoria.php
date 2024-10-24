@@ -11,11 +11,6 @@ $retorno = '';
 $mensagem = '';
 $Ambiente = '';
 
-//<<<<<<< HEAD
-
-//=======
-//>>>>>>> 9d066070f353532c9af116dbb8919897e112bc8c
-
 // se a pagina foi requerida pra receber dados e salvar
 
 if (isset($_GET['salvar']))
@@ -27,15 +22,13 @@ if (isset($_GET['salvar']))
         $descre = $_GET['descricao'];
         $Ambiente = (isset($_GET['ambiente_fisico']))?$_GET['ambiente_fisico']:null;
         $resposta = insere_categoria_recurso($nome, $descre, $Ambiente);
-        $mensagem = ['Nome da categoria ínvalido', 'Numero maximo de caracter na descrição é 100', 'Categoria cadastrada com Sucesso!!'];
+        $mensagem = ['Categoria cadastrada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da categoria ínvalido', 'Categoria de recurso já cadastrado' ];
 
         // respostas
         $mensagem = $mensagem[$resposta];
-        $retorno =  ($resposta<2)?'erro':'sucesso';
+        $retorno =  ($resposta>0)?'erro':'sucesso';
 
-
-        
-        if($resposta == 2)
+        if($resposta == 0)
         {
             // salvo com sucesso
             $nome = '';
@@ -56,6 +49,9 @@ $html = str_replace('{{resposta}}', $retorno, $html);
     
 
 
+
+
 echo $html;
+
 
 ?>

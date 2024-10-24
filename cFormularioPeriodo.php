@@ -24,15 +24,18 @@ if(isset($_GET['salvar']))
     {
         // preecheu tudo 
         include_once 'Model/mPeriodo.php';
-        $msm = 'Falha no banco';
-        if(insere_periodo($nomeP, $dataIn, $dataFim)===true)
+
+        $resposta = insere_periodo($nomeP, $dataIn, $dataFim);
+        
+        $lMensagens = [ 'Período cadastrado com Sucesso!!','Não podemos salvar nomes de períodos repetidos'];
+        $msm = $lMensagens[$resposta];
+        
+        if($resposta==0)
         {
-            $msm = 'Período cadastrado com Sucesso!!';
+            $respo = 'sucessso';
             $nomeP = '';
             $dataIn = '';
             $dataFim = '';
-            $respo = 'sucessso';
-
         }
         
     }
@@ -44,14 +47,8 @@ if(isset($_GET['salvar']))
         {
             $msm = 'Nome do período inválido'; // nome do periodo invalido
         }
-
-        
-
-        
+       
     }
-
-    
-    
 
 }
 
@@ -63,6 +60,7 @@ $html = str_replace('{{dataFim}}',$dataFim, $html);
 
 
 $html = str_replace('{{mensagem}}',$msm, $html);
+$html = str_replace('{{msg}}',$respo , $html);
 
 
 

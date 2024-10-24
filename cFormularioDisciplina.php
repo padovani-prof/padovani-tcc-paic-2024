@@ -1,5 +1,6 @@
 <?php
 
+
 include_once 'Model/mPeriodo.php';
 $lista_de_periodos = carrega_periodo();
 
@@ -7,8 +8,6 @@ $peri = '';
 $nome = '';
 $curso = '';
 $mens = '';
-
-
 
 
 if(isset($_GET['salvar']))
@@ -19,7 +18,7 @@ if(isset($_GET['salvar']))
     $peri = $_GET['periodo'];
     $resp = insere_disciplina($nome, $curso, $peri);
 
-    if($resp==2)
+    if($resp==0)
     {
         $peri = '';
         $nome = '';
@@ -27,7 +26,7 @@ if(isset($_GET['salvar']))
     }
  
 
-    $lMensa = ['Nome inválido', 'Nome do curso inválido', 'Disciplina cadastrada com Sucesso!!'];
+    $lMensa = ['Disciplina cadastrada com Sucesso!!', 'Nome do curso inválido','Nome inválido', 'Diciplina já cadastrada'];
 
 
     $mens = $lMensa[$resp];
