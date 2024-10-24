@@ -1,6 +1,7 @@
 <?php 
 
 
+
 function apagar_diciplina($chave_pri)
 {
    
@@ -45,12 +46,12 @@ function Validar_recurso($nome, $curso)
 {
     // retorna se o dado é valido
 
-   if (strlen($nome) < 3 or strlen($nome) > 50) 
+   if (mb_strlen($nome) < 3 or mb_strlen($nome) > 50) 
    {
-        return 0 ; // numero de caracter do nome invalido
+        return 2 ; // numero de caracter do nome invalido
    }
    
-   if (strlen($curso) > 100  or (strlen($curso) < 5 ))
+   if (mb_strlen($curso) > 100  or (mb_strlen($curso) < 5 ))
    {
         return 1; // nome do curso invalido
    }
@@ -67,11 +68,9 @@ function insere_disciplina($nome, $curso, $codi_pere)
 {
 
     // Trata os dados
-    $nome = strtoupper(trim($nome));
-    $curso = strtoupper(trim($curso));
+    $nome = mb_strtoupper(trim($nome));
+    $curso = mb_strtoupper(trim($curso));
     $validar = Validar_recurso($nome, $curso);
-
-
     
     if ($validar === true)
     {
@@ -81,11 +80,19 @@ function insere_disciplina($nome, $curso, $codi_pere)
 
         if(!$conecxao->connect_error)
         {
-            $resulta = $conecxao->query ("INSERT INTO disciplina (nome, curso,codigo_periodo ) values ('$nome', '$curso', '$codi_pere')");
+            $resulta = $conecxao->query ("SELECT * FROM disciplina WHERE nome='$nome'");
+            if ($resulta->num_rows == 0)
+            {
 
-            // Adicionou no banco
-
-            return 2; // inserido corretamente
+                $resulta = $conecxao->query ("INSERT INTO disciplina (nome, curso,codigo_periodo ) values ('$nome', '$curso', '$codi_pere')");
+                // Adicionou no banco
+                $validar = 0; // inserido corretamente
+            }
+            else
+            {
+                $validar = 3;
+                // nome repetido
+            }
             
         }
     }
@@ -95,6 +102,10 @@ function insere_disciplina($nome, $curso, $codi_pere)
     return $validar;
 
 }
+
+
+?>
+
 
 
 ?>
