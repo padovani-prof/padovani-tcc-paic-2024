@@ -1,6 +1,6 @@
 <?php
-include_once 'Model/mFuncionalidade.php';  
-$funcionalidades = listar_funcionalidades();
+include_once 'Model/mPerfilUsuario.php';  
+$funcionalidades = listar_funcionalidade();
 
 $nome = '';
 $descricao = '';
@@ -45,16 +45,18 @@ if (isset($_GET["salvar"])) {
 }
 
 // Inicializa a variável que conterá o HTML dos checkboxes
-$aux = ""; 
+
 if (is_array($funcionalidades)) {
-    foreach ($funcionalidades as $func) {
+    $aux = ""; 
+    foreach ($funcionalidades as $linha) {
         // Verifica se a funcionalidade está na lista de selecionadas
-        $checked = in_array($func, $funcionalidades_selecionadas) ? "checked" : "";
-        $aux .= "<input type='checkbox' name='funcionalidades[]' value='" . $func . "' $checked> " . $func . "<br>";
+        $checked = in_array($linha['codigo'], $funcionalidades_selecionadas) ? "checked" : "";
+        $aux .= "<input type='checkbox' name='funcionalidades[]' value='" . $linha['codigo'] . "' $checked> " . $linha['nome'] . "<br>";
     }
 } else {
     $aux .= "<input type='checkbox' name='funcionalidades'> Não há nenhuma funcionalidade cadastrada <br>";
 }
+
 
 $html = file_get_contents('View/vFormularioPerfil.php');
 $html = str_replace('{{campoNome}}', $nome, $html);
