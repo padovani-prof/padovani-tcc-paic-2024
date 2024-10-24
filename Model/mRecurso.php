@@ -1,5 +1,7 @@
 <?php 
 
+
+
 function tem_banco($categoria)
 {
 
@@ -33,12 +35,12 @@ function Validar_recurso($nome, $desc, $cCatego)
 {
     // retorna se o dado é valido
 
-   if ( strlen($nome) < 3 or strlen($nome) > 50) 
+   if ( mb_strlen($nome) < 3 or mb_strlen($nome) > 50) 
    {
-        return 0 ; // numero de caracter do nome invalido
+        return 3 ; // numero de caracter do nome invalido
    }
    
-   if (strlen($desc) > 100 )
+   if (mb_strlen($desc) > 100 )
    {
         return 1; // passou do numero maximo de caracter da descrição
    }
@@ -66,17 +68,22 @@ function insere_no_banco($nome, $descre, $cCatego)
 
     if(!$conecxao->connect_error)
     {
-        $resulta = $conecxao->query ("INSERT INTO recurso (nome, descricao, codigo_categoria) values ('$nome', '$descre', $cCatego)");
 
-        // Adicionou no banco
-
-        return $resulta;
-
+        $resultado = $conecxao->query("SELECT * FROM recurso where nome= '$nome'");
+        if ($resultado->num_rows == 0 )
         
+        {
+            $resulta = $conecxao->query ("INSERT INTO recurso (nome, descricao, codigo_categoria) values ('$nome', '$descre', $cCatego)");
+            // Adicionou no banco
+            return 0;
+        }
+       else
+       {
+            return 4;
+       }
+   
     }
-    // não adicionou no banco
-    return false;
-
+    
 }
 
 
@@ -84,24 +91,20 @@ function insere_no_banco($nome, $descre, $cCatego)
 function cadastrar_recurso($nome, $des, $cCatego)
 {
     
-    $nome = trim(strtoupper($nome));
+    $nome = trim(mb_strtoupper($nome));
     $descre = trim($des);
 
     
     // ver se os dados estão condisentes retornando true ou false
     $valido = Validar_recurso($nome, $descre, $cCatego);
-
-    
-    
-
     
     if ($valido === true )
  
     {
-        $insere = insere_no_banco($nome, $descre, $cCatego);
-        // retorna o dado 3 que foi adicionado com sucesso
-        return 3;
-
+        return insere_no_banco($nome, $descre, $cCatego);
+        // retorna o dado 0 que foi adicionado com sucesso
+        // retona 3 nome repetido
+        
     }
     return $valido;
 }
@@ -142,6 +145,7 @@ function apagar_recurso($chave_pri)
 
 }
 
+   
    
 
 
