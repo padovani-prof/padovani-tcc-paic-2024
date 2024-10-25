@@ -8,22 +8,22 @@
 <body>
     <section>
         <h1>Perfil Usuario</h1>
-        <form>
+        <form action="cFormularioPerfil.php">
             <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nome"> <br>
+            <input type="text" name="nome" id="nome" value="{{campoNome}}"> <br>
 
             <label for="descricao">Descrição:</label>
-            <input type="text" name="descricao" id="descricao"> <br>
+            <input type="text" name="descricao" id="descricao" value="{{campoDescricao}}"> <br>
 
             <h3>Funcionalidades:</h3>
             {{funcionalidades}}
-            <input type="submit" value="Salvar">
+            <input type="submit" name = "salvar" value="Salvar">
         </form>
         
-                <a href=""></a>
+        <p id="mensagem-{{retorno}}">{{mensagem}}</p>
 
         <div>
-            <a href=""><input type="button" value="Voltar"></a>
+            <a href="cPerfilUsuario.php"><input type="button" value="Voltar"></a>
         </div>
     </section>
 </body>

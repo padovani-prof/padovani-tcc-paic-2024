@@ -1,49 +1,73 @@
 <?php 
 
 
-function carrega_categorias_recurso()
+
+    
+
+function Validar_categoria($nome, $desc)
 {
-    include_once 'confg_banco.php';
-    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    // retorna se os nomes dos dados são validos é para a inserção
 
-
-    $resulta = $cone->query('SELECT *  from categoria_recurso');
-
-    $todos_dados = [];
-
-    while ($dados = $resulta->fetch_assoc())
-    {
-        $todos_dados[] = $dados;
+    if (mb_strlen($nome) < 3 or mb_strlen($nome) > 50) {
+        return 2; // numero de caracter do nome invalido
     }
 
-    return $todos_dados; 
-    // retorna todos os dados da tabela categoria_recurso do banco em forma de lista com nome e o codigo
+    if (mb_strlen($desc) > 100) {
+        return 1; // passou do numero maximo de caracter da descrição
+    }
+
+    return true; // recurso valido
 
 }
 
 
 function insere_categoria_recurso($nome, $descre, $ambF)
 {
-    include 'confg_banco.php';
-    
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    // cadastra / retorna um numeros para a mensagem
 
-    if(!$conecxao->connect_error)
+    $nome = trim(mb_strtoupper($nome));
+    $descre = trim($descre);
+
+    $valido = Validar_categoria($nome, $descre);
+
+    if($valido===true)
     {
-        $resulta = $conecxao->query ("INSERT INTO categoria_recurso (nome, descricao, ambiente_fisico) values ('$nome', '$descre', '$ambF')");
+        if($ambF=== 'on')
+        {
+            $ambF = 'S';
+        }
+        else
+        {
+            $ambF = 'N';
+        }
+        include 'confg_banco.php';
+        $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+        if (!$conecxao->connect_error) 
+        {
+            
+            
+            $resulta = $conecxao->query ("SELECT * FROM categoria_recurso WHERE nome='$nome'");
+            if ($resulta->num_rows == 0)
+            {
 
-        // Adicionou no banco
+                $resulta = $conecxao->query("INSERT INTO categoria_recurso (nome, descricao, ambiente_fisico) values ('$nome', '$descre', '$ambF')");
 
-        return $resulta;
+                // Adicionou no banco
+                $valido = 0;
+            
+            }
+            else
+            {
+                $valido = 3; // nome repetido
+            }
+        }
 
-        
     }
-    // não adicionou no banco
-    return false;
+    return $valido;
 
+    
+   
 }
-
-
 
 
 

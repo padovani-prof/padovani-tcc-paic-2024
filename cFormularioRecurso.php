@@ -1,5 +1,3 @@
-
-
 <?php 
 
 
@@ -10,12 +8,13 @@ $Lcategorias = carrega_categorias_recurso();
 $html = file_get_contents('View/vNovoRecurso.php');
 
 
-
-
 // carrega todos as categorias de recurso na teg option 
 
+//<<<<<<< HEAD:cNovoRecurso.php
+//=======
 
-
+ 
+$categoria = ' ';
 
 // se a pagina foi requerida pra receber dados e salvar
 if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categoria'])) 
@@ -30,20 +29,19 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
     
     $resposta = cadastrar_recurso($nome, $descre, $categoria);
 
-    $mensagens = ['Nome do recurso ínvalido', 'Numero maximo de caracter na descrição é 100', 'Categoria ínvalida', 'Recurso cadastrado com Sucesso!!'];
+    $mensagens = ['Recurso cadastrado com Sucesso!!' , 'Numero maximo de caracter na descrição é 100', 'Categoria ínvalida',  'Nome do recurso ínvalido', 'Nome do recurso já cadastrado'];
     
 
     $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
+    $retorno =  ($resposta>0)?'erro':'sucesso';
     $html = str_replace('{{retorno}}', $retorno, $html);
-    if($resposta < 3)
+    
+    if($resposta>0)
     {
         $html = str_replace('{{campoNome}}', $nome, $html);
         $html = str_replace('{{campoDescricao}}', $descre, $html);
-        $retorno =  ($resposta<3)?'erro':'sucesso';
-
-
-
         
+
         
     }
     else
@@ -53,9 +51,6 @@ if (isset($_GET['nome']) and isset($_GET['descricao']) and isset($_GET['categori
         $html = str_replace('{{campoDescricao}}','', $html);
         $html = str_replace('{{retorno}}', '', $html);
     }
-
-    
-
 }
 
 // A pagina for requerida pela primeira vez vai entra no else
@@ -71,8 +66,6 @@ else
 }
 
 
-
-
 $catego ='';
 foreach ($Lcategorias as $dados)
 {
@@ -85,11 +78,4 @@ $html = str_replace('{{categoriarecurso}}', $catego, $html);
 echo $html;
 
 
-
-
-
-
-
-
 ?>
-

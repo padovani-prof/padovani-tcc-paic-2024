@@ -17,11 +17,15 @@
         <label for="">Descrição: </label>
         <input type="text" name="descricao" id="txtdescricao" value="{{Campodescricao}}">
         <label for="">Ambiente Físico</label> 
-        <input type="checkbox" name="" id="" {{Campoambiente}}>
-        <input type="submit" value="Salvar">
-      </form>
+        <input type="checkbox" name="ambiente_fisico" id="" {{Campoambiente}}>
 
-      <a href="cCategoria.php"><input type="button" value="Cancelar"></a>
+        <input type="submit" name="salvar" value="Salvar">
+        
+      </form>
+      
+      <p id="mensagen-{{resposta}}" >{{mensagem}}</p>
+
+      <a href="cCategoria.php"><input type="button" value="Voltar"></a>
       
   </section>
 

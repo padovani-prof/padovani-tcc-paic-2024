@@ -26,17 +26,17 @@
     <div id="area-principal">
         <div id="menu-principal">
             <ul>
-                <li><a href="perfil.html">Perfil de Usuário</a></li>
-                <li><a href="">Usuários</a></li>
+                <li><a href="cPerfilUsuario.php">Perfil de Usuário</a></li>
+                <li><a href="cUsuario.php">Usuários</a></li>
                 <li><a href="cRecursos.php">Recursos</a></li>
-                <li><a href="">Categoria do Recurso</a></li>
+                <li><a href="cCategoria.php">Categoria do Recurso</a></li>
                 <li><a href="">Registro de retirada / Devolução</a></li>
                 <li><a href="">Cancelar Retirada / Devolução</a></li>
                 <li><a href="">Consultar Disponibilidade</a></li>
                 <li><a href="">Reserva Recurso</a></li>
                 <li><a href="">Ensalamento</a></li>
-                <li><a href="">Cadastrar Período</a></li>
-                <li><a href="">Cadastrar Disciplina</a></li>
+                <li><a href="cPeriodo.php">Cadastrar Período</a></li>
+                <li><a href="cDisciplina.php">Cadastrar Disciplina</a></li>
 
 
             </ul>

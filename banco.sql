@@ -154,3 +154,60 @@ insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Introduç
 insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Matemática Básica', 'Licenciatura em Computação', 1);
 insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Linguagem Programação', 'Licenciatura em Computação', 2);
 insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Sistemas Digitais', 'Licenciatura em Computação', 2);
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade` (
+  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `sigla` VARCHAR(20) NOT NULL,
+  `nome` VARCHAR(60) NOT NULL,
+  `descricao` VARCHAR(200) NOT NULL,
+  `ativa` CHAR(1) NOT NULL,
+  PRIMARY KEY (`codigo`))
+ENGINE = InnoDB;
+
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_recurso', 'Cadastrar recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('alt_recurso', 'Alterar recurso', 'O usuário pode alterar as informções do recusros no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('apag_recurso', 'Apagar recurso', 'O usuário pode apagar recusros no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('adm_perm_recurso', 'Administrar permissão de recurso', 'O usuário pode administrar permissão dos recusros no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_categoria_rec', 'Cadastrar categoria de recurso', 'O usuário pode cadastra a categoria de cada recusros no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('alt_categoria_rec', 'Alterar categoria de recurso', 'O usuário pode alterar as informações da categoria de cada recusros do sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('apag_categoria_rec', 'Apagar categoria de recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_perfil', 'Cadastrar perfil de usuário', 'O usuário pode cadastrar os perfis do usuário no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('alt_perfil', 'Alterar perfil de usuário', 'O usuário pode alterar as informações do perifl no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('apag_perfil', 'Apagar perfil de usuário', 'O usuário pode apagar o perifl do sistema', 'S');
+    
+CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
+  `codigo_funcionalidade` INT NOT NULL,
+  `codigo_perfil` INT NOT NULL,
+  PRIMARY KEY (`codigo_funcionalidade`, `codigo_perfil`),
+  CONSTRAINT `fk_funcionalidade_has_perfil_usuario_funcionalidade1`
+    FOREIGN KEY (`codigo_funcionalidade`)
+    REFERENCES `sgrp`.`funcionalidade` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_funcionalidade_has_perfil_usuario_perfil_usuario1`
+    FOREIGN KEY (`codigo_perfil`)
+    REFERENCES `sgrp`.`perfil_usuario` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (1,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (2,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (3,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (4,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (5,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (6,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (7,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (8,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (9,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (10,1);

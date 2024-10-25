@@ -1,7 +1,7 @@
 <?php
 
 include_once 'Model/mRecurso.php';
-mb_internal_encoding("UTF-8");
+//mb_internal_encoding("UTF-8");
 
 
 if (isset($_GET['codigo_do_recurso']))
@@ -18,7 +18,7 @@ $recurso = Carregar_recursos();
 $recursos = '<tbody>';
 foreach ($recurso as $nome) {
     $recursos = $recursos. '<tr>
-        <td>'. mb_strtoupper($nome["nome"]).'</td>
+        <td>'. $nome["nome"].'</td>
         <td>   </td>                                
         
         

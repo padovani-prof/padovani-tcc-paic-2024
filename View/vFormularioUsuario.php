@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil USuário</title>
+    <title>USuário</title>
 </head>
 <body>
     <section>
         <h1>Usuario</h1>
-        <form>
+        <form action="cFormularioUsuario.php">
             <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nome"> <br>
+            <input type="text" name="nome" id="nome" value="{{campoNome}}"> <br>
 
             <label for="email">Email:</label>
-            <input type="text" name="email" id="email"> <br>
+            <input type="email" name="email" id="email" value="{{campoEmail}}"> <br>
 
-            <label for="senna">Senha:</label>
-            <input type="password" name="senha" id="senha"> <br>
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" id="senha" value="{{campoSenha}}"> <br>
+            <!-- será que tem como ter a opção de mostrar senha? -->
 
             <label for="senna">Confirmar Senha:</label>
-            <input type="password" name="conf_senha" id="conf_senha"> <br>
-
+            <input type="password" name="conf_senha" id="conf_senha" value="{{campoConfirma}}"> <br> 
+            <!--aqui verificar se a senha foi preenchida corretamente-->
+            
             <h3>Perfis:</h3>
             {{perfis}}
-            <input type="submit" value="Salvar">
+            <input type="submit" name="salvar" value="Salvar">
         </form>
-        
-                <a href=""></a>
+
+        <p id="mensagem-{{retorno}}" >{{mensagem}}</p>
 
         <div>
             <a href="cUsuario.php"><input type="button" value="Voltar"></a>

@@ -3,7 +3,7 @@ function dias_da_semana($lista_sema)
 {
     $semana = '';
     $cont = 0;
-
+ 
     
     foreach($lista_sema as $dia)
     {
@@ -60,7 +60,7 @@ function carrega_perfil_usuario()
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    $resultado = $conecxao->query("SELECT nome, codigo from perfil_usuario");
+    $resultado = $conecxao->query("SELECT codigo, nome from perfil_usuario");
 
     $perfil = [];
     while ($linha = $resultado->fetch_assoc())
