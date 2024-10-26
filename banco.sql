@@ -201,6 +201,7 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (1,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (2,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (3,1);
@@ -211,3 +212,58 @@ insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (8,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (9,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (10,1);
+
+create table `sgrp`.`reserva`(
+	codigo int not null auto_increment primary key,
+	justificativa varchar(150) not null,
+	codigo_usuario_agendador int not null references usuario(codigo),
+	codigo_recurso int not null references recurso(codigo),
+	codigo_usuario_utilizador int not null references usuario(codigo)
+);
+
+create table `sgrp`.`data_reserva`(
+	codigo int not null auto_increment primary key,
+	data date not null,
+	hora_inicial time not null, 
+	hora_final time not null, 
+	codigo_reserva int not null references reserva(codigo)
+);
+
+/*
+SELECT DISTINCT
+    r.codigo AS codigo_recurso,
+    r.nome AS nome_recurso,
+    d.data AS data_disponivel,
+    d.hora_inicial AS hora_inicio_disponivel,
+    d.hora_final AS hora_fim_disponivel
+FROM sgrp.recurso r
+LEFT JOIN sgrp.categoria_recurso cr ON r.codigo_categoria = cr.codigo
+-- Define os dias e horários desejados diretamente na consulta
+-- Usando CROSS JOIN para combinar recursos com horários
+CROSS JOIN (
+    SELECT '2024-10-01' AS data, '08:00' AS hora_inicial, '12:00' AS hora_final
+    UNION ALL
+    SELECT '2024-10-01', '13:00', '17:00'
+    UNION ALL
+    SELECT '2024-10-02', '09:00', '11:00'
+    -- Continue listando os dias e horários desejados
+) AS d
+-- Filtra por códigos de recursos ou categorias desejadas
+WHERE r.codigo IN (1, 2, 3)
+   OR r.codigo_categoria IN (4, 5)
+-- Usa NOT EXISTS para excluir horários em que o recurso está reservado
+and NOT EXISTS (
+    SELECT 1
+    FROM sgrp.reserva res
+    INNER JOIN sgrp.data_reserva dr ON res.codigo = dr.codigo_reserva
+    WHERE res.codigo_recurso = r.codigo
+      AND dr.data = d.data
+      -- Condição de conflito de horários:
+      AND (
+          (d.hora_inicial >= dr.hora_inicial AND d.hora_inicial < dr.hora_final) OR
+          (d.hora_final > dr.hora_inicial AND d.hora_final <= dr.hora_final) OR
+          (d.hora_inicial <= dr.hora_inicial AND d.hora_final >= dr.hora_final)
+      )
+)
+ORDER BY r.codigo, d.data, d.hora_inicial;
+*/
