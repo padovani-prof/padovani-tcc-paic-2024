@@ -1,4 +1,4 @@
-drop schema sgrp;
+drop schema if exists sgrp;
 
 create schema sgrp;
 CREATE TABLE sgrp.usuario(
@@ -216,54 +216,64 @@ insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil
 create table `sgrp`.`reserva`(
 	codigo int not null auto_increment primary key,
 	justificativa varchar(150) not null,
-	codigo_usuario_agendador int not null references usuario(codigo),
-	codigo_recurso int not null references recurso(codigo),
-	codigo_usuario_utilizador int not null references usuario(codigo)
-);
+	codigo_usuario_agendador int not null,
+	codigo_recurso int not null,
+	codigo_usuario_utilizador int not null, 
+	foreign key(codigo_usuario_utilizador) references usuario(codigo) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	foreign key(codigo_usuario_agendador) references usuario(codigo) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	foreign key(codigo_recurso) references recurso(codigo) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 create table `sgrp`.`data_reserva`(
 	codigo int not null auto_increment primary key,
 	data date not null,
 	hora_inicial time not null, 
 	hora_final time not null, 
-	codigo_reserva int not null references reserva(codigo)
-);
+	codigo_reserva int not null,
+	foreign key(codigo_reserva)  references reserva(codigo) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE = InnoDB; 
+
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 1, 2);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(1, '2024-10-01', '12:00', '15:00');
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(2, '2024-10-01', '12:00', '22:00');
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 3, 2);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(3, '2024-10-01', '15:00', '22:00');
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 4, 2);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(4, '2024-10-01', '15:00', '16:00');
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(5, '2024-10-01', '11:00', '12:00');
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(6, '2024-10-01', '18:00', '20:00');
 
 /*
-SELECT DISTINCT
-    r.codigo AS codigo_recurso,
-    r.nome AS nome_recurso,
-    d.data AS data_disponivel,
-    d.hora_inicial AS hora_inicio_disponivel,
-    d.hora_final AS hora_fim_disponivel
-FROM sgrp.recurso r
-LEFT JOIN sgrp.categoria_recurso cr ON r.codigo_categoria = cr.codigo
--- Define os dias e horários desejados diretamente na consulta
--- Usando CROSS JOIN para combinar recursos com horários
+SELECT 
+	rec.codigo AS codigo_recurso, 
+	rec.nome AS nome_recurso, 
+	dts.data AS data_alvo, 
+	dts.hora_inicial AS hora_inicial_alvo, 
+	dts.hora_final AS hora_final_alvo
+FROM sgrp.recurso rec
+LEFT JOIN sgrp.categoria_recurso cat 
+	ON rec.codigo_categoria = cat.codigo
 CROSS JOIN (
-    SELECT '2024-10-01' AS data, '08:00' AS hora_inicial, '12:00' AS hora_final
+    SELECT CAST('2024-10-01' AS date) AS data, CAST('08:00' AS TIME) AS hora_inicial, CAST('12:00' AS TIME) AS hora_final
     UNION ALL
-    SELECT '2024-10-01', '13:00', '17:00'
+    SELECT CAST('2024-10-01' AS date), CAST('13:00' AS time), CAST('17:00' AS time)
     UNION ALL
-    SELECT '2024-10-02', '09:00', '11:00'
-    -- Continue listando os dias e horários desejados
-) AS d
--- Filtra por códigos de recursos ou categorias desejadas
-WHERE r.codigo IN (1, 2, 3)
-   OR r.codigo_categoria IN (4, 5)
--- Usa NOT EXISTS para excluir horários em que o recurso está reservado
-and NOT EXISTS (
-    SELECT 1
-    FROM sgrp.reserva res
-    INNER JOIN sgrp.data_reserva dr ON res.codigo = dr.codigo_reserva
-    WHERE res.codigo_recurso = r.codigo
-      AND dr.data = d.data
-      -- Condição de conflito de horários:
-      AND (
-          (d.hora_inicial >= dr.hora_inicial AND d.hora_inicial < dr.hora_final) OR
-          (d.hora_final > dr.hora_inicial AND d.hora_final <= dr.hora_final) OR
-          (d.hora_inicial <= dr.hora_inicial AND d.hora_final >= dr.hora_final)
-      )
-)
-ORDER BY r.codigo, d.data, d.hora_inicial;
+    SELECT CAST('2024-10-02' AS date), CAST('09:00' AS time), CAST('11:00' AS time)
+) AS dts
+LEFT JOIN sgrp.reserva res
+	ON res.codigo_recurso = rec.codigo
+LEFT JOIN sgrp.data_reserva dtr
+	ON res.codigo = dtr.codigo_reserva AND
+	dtr.data = dts.data AND
+	(
+		(dts.hora_inicial >= dtr.hora_inicial AND dts.hora_inicial < dtr.hora_final) OR
+		(dts.hora_final > dtr.hora_inicial AND dts.hora_final <= dtr.hora_final) OR
+		(dts.hora_inicial <= dtr.hora_inicial AND dts.hora_final >= dtr.hora_final)
+	)
+WHERE rec.codigo IN (2, 3) OR rec.codigo_categoria IN (2)
+GROUP BY 1, 2, 3, 4, 5
+HAVING COUNT(dtr.data) = 0
 */
