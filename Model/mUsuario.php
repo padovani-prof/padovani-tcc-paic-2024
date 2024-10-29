@@ -87,7 +87,6 @@ function insere_usuario($nome, $email, $senha)
         $resul = $conexao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
         $resul->bind_param("sss", $nome, $email, $senha_hash);
 
-        $resul = $conexao->query ("INSERT INTO usuario_perfil (codigo_perfil, codigo_usuario) values ('$perfil', '$nome')");
 
         // Executa a query e retorna o resultado
         if ($resul->execute()) {
