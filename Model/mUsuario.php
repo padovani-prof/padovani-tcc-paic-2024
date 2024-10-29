@@ -35,7 +35,7 @@ function listar_perfil(){
     }
 
     // Executa a consulta
-    $resultado = $conexao->query("SELECT codigo, nome FROM perfil_usuario");
+    $resultado = $conexao->query("SELECT * FROM perfil_usuario");
 
     // Inicializa um array vazio
     $todos_dados = [];
@@ -77,18 +77,20 @@ function insere_usuario($nome, $email, $senha)
 {
 
     include 'confg_banco.php';
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if (!$conecxao->connect_error) {
+    if (!$conexao->connect_error) {
 
         $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
 
         // Usar prepared statements para evitar SQL Injection
-        $stmt = $conecxao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $nome, $email, $senha_hash);
+        $resul = $conexao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
+        $resul->bind_param("sss", $nome, $email, $senha_hash);
+
+        $resul = $conexao->query ("INSERT INTO usuario_perfil (codigo_perfil, codigo_usuario) values ('$perfil', '$nome')");
 
         // Executa a query e retorna o resultado
-        if ($stmt->execute()) {
+        if ($resul->execute()) {
             return true; // Adicionado com sucesso
         }
 

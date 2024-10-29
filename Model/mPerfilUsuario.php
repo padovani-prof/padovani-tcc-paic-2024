@@ -59,10 +59,10 @@ function apagar_perfil($chave_pri)
    
     include 'confg_banco.php';
     
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     
-    $resulta = $conecxao->query("DELETE from perfil_usuario where codigo=$chave_pri");
+    $resulta = $conexao->query("DELETE from perfil_usuario where codigo=$chave_pri");
 
     
 
@@ -95,11 +95,11 @@ function insere_perfil($nome, $descricao)
     {
         include 'confg_banco.php';
     
-        $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+        $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-        if(!$conecxao->connect_error)
+        if(!$conexao->connect_error)
         {
-            $resulta = $conecxao->query ("INSERT INTO perfil_usuario (nome, descricao) values ('$nome', '$descricao')");
+            $resulta = $conexao->query ("INSERT INTO perfil_usuario (nome, descricao) values ('$nome', '$descricao')");
 
             // Adicionou no banco
 
