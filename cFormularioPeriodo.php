@@ -1,6 +1,8 @@
 <?php
 
 
+
+
 $html = file_get_contents('View/vFormularioPeriodo.php');
 
 
@@ -47,7 +49,7 @@ if(isset($_GET['salvar']))
             $mes_fim = $quebra_data_ini->format('m');
             $dia_fim = $quebra_data_ini->format('d');
             $resposta = 3;
-            if ($ano_fim==$ano_ini and $mes_fim>$mes_ini  or $ano_fim > $ano_ini)
+            if ($ano_fim==$ano_ini and $mes_fim==$mes_ini and $dataIn<$dia_fim  or $ano_fim > $ano_ini or $ano_fim==$ano_ini and $mes_fim>$mes_ini)
             {
                 $resposta = insere_periodo($nomeP, $dataIn, $dataFim);
             }
