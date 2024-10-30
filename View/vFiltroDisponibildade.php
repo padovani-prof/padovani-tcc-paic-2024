@@ -18,50 +18,63 @@
           <tr>
             <th>Categoria ou Recurso</th>
           </tr>
-        
+          <tbody>
             {{RecursoCategoria}}
+          </tbody>
         
         </table>
         
       </div>
 
       <label for="">Categoria: </label>
-      <select name="" id="">
+      <select name="categoria" id="">
+        {{op-categoria}}
 
       </select>
+      {{dados-catego0}}
+      {{dados-catego}}
       <input type="submit" value="Adicionar" name="btnCategoria">
+
       <label for="">Recurso:</label>
-      <select name="" id="">
+      <select name="recurso" id="">
+
+        {{op-recurso}}
 
       </select>
+
+      {{dados-recurso0}}
+      {{dados-recurso}}
       <input type="submit" value="Adicionar" name="btnRecursos">
-    
-    
+
+
+
+
     <div>
       <table border="1">
         <tr>
           <th>Período</th>
         </tr>
+        <tbody>
           {{Períodos}}
+        </tbody>
+          
         <tr>
-          <td> Data: </Data><input type="date" name="" id=""></td>
+          <td> Data: </Data><input type="date" name="p-data" id="" value="{{data}}"></td>
         </tr>
         <tr>
           <td>Horário Local:
-            <input type="time" name="" id="">
+            <input type="time" name="p-hora-ini" id="" value="{{hora_ini}}">
          </td>
         </tr>
         <tr>
           <td>Horário Final:
-             <input type="time" name="" id="">
+             <input type="time" name="p-hora-fim"  id="" value="{{hora_fim}}">
           </td>
         </tr>
       </table>
     </div>
 
-
-      <label for="">Categoria: </label>
-      <select name="" id="">
+      {{peridos-salvos}}
 
       <input type="submit" value="Adicionar" name="btnPeriodos">
         <div>
