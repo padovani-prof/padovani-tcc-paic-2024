@@ -1,7 +1,5 @@
 <?php 
-function listar_usuarios()
-{   
-    // Conexão com o banco de dados
+function listar_usuarios(){   
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
@@ -11,22 +9,18 @@ function listar_usuarios()
     $resultado = $conexao->query("SELECT * FROM usuario");
     $todos_dados = [];
 
-    // Popula o array com os resultados
     if ($resultado) {
         while ($linha = $resultado->fetch_assoc()) {
             $todos_dados[] = $linha;
         }
     }
 
-    // Fecha a conexão
     $conexao->close();
 
-    // Retorna o array com todos os dados
     return $todos_dados;
 }
 
 function listar_perfil(){
-    // Conexão com o banco de dados
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
@@ -34,30 +28,24 @@ function listar_perfil(){
         die("Falha na conexão: " . $conexao->connect_error);
     }
 
-    // Executa a consulta
     $resultado = $conexao->query("SELECT * FROM perfil_usuario");
 
-    // Inicializa um array vazio
     $todos_dados = [];
 
-    // Popula o array com os resultados
     if ($resultado) {
         while ($linha = $resultado->fetch_assoc()) {
             $todos_dados[] = $linha;
         }
     }
 
-    // Fecha a conexão
     $conexao->close();
 
-    // Retorna o array com todos os dados
     return $todos_dados;
 
 }
 
 function Validar_usuario($nome, $senha)
 {
-    // Validação do nome e senha
     if (strlen($nome) < 2 || strlen($nome) > 50) {
         return 0; // Nome inválido
     }
@@ -73,9 +61,9 @@ function Validar_usuario($nome, $senha)
     return true; // Dados válidos
 }
 
-function insere_usuario($nome, $email, $senha)
-{
 
+function insere_usuario($nome, $email, $senha) 
+{
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
@@ -83,47 +71,67 @@ function insere_usuario($nome, $email, $senha)
 
         $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
 
-        // Usar prepared statements para evitar SQL Injection
-        $resul = $conexao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
-        $resul->bind_param("sss", $nome, $email, $senha_hash);
+        $stmt = $conexao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $nome, $email, $senha_hash);
 
-
-        // Executa a query e retorna o resultado
-        if ($resul->execute()) {
-            return true; // Adicionado com sucesso
+        if ($stmt->execute()) {
+            return $conexao->insert_id; 
         }
-
-        return false; // Falha ao adicionar
+        return false;
     }
-
-    // Erro de conexão
     return false;
 }
 
-function cadastrar_usuario($nome, $email, $senha)
+function insere_usuario_perfil($codigo_usuario, $codigo_perfil) 
 {
-    // Validação dos dados
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    if (!$conexao->connect_error) {
+        $stmt = $conexao->prepare("INSERT INTO usuario_perfil (codigo_usuario, codigo_perfil) VALUES (?, ?)");
+        $stmt->bind_param("ii", $codigo_usuario, $codigo_perfil);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            echo "Erro: " . $conexao->error;
+            return false;
+        }
+    }
+
+    return false; 
+}
+
+
+function cadastrar_usuario($nome, $email, $senha, $perfis_selecionados) 
+{
     $valido = Validar_usuario($nome, $senha);
 
     if ($valido === true) {
-        // Inserção no banco
-        if (insere_usuario($nome, $email, $senha)) {
+        $codigo_usuario = insere_usuario($nome, $email, $senha);
+
+        if ($codigo_usuario) {
+            foreach ($perfis_selecionados as $codigo_perfil) {
+                if (!insere_usuario_perfil($codigo_usuario, $codigo_perfil)) {
+                    return 4; // Erro ao vincular perfil ao usuário
+                }
+            }
             return 3; // Usuário cadastrado com sucesso
         } else {
             return 4; // Erro ao cadastrar no banco de dados
         }
     }
-
-    // Dados inválidos
-    return $valido;
+    return $valido; 
 }
 
-function apagar_usuario($chave_pri)
-{
-   
-    include 'confg_banco.php';
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    
-    $resulata = $conecxao->query("DELETE from usuario where codigo=$chave_pri");
 
-} 
+
+function apagar_usuario($chave_pri) {
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    if (!$conexao->connect_error) {
+        $conexao->query("DELETE FROM usuario_perfil WHERE codigo_usuario = $chave_pri");
+        $conexao->query("DELETE FROM usuario WHERE codigo = $chave_pri");
+    } 
+}

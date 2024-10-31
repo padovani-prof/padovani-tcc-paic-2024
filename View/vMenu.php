@@ -9,22 +9,15 @@
 <body>
 
 <header>
-    Seja Bem Vindo 
 </header>
 
-    <div id="cabecalho-menu">
-        <div>
-            imagem1
-        </div>
-        <div>
-            imagem2
-        </div>
-        <div>
-            Imagem3
-        </div>
-    </div>
     <div id="area-principal">
+        <div>
+            <h2>{{saudacao}}</h2>
+        </div>
+
         <div id="menu-principal">
+            <h2>Operações</h2>
             <ul>
                 <li><a href="cPerfilUsuario.php">Perfil de Usuário</a></li>
                 <li><a href="cUsuario.php">Usuários</a></li>
@@ -32,22 +25,21 @@
                 <li><a href="cCategoria.php">Categoria do Recurso</a></li>
                 <li><a href="">Registro de retirada / Devolução</a></li>
                 <li><a href="">Cancelar Retirada / Devolução</a></li>
-                <li><a href="">Consultar Disponibilidade</a></li>
+                <li><a href="cResultadoDisponibilidade.php">Consultar Disponibilidade</a></li>
                 <li><a href="">Reserva Recurso</a></li>
                 <li><a href="">Ensalamento</a></li>
                 <li><a href="cPeriodo.php">Cadastrar Período</a></li>
                 <li><a href="cDisciplina.php">Cadastrar Disciplina</a></li>
 
 
+
             </ul>
         </div>
 
 
+        
         <div>
-            <h2>{{saudacao}}</h2>
-        </div>
-
-        <div>
+            <h2>Área do Usuário</h2>
             <ul>
                 <li><a href="#">Editar Perfil</a></li>
                 <li><a href="cLogin.php?desconectar=1">Sair</a></li>

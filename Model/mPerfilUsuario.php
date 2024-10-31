@@ -10,23 +10,19 @@ function listar_funcionalidade(){
 
     $todos_dados = [];
 
-    // Popula o array com os resultados
     if ($resultado) {
         while ($linha = $resultado->fetch_assoc()) {
             $todos_dados[] = $linha;
         }
     }
 
-    // Fecha a conexão
     $conexao->close();
 
     // Retorna o array com todos os dados
     return $todos_dados;
 }
 
-function listar_perfis()
-{   
-    // Conexão com o banco de dados
+function listar_perfis(){   
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
@@ -54,18 +50,14 @@ function listar_perfis()
     return $todos_dados;
 }
 
-function apagar_perfil($chave_pri)
-{
-   
+function apagar_perfil($chave_pri) {
     include 'confg_banco.php';
-    
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    
-    $resulta = $conexao->query("DELETE from perfil_usuario where codigo=$chave_pri");
-
-    
-
+    if (!$conexao->connect_error) {
+        $conexao->query("DELETE FROM usuario_perfil WHERE codigo_perfil = $chave_pri");
+        $conexao->query("DELETE FROM perfil_usuario WHERE codigo = $chave_pri");
+    }
 }
 
 function Validar_perfil($nome, $descricao){
@@ -83,14 +75,10 @@ function Validar_perfil($nome, $descricao){
 }
 
 
-function insere_perfil($nome, $descricao)
-{
+function insere_perfil($nome, $descricao){
 
-    // Trata os dados
     $validar = Validar_perfil($nome, $descricao);
 
-
-    
     if ($validar === true)
     {
         include 'confg_banco.php';
