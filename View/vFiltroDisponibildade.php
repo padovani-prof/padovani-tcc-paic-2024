@@ -17,6 +17,7 @@
         <table border="1">
           <tr>
             <th>Categoria ou Recurso</th>
+            <th>Ação</th>
           </tr>
           <tbody>
             {{RecursoCategoria}}
@@ -92,3 +93,4 @@
   
 </body>
 </html>
+
