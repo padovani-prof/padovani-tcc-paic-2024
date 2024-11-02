@@ -11,7 +11,7 @@ function tem_banco($categoria)
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
     if(!$conecxao->connect_error) {
-        $consulta = $conecxao->prepare("SELECT * FROM `recurso` WHERE `codigo_categoria` = ?");
+        $consulta = $conecxao->prepare("SELECT * FROM `categoria_recurso` WHERE `codigo` = ?");
         $consulta->bind_param('i', $categoria);
         $consulta->execute();
         $resultado = $consulta->get_result();
