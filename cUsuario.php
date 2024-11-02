@@ -27,12 +27,6 @@
     $usuarios = $usuarios. '<tbody/>';
 
     $html = file_get_contents('View/vUsuario.php');
-
-    // Substitui {{perfis}} pelo conteúdo da variável $perfis
-    if ($html !== false) {
-        $html = str_replace('{{usuarios}}', $usuarios, $html);
-        echo $html;
-    } else {
-        echo "Erro ao carregar o HTML da página.";
-    }
+    $html = str_replace('{{usuarios}}', $usuarios, $html);
+    echo $html;
 ?>
