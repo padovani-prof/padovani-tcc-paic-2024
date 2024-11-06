@@ -20,6 +20,7 @@
             <th>Recurso</th>
             <th>Usuário</th>
             <th>Datas</th>
+            <th>Horário</th>
             <th>Ações</th>
           </tr>
         
