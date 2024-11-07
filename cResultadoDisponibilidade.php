@@ -8,20 +8,22 @@ include_once 'Model/mRecurso.php';
 
 function remover_rc($chave, $lista_dados)
 {
+
    for ($i=0; $i < count($lista_dados) ; $i++) 
    { 
       if ($lista_dados[$i] != 0)
       {
-         $dado = explode(',', $lista_dados[$i]);
-         if($chave == $dado[1])
+         if($chave == $lista_dados[$i])
          {
             unset($lista_dados[$i]);
-            $lista_dados = array_values($lista_dados);
+
          }
 
       }
       
+
    }
+  
    return $lista_dados;
 }
 
@@ -44,8 +46,6 @@ function remover($dados, $removida)
    }
    return $removida;
 }
-
-
 
 
 $recursoR_categoG  = '';
@@ -75,22 +75,60 @@ $dados_recu = '';
 
 
 
-if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['btnPeriodos']) or isset($_GET['apagar']))
+
+
+
+if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['btnPeriodos']) or isset($_GET['apagar']) or isset($_GET['btnConsultar']))
 {
    $lista_informação = $_GET['dados-categoria'];
    $lista_informação_recu = $_GET['dados-recurso'];
    $lista_informação_peri = $_GET['periodo-salvos'];
+   
+
+
+   if(isset($_GET['btnConsultar']))
+        
+   {
+      // codição pa não passar
+      if(count($lista_informação_peri)>=3)
+      {
+         if($lista_informação[0]!=0 or $lista_informação_recu[0]!=0)
+         {
+            header("Location: cFiltroDisponibildade.php?categorias=" . urlencode(json_encode($lista_informação)) . 
+         "&recursos=" . urlencode(json_encode($lista_informação_recu)) . 
+         "&periodos=" . urlencode(json_encode($lista_informação_peri)));
+         exit();
+
+         }
+         else
+         {
+            $mensagem = 'Adicione alguma Categoria ou recurso';
+         }
+         
+      }else
+      {
+         $mensagem = 'Adicione algum periodo';
+      }
+      
+
+   }
 
    if (isset($_GET['apagar']))
    {
-      $lista_informação = remover_rc($_GET['apagar_d'],$lista_informação);
+      
+
+      $d_apaga = $_GET['apagar_d'];
+
+
+
+      $lista_informação = remover_rc($d_apaga,$lista_informação);
 
       if (count($lista_informação)==0)
       {
          $categoria0 = '<input type="hidden" value="0" name="dados-categoria[]">';
       }
 
-      $lista_informação_recu = remover_rc($_GET['apagar_d'],$lista_informação_recu);
+      $lista_informação_recu = remover_rc($d_apaga, $lista_informação_recu);
 
       if (count($lista_informação_recu)==0)
       {
@@ -101,6 +139,7 @@ if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['b
       $mensagem = 'Recurso removido';
       
    }
+ 
 
 
    if (isset($_GET['dados-categoria']))
@@ -119,11 +158,16 @@ if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['b
          $mensagem = 'Nova categoria adicionada';
       }
    
+      
+
       $iforma_c = '';
-    
       for ($i=0; $i < count($lista_informação); $i++) 
       { 
+      
          $iforma_c = $iforma_c.'<input type="hidden" value="'. $lista_informação[$i].'" name="dados-categoria[]">';
+
+         
+        
       }
       $html = str_replace('{{dados-catego}}', $iforma_c, $html);
    }
@@ -154,8 +198,9 @@ if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['b
      
      
       
-      $iforma_c = '';
+     
 
+      $iforma_c = '';
       for ($i=0; $i < count($lista_informação_recu); $i++) 
       { 
          $iforma_c = $iforma_c.'<input type="hidden" value="'. $lista_informação_recu[$i].'" name="dados-recurso[]">';
@@ -181,7 +226,7 @@ if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['b
          {
             $dado = explode(',',$lista_informação[$i]);
             $recursoR_categoG = $recursoR_categoG.'<tr>';
-            $recursoR_categoG = $recursoR_categoG.'<td>'.$dado[0].': '.$dado[1].'</td>'.'<td> '.'<input name="apagar_d" type="hidden" value="'.$dado[1].'"><input type="submit" name="apagar" value="Remover"></td>';    
+            $recursoR_categoG = $recursoR_categoG.'<td>'.$dado[0].': '.$dado[1].'</td>'.'<td> '.'<input name="apagar_d" type="hidden" value="'.$lista_informação[$i].'"><input type="submit" name="apagar" value="Remover"></td>';    
             $recursoR_categoG = $recursoR_categoG.'<tr/>';
          }
 
@@ -192,7 +237,7 @@ if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['b
          {
             $dado = explode(',',$lista_informação_recu[$i]);
             $recursoR_categoG = $recursoR_categoG.'<tr>';
-            $recursoR_categoG = $recursoR_categoG.'<td>'.$dado[0].': '.$dado[1].'</td>' .'<td> '.'<input name="apagar_d" type="hidden" value="'.$dado[1].'">
+            $recursoR_categoG = $recursoR_categoG.'<td>'.$dado[0].': '.$dado[1].'</td>' .'<td> '.'<input name="apagar_d" type="hidden" value="'.$lista_informação_recu[$i].'">
             <input type="submit" name="apagar" value="Remover"></td>'; 
             $recursoR_categoG = $recursoR_categoG.'<tr/>';
          }
@@ -212,20 +257,20 @@ if(isset($_GET['btnCategoria']) or isset($_GET['btnRecursos']) or isset($_GET['b
 
       if(mb_strlen($_GET['p-data'])>=10 and mb_strlen($_GET['p-hora-ini'])>=5 and  mb_strlen($_GET['p-hora-ini'])>=5)
       {
+         date_default_timezone_set('America/Manaus');
+         $dataAtual = date('Y-m-d H:i:s');
+         $dataAtual = new DateTime("$dataAtual");
+
+
+         $dataUsu_ini = new DateTime("$data_d $hora_ini_d");
+         $dataUsu_fim = new DateTime("$data_d $hora_fim_d");
          
 
-         $dataUsu = new DateTime($_GET['p-data']);
-         $dataAtual = new DateTime();
 
-         
-
-        
-         if($dataUsu>=$dataAtual)
+         if($dataUsu_ini>=$dataAtual)
          {
-            $horaini = explode(':', $_GET['p-hora-ini']);
-            $horafim = explode(':',  $_GET['p-hora-fim']);
-
-            if($horaini[0]==$horafim[0] and $horaini[1] < $horafim[1] or $horaini[0]<$horafim[0])
+            
+            if($dataUsu_ini < $dataUsu_fim)
             {
                if($lista_informação_peri[0]==0)
                {

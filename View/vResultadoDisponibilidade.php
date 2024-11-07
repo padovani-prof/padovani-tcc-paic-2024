@@ -18,7 +18,10 @@
             <th>Recurso</th>
             {{Colunas}}
           </tr>
-          {{Disponibilidades}}
+          <tbody>
+            {{Disponibilidades}}
+          </tbody>
+          
       </table>
       <input type="submit" value="Reservar">
       <p id="mensagem-{{retorno}}">{{mensagem}}</p> 
