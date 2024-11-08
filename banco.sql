@@ -246,6 +246,43 @@ insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)val
 insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
 insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(6, '2024-10-01', '18:00', '20:00');
 
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`ensalamento` (
+  `codigo` INT NOT NULL auto_increment,
+  `dias_semana` CHAR(7) NOT NULL,
+  `hora_inicial` TIME NOT NULL,
+  `hora_final` TIME NOT NULL,
+  `codigo_disciplina` INT NOT NULL,
+  `codigo_sala` INT NOT NULL,
+  PRIMARY KEY (`codigo`), 
+  FOREIGN KEY (`codigo_disciplina`) REFERENCES `sgrp`.`disciplina` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (`codigo_sala`) REFERENCES `sgrp`.`recurso` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NSNNSNN', '18:00', '22:00', 1, 6);
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NNSSNNN', '18:00', '22:00', 2, 7);
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NNSNNSN', '18:00', '22:00', 4, 10);
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`reserva_ensalamento` (
+  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `codigo_reserva` INT NOT NULL,
+  `codigo_ensalamento` INT NOT NULL,
+  PRIMARY KEY (`codigo`),
+  FOREIGN KEY (`codigo_reserva`) REFERENCES `sgrp`.`reserva` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (`codigo_ensalamento`) REFERENCES `sgrp`.`ensalamento` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(5,1);
+insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(6,2);
+
 /*
 SELECT 
 	rec.codigo AS codigo_recurso, 
