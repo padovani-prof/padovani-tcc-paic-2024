@@ -13,39 +13,43 @@
   <section>
     <form action="cFormularioEnsalamento.php">
         <label for="">Perído:</label>
-        <select name="" id="">
+        <select name="periodo" id="txtperiodo">
+          {{Periodo}}
 
         </select>
         <label for="">Disciplina: </label>
-        <select name="" id="">
+        <select name="disciplina" id="txtdisciplina">
+          {{Disciplina}}
 
         </select>
 
         <label for="">Sala: </label>
-        <select name="" id="">
+        <select name="sala" id="txtsala">
+          {{Sala}}
 
         </select>
         <p>Dias da Semana</p>
-        <input type="checkbox" name="DiaSemana[]" id="">
-        <label for="">Segunda</label>
-        <input type="checkbox" name="DiaSemana[]" id="">
-        <label for="">Terça</label>
-        <input type="checkbox" name="DiaSemana[]" id="">
-        <label for="">Quarta</label>
-        <input type="checkbox" name="DiaSemana[]" id="">
-        <label for="">Quinta</label>
-        <input type="checkbox" name="DiaSemana[]" id="">
-        <label for="">Sexta</label>
-        <input type="checkbox" name="DiaSemana[]" id="">
-        <label for="">Sábado</label>
-        <input type="checkbox" name="DiaSemana[]" id="">
+        <input type="checkbox" name="DiaSemana[]" id="domingo">
         <label for="">Domingo</label>
+        <input type="checkbox" name="DiaSemana[]" id="segunda">
+        <label for="">Segunda</label>
+        <input type="checkbox" name="DiaSemana[]" id="terça">
+        <label for="">Terça</label>
+        <input type="checkbox" name="DiaSemana[]" id="quarta">
+        <label for="">Quarta</label>
+        <input type="checkbox" name="DiaSemana[]" id="quinta">
+        <label for="">Quinta</label>
+        <input type="checkbox" name="DiaSemana[]" id="sexta">
+        <label for="">Sexta</label>
+        <input type="checkbox" name="DiaSemana[]" id="sábado">
+        <label for="">Sábado</label>
+        
 
         <div>
           <label for="">Horário: </label>
-          <input type="time" name="" id=""> -
-          <input type="time" name="" id="">
-          <input type="submit" value="Salvar">
+          <input type="time" name="h_inicio" id="hora_inicio"> -
+          <input type="time" name="h_fim" id="hora_fim">
+          <input type="submit" name="salvar" value="Salvar">
         </div>
          
         <p id="mensagem-{{retorno}}">{{mensagem}}</p> 
@@ -54,7 +58,7 @@
     
 
     
-    <a href="cEnsalameno.php"><input type="button" value="Cancelar"></a>
+    <a href="cEnsalamento.php"><input type="button" value="Cancelar"></a>
   </section>
 
    
