@@ -24,7 +24,6 @@
           
       </table>
       <input type="submit" value="Reservar">
-      <p id="mensagem-{{retorno}}">{{mensagem}}</p> 
       </form>
       
     </div>    
