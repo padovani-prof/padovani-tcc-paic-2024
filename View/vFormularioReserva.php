@@ -14,17 +14,18 @@
     
     <form action="cFormularioReserva.php">  
         <label for="">Recurso: </label>
-        <select name="" id="">
-
+        <select name="recurso" id="recurso">
+          {{Recursos}}
         </select>
 
         <label for="">Agendado por: </label>
-        <select name="" id="">
-
+        <select name="usuario_agendador" id="usuario_agendador">
+          {{Usuarios}}
         </select>
+
         <p>
           <label for="">Justificativa: </label>
-          <input type="text" name="" id="" value="{{Campojustificativa}}">
+          <input type="text" name="justificativa" id="justificativa" value="{{Campojustificativa}}">
         </p>
 
         <table border="1">
@@ -38,9 +39,10 @@
         Nova Data: 
         <p>        
           <label for="">Data: </label>
-          <input type="date" name="" id="">
+          <input type="date" name="data" id="data">
           <label for="">Hora: </label>
-          <input type="time" name="" id=""> - <input type="time" name="" id="">
+          <input type="time" name="hora_inicial" id=""> - <input type="time" name="hora_final" id="">
+          {{Lista Data}}
         </p>
 
 
@@ -50,8 +52,8 @@
 
         <p>
           <label for="">Agendado para: </label>
-          <select name="" id="">
-            
+          <select name="usuario_utilizador" id="usuario_utilizador">
+            {{Usuarios}}
           </select>
         </p>
 

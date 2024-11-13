@@ -35,7 +35,7 @@ function listar_datas($codigo_reserva){
     }
 
     $consulta = $conexao->prepare("SELECT * FROM data_reserva WHERE codigo_reserva = ?");
-    $consulta->bind_param('i', $codigo_reserva); // Tipo 'i' para integer
+    $consulta->bind_param('i', $codigo_reserva);
     $consulta->execute();
     $resultado = $consulta->get_result();
     $todos_dados = [];
@@ -50,4 +50,106 @@ function listar_datas($codigo_reserva){
     $conexao->close();
     return $todos_dados;
 }
+
+function carregar_recurso()
+{
+    include 'confg_banco.php';
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $cone->query('SELECT *  from recurso');
+    $todos_dados = [];
+
+    while ($dados = $resulta->fetch_assoc()) {
+        $todos_dados[] = $dados;
+    }
+
+    
+    return $todos_dados;
+    
+
+}
+
+function carregar_usuario()
+{
+    include 'confg_banco.php';
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $cone->query('SELECT *  from usuario');
+    $todos_dados = [];
+
+    while ($dados = $resulta->fetch_assoc()) {
+        $todos_dados[] = $dados;
+    }
+
+    
+    return $todos_dados;
+
+}
+
+function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final) {
+    if (mb_strlen($justificativa) < 5 || mb_strlen($justificativa) > 100) {
+        return 1;
+    }
+    if (empty($data)) {
+        return 2; 
+    }
+
+    if (empty($hora_inicial) || empty($hora_final)) {
+        return 3;
+    }
+    if ($hora_inicial >= $hora_final) {
+        return 4;
+    }
+    return true; 
+}
+
+function inserir_reserva($justificativa, $usuario_agendador, $recurso, $usuario_utilizador, $datas_reservas) {
+
+    $justificativa = trim($justificativa);
+
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    if ($conexao->connect_error) {
+        return "Erro na conexão: " . $conexao->connect_error;
+    }
+
+    foreach ($datas_reservas as $data_horario) {
+        $data = $data_horario['data'];
+        $hora_inicial = $data_horario['hora_inicial'];
+        $hora_final = $data_horario['hora_final'];
+
+        $validar = Validar_reserva($justificativa, $data, $hora_inicial, $hora_final);
+        if ($validar !== true) {
+            return $validar;
+        }
+
+        $reserva_query = "INSERT INTO justificativa (codigo_usuario_agendador, codigo_recurso, codigo_usuario_utilizador)
+                          VALUES ('$justificativa', '$usuario_agendador', '$recurso', '$usuario_utilizador')";
+
+        if (!$conexao->query($reserva_query)) {
+            return "Erro ao inserir justificativa: " . $conexao->error;
+        }
+
+        $data_reserva_query = "INSERT INTO data_reserva (data, hora_inicial, hora_final)
+                               VALUES ('$data', '$hora_inicial', '$hora_final')";
+
+        if (!$conexao->query($data_reserva_query)) {
+            return "Erro ao inserir data da reserva: " . $conexao->error;
+        }
+    }
+
+    return 5; // Código de sucesso
+}
+
+
+function apagar_data($codigo_data) {
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    if (!$conexao->connect_error) {
+        $conexao->query("DELETE FROM data_reserva WHERE codigo = '$codigo_data'");
+    }
+}
+
 ?>
+
+

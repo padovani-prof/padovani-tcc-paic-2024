@@ -1,6 +1,14 @@
 <?php
 include_once 'Model/mReserva.php';
 
+if (isset($_GET['codigo_da_reserva']))
+{
+   
+    $cod_recurso = $_GET['codigo_da_rserva'];
+    apagar_reserva($cod_reserva);
+}
+
+
 $reservas = listar_reserva();
 $conteudo_reservas = '<tbody>';
 
@@ -15,11 +23,12 @@ foreach ($reservas as $reserva) {
     }
 
     $conteudo_reservas .= '<tr>
-        <td>' . htmlspecialchars($reserva["recurso"]) . '</td>
-        <td>' . htmlspecialchars($reserva["usuario"]) . '</td>
+        <td>' . ($reserva["recurso"]) . '</td>
+        <td>' . ($reserva["usuario"]) . '</td>
         <td>' . $datas_horarios . '</td>
         <td>
-            <form method="post" action="cReserva.php">
+            <form action="cReserva.php">
+                <input type="hidden" name="codigo_da_reserva" value="'. $reserva["codigo_reserva"] . '">
                 <input type="submit" name="apagar" value="Apagar">
             </form>
         </td>
