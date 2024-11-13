@@ -241,10 +241,10 @@ insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario
 insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(3, '2024-10-01', '15:00', '22:00');
 insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 4, 2);
 insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(4, '2024-10-01', '15:00', '16:00');
-insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
-insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(5, '2024-10-01', '11:00', '12:00');
-insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
-insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(6, '2024-10-01', '18:00', '20:00');
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 6);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(5, '2024-10-01', '18:00', '22:00');
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 7);
+insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(6, '2024-10-01', '18:00', '22:00');
 
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`ensalamento` (
@@ -282,6 +282,7 @@ ENGINE = InnoDB;
 
 insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(5,1);
 insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(6,2);
+
 
 /*
 SELECT 
