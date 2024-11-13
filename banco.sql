@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`categoria_recurso` (
 ENGINE = InnoDB;
 
 insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Projetores', 'Datashows e afins', 'N');
-insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Laboratórios', 'Laboratórios', 'N');
+insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Laboratórios', 'Laboratórios', 'S');
+insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Salas', 'Sala de Aula', 'S');
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`recurso` (
   `codigo` INT NOT NULL auto_increment,
@@ -77,6 +78,11 @@ insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Datashow
 insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Datashow 3', 'Datashow', 1);
 insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Lab. 1', 'Laboratório de informática 1', 2);
 insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Lab. DI', 'Laboratório de Design 2', 2);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 1', 'Sala de aula 1', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 2', 'Sala de aua 2', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 3', 'Sala de aua 3', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 4', 'Sala de aua 4', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 5', 'Sala de aua 5', 3);
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`acesso_recurso` (
   `codigo` INT NOT NULL auto_increment,
@@ -201,7 +207,6 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (1,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (2,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (3,1);
@@ -212,6 +217,7 @@ insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (8,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (9,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (10,1);
+select * from sgrp.recurso;
 
 create table `sgrp`.`reserva`(
 	codigo int not null auto_increment primary key,
