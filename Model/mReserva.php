@@ -101,7 +101,7 @@ function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final) {
     return true; 
 }
 
-function inserir_reserva($justificativa, $usuario_agendador, $recurso, $usuario_utilizador, $datas_reservas) {
+function inserir_reserva($justificativa, $usuario_agendador, $recurso, $usuario_utilizador, $data, $hora_inicial, $hora_final) {
 
     $justificativa = trim($justificativa);
 
@@ -122,17 +122,17 @@ function inserir_reserva($justificativa, $usuario_agendador, $recurso, $usuario_
             return $validar;
         }
 
-        $reserva_query = "INSERT INTO justificativa (codigo_usuario_agendador, codigo_recurso, codigo_usuario_utilizador)
+        $reserva = "INSERT INTO justificativa (codigo_usuario_agendador, codigo_recurso, codigo_usuario_utilizador)
                           VALUES ('$justificativa', '$usuario_agendador', '$recurso', '$usuario_utilizador')";
 
         if (!$conexao->query($reserva_query)) {
             return "Erro ao inserir justificativa: " . $conexao->error;
         }
 
-        $data_reserva_query = "INSERT INTO data_reserva (data, hora_inicial, hora_final)
+        $data_reserva = "INSERT INTO data_reserva (data, hora_inicial, hora_final)
                                VALUES ('$data', '$hora_inicial', '$hora_final')";
 
-        if (!$conexao->query($data_reserva_query)) {
+        if (!$conexao->query($data_reserva)) {
             return "Erro ao inserir data da reserva: " . $conexao->error;
         }
     }

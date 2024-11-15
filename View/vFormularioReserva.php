@@ -37,12 +37,18 @@
         </table>
 
         Nova Data: 
-        <p>        
+        <p> 
+          
+        <input type="hidden" name="datas" value="{{d}}">
+        <input type="hidden" name="horarios_iniciais" value="{{hr_inicial}}">
+        <input type="hidden" name="horarios_finais" value="{{hr_final}}">
+
           <label for="">Data: </label>
           <input type="date" name="data" id="data">
           <label for="">Hora: </label>
           <input type="time" name="hora_inicial" id=""> - <input type="time" name="hora_final" id="">
-          {{Lista Data}}
+
+          <input type="hidden" name="lista_periodos" value="<?php ($lista_periodos); ?>">
         </p>
 
 
@@ -71,9 +77,5 @@
     <a href="cReservas.php"><input type="button" value="Voltar"></a>
       
   </section>
-
-
-
-  
 </body>
 </html>
