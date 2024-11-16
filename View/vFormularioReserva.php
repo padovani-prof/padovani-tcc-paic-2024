@@ -39,16 +39,13 @@
         Nova Data: 
         <p> 
           
-        <input type="hidden" name="datas" value="{{d}}">
-        <input type="hidden" name="horarios_iniciais" value="{{hr_inicial}}">
-        <input type="hidden" name="horarios_finais" value="{{hr_final}}">
 
           <label for="">Data: </label>
-          <input type="date" name="data" id="data">
+          <input type="date" name="data" id="data" value="{{data}}">
           <label for="">Hora: </label>
-          <input type="time" name="hora_inicial" id=""> - <input type="time" name="hora_final" id="">
+          <input type="time" name="hora_inicial" id="" value="hora_inicial"> - <input type="time" name="hora_final" id="" value="hora_final">
 
-          <input type="hidden" name="lista_periodos" value="<?php ($lista_periodos); ?>">
+          {{Lista Data}}
         </p>
 
 

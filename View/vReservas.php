@@ -13,7 +13,7 @@
 
   <section>
     
-    <form action="cFormularioReserva.php">  
+    <form action="cReservas.php">  
       <div>
         <table border="1">  
           <tr>
