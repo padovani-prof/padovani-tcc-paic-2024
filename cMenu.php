@@ -10,7 +10,12 @@ $html = file_get_contents('View/vMenu.php');
 $html = str_replace('{{saudacao}}', 'Bem vindo(a), ' . htmlspecialchars($usuario) . '!', $html);
 echo $html;
 }else{
-    echo "Acesso negado";
+    session_start(); 
+    // Se o usuario não fez login joge ele para logar
+    header('Location: cLogin.php');
+    exit();
+
+
 }
 
 
