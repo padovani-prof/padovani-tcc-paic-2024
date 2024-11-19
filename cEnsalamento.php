@@ -1,5 +1,14 @@
 <?php
 
+session_start();
+if(!isset($_SESSION['codigo_usuario']))
+{   
+    // Se o usuario não fez login joge ele para logar
+    header('Location: cLogin.php');
+    exit();
+}
+
+
 //include once 'mEnsalamento.php';
 $html = file_get_contents('View/vEnsalamento.php');
 include_once 'Model/mPeriodo.php';
