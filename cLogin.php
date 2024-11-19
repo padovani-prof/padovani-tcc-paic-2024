@@ -1,14 +1,5 @@
 <?php
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login joge ele para logar
-    header('Location: cLogin.php');
-    exit();
-}
-
-
 if (isset($_GET['desconectar'])){
     session_start();
     session_destroy();
