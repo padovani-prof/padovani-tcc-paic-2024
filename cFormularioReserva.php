@@ -4,7 +4,6 @@ include_once 'Model/mReserva.php';
 
 $html = file_get_contents('View/vFormularioReserva.php');
 
-// Carregar recursos e usuários
 $recursos = carregar_recurso();
 $usuarios = carregar_usuario();
 
@@ -15,9 +14,9 @@ $usuario_utilizador = '';
 $data_reserva = '';
 $lista_datas = isset($_GET['lista_datas']) ? json_decode(urldecode($_GET['lista_datas']), true) : [];
 
-// Certifique-se de que lista_datas seja um array válido
+
 if (!is_array($lista_datas)) {
-    $lista_datas = []; // Caso contrário, inicie com um array vazio
+    $lista_datas = []; 
 }
 
 function remover_periodo($lista_datas) {
@@ -41,7 +40,6 @@ if (isset($_GET['btnSalvar'])) {
         return "Erro: Usuário não autenticado.";
     }
 
-    // Enviar dados para inserção no banco
     $resultado = inserir_reserva($justificativa, $recurso, $usuario_utilizador, $lista_datas);
 
     $mensagens = [
@@ -55,7 +53,6 @@ if (isset($_GET['btnSalvar'])) {
     $mensagem = $mensagens[$resultado];
 
     if ($resultado == 5) {
-        // Limpar formulário após salvar com sucesso
         $justificativa = '';
         $recurso = '';
         $usuario_utilizador = '';
@@ -69,6 +66,7 @@ if (isset($_GET['btnAdicionar'])) {
     $hora_final = $_GET['hora_final'] ?? '';
 
     $mensagem = 'Preencha todos os campos!';
+
     if ($data && $hora_inicial && $hora_final) {
         date_default_timezone_set('America/Manaus');
         $data_atual = new DateTime();
@@ -76,25 +74,26 @@ if (isset($_GET['btnAdicionar'])) {
         $data_final = new DateTime("$data $hora_final");
 
         if ($data_atual <= $data_inicial && $data_inicial < $data_final) {
-            // Verificar conflito de horários
+            
             $conflito = false;
             foreach ($lista_datas as $periodo) {
                 $inicio_hr = new DateTime($periodo['data'] . ' ' . $periodo['hora_inicial']);
                 $fim_hr = new DateTime($periodo['data'] . ' ' . $periodo['hora_final']);
                 
-                // Verificar se há conflito
+            
                 if (
                     ($data_inicial < $fim_hr && $data_final > $inicio_hr)
                 ) {
-                    $conflito = true; // Marcar conflito
-                    break; // Já encontramos um conflito, não precisa continuar
+                    $conflito = true;
+                    break; 
                 }
             }
 
             if (!$conflito) {
-                // Adicionar novo período
+                
                 $lista_datas[] = ['data' => $data, 'hora_inicial' => $hora_inicial, 'hora_final' => $hora_final];
                 $mensagem = 'Período adicionado com sucesso!';
+
             } else {
                 $mensagem = 'Conflito de horário detectado!';
             }
@@ -111,10 +110,10 @@ if ($id != -1) {
     $mensagem = 'Período removido com sucesso!';
 }
 
-// Atualizar campos do formulário
+
 $data_reserva = '';
 foreach ($lista_datas as $key => $periodo) {
-    // Certifique-se de que periodo['data'] seja uma string válida
+    
     $data = (is_string($periodo['data']) && !empty($periodo['data'])) ? explode('-', $periodo['data']) : [];
     
     if (count($data) == 3) {
@@ -130,7 +129,7 @@ foreach ($lista_datas as $key => $periodo) {
 $ldatas = '<input type="hidden" name="lista_datas" value="' . urlencode(json_encode($lista_datas)) . '">';
 $html = str_replace('{{Lista Data}}', $ldatas, $html);
 
-// Gerar selects de recursos e usuários
+
 $sel_recursos = '';
 foreach ($recursos as $rec) {
     $sel_recursos .= '<option value="'.$rec['codigo'].'"'.($rec['codigo'] == $recurso ? 'selected' : '').'>'.$rec['nome'].'</option>';
@@ -141,7 +140,7 @@ foreach ($usuarios as $us) {
     $sel_usuarios .= '<option value="'.$us['codigo'].'"'.($us['codigo'] == $usuario_utilizador ? 'selected' : '').'>'.$us['nome'].'</option>';
 }
 
-// Substituir no HTML
+
 $html = str_replace('{{Campojustificativa}}', $justificativa, $html);
 $html = str_replace('{{Recursos}}', $sel_recursos, $html);
 $html = str_replace('{{Usuarios}}', $sel_usuarios, $html);

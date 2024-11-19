@@ -77,9 +77,13 @@ function carregar_usuario() {
 }
 
 function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final) {
-    if (mb_strlen($justificativa) < 3 || mb_strlen($justificativa) > 100) {
-        return 1; // Justificativa inválida
+    if (empty($justificativa)) {
+        return 0; // Justificativa Vazia
     }
+    if (mb_strlen($justificativa) > 100 or mb_strlen($justificativa) < 3){
+        return 1; //Justificativa Inválida
+    }
+
     if (empty($data)) {
         return 2; // Data não fornecida
     }
@@ -153,8 +157,8 @@ function apagar_reserva($codigo) {
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     if (!$conexao->connect_error) {
-        $conexao->query("DELETE FROM data_reserva WHERE codigo_reserva = $codigo_reserva");
-        $conexao->query("DELETE FROM reserva WHERE codigo_reserva = $codigo_reserva");
+        $conexao->query("DELETE FROM data_reserva WHERE codigo_reserva = $codigo");
+        $conexao->query("DELETE FROM reserva WHERE codigo = $codigo");
     } else {
         echo "Erro de conexão: " . $conexao->connect_error;
     }

@@ -24,7 +24,7 @@ foreach ($reservas as $reserva) {
         <td>' . ($reserva["usuario"]) . '</td>
         <td>' . $datas_horarios . '</td>
         <td>
-            <form action="cReserva.php" method="get">
+            <form action="cReservas.php" method:"get">
                 <input type="hidden" name="codigo_da_reserva" value="' . $reserva["codigo_reserva"] . '">
                 <input type="submit" name="apagar" value="Apagar">
             </form>

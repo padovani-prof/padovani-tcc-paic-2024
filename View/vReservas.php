@@ -19,7 +19,7 @@
           <tr>
             <th>Recurso</th>
             <th>Usuário</th>
-            <th>Datas e Horário</th>
+            <th>Datas e Horários</th>
             <th>Ações</th>
           </tr>
         
@@ -28,9 +28,10 @@
         </table>
       </div>
         
-        <p>
-          <input type="submit" value="Nova Reserva" name="btnNovaReserva"> 
-        </p>
+      <div>
+        <br>
+        <a href="cFormularioReserva.php"><input type="button" value="Nova Reserva" name="btnNovaReserva"></a>
+      </div>
      
     <p id="mensagem-{{retorno}}">{{mensagem}}</p>  
     </form> 
@@ -38,9 +39,5 @@
     <a href="cMenu.php"><input type="button" value="Voltar"></a> 
       
   </section>
-
-
-
-  
 </body>
 </html>
