@@ -16,7 +16,11 @@ foreach ($reservas as $reserva) {
 
     $datas_horarios = '';
     foreach ($datas_reserva as $data) {
-        $datas_horarios .= $data["data"] . ' (' . $data["hora_inicial"] . '-' . $data["hora_final"] . ')<br>';
+        // Formatando a data para "DD/MM/AAAA"
+        $data_formatada = DateTime::createFromFormat('Y-m-d', $data["data"])->format('d/m/Y');
+        
+        // Montando o texto formatado
+        $datas_horarios .= $data_formatada . ' das ' . $data["hora_inicial"] . ' às ' . $data["hora_final"] . '<br>';
     }
 
     $conteudo_reservas .= '<tr>
