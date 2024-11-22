@@ -26,8 +26,8 @@
                 <li><a href="">Registro de retirada / Devolução</a></li>
                 <li><a href="">Cancelar Retirada / Devolução</a></li>
                 <li><a href="cResultadoDisponibilidade.php">Consultar Disponibilidade</a></li>
-                <li><a href="">Reserva Recurso</a></li>
-                <li><a href="">Ensalamento</a></li>
+                <li><a href="cReservas.php">Reserva Recurso</a></li>
+                <li><a href="cEnsalamento.php">Ensalamento</a></li>
                 <li><a href="cPeriodo.php">Cadastrar Período</a></li>
                 <li><a href="cDisciplina.php">Cadastrar Disciplina</a></li>
 

@@ -1,17 +1,23 @@
-<?php
-
-function listar_funcionalidades() {
+<?php 
+function listar_funcionalidades(){
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
-    return [
-        'Cadastrar recurso',
-        'Alterar recurso',
-        'Apagar recurso',
-        'Administrar permissão de recurso',
-        'Cadastrar categoria de recurso',
-        'Alterar categoria de recurso',
-        'Apagar categoria de recurso',
-        'Cadastrar perfil de usuário',
-        'Alterar perfil de usuário',
-        'Apagar perfil de usuário',
-    ];
+    if ($conexao->connect_error) {
+        die("Falha na conexão: " . $conexao->connect_error);
+    }
+    $resultado = $conexao->query("SELECT * FROM funcionalidade");
+
+    $todos_dados = [];
+
+    if ($resultado) {
+        while ($linha = $resultado->fetch_assoc()) {
+            $todos_dados[] = $linha;
+        }
+    }
+
+    $conexao->close();
+
+    // Retorna o array com todos os dados
+    return $todos_dados;
 }

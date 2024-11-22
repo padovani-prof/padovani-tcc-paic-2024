@@ -26,7 +26,7 @@
         </select>
 
         <input type="submit" value="Filtrar">
-        <a href=""><input type="button" value="Novo"></a>
+        <a href="cFormularioEnsalamento.php"><input type="button" value="Novo"></a>
     </form>
 
       <table border="1">

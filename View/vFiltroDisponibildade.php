@@ -32,8 +32,7 @@
         {{op-categoria}}
 
       </select>
-      {{dados-catego0}}
-      {{dados-catego}}
+      {{dados-catego-recu}}
       <input type="submit" value="Adicionar" name="btnCategoria">
 
       <label for="">Recurso:</label>
@@ -42,9 +41,6 @@
         {{op-recurso}}
 
       </select>
-
-      {{dados-recurso0}}
-      {{dados-recurso}}
       <input type="submit" value="Adicionar" name="btnRecursos">
 
 
@@ -54,12 +50,15 @@
       <table border="1">
         <tr>
           <th>Período</th>
+          <th>Ação</th>
         </tr>
         <tbody>
           {{Períodos}}
         </tbody>
           
-        <tr>
+
+      </table>
+      <tr>
           <td> Data: </Data><input type="date" name="p-data" id="" value="{{data}}"></td>
         </tr>
         <tr>
@@ -72,7 +71,6 @@
              <input type="time" name="p-hora-fim"  id="" value="{{hora_fim}}">
           </td>
         </tr>
-      </table>
     </div>
 
       {{peridos-salvos}}
@@ -83,8 +81,8 @@
         </div>
       
     <p id="mensagem-{{retorno}}">{{mensagem}}</p>  
-    </form> 
-    <a href="cMenu.php"><input type="button" value="Voltar"></a>
+  </form> 
+  <a href="cMenu.php"><input type="button" value="Voltar"></a>
       
   </section>
 

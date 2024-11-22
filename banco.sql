@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`categoria_recurso` (
 ENGINE = InnoDB;
 
 insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Projetores', 'Datashows e afins', 'N');
-insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Laboratórios', 'Laboratórios', 'N');
+insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Laboratórios', 'Laboratórios', 'S');
+insert into `sgrp`.`categoria_recurso`(nome, descricao, ambiente_fisico)values('Salas', 'Sala de Aula', 'S');
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`recurso` (
   `codigo` INT NOT NULL auto_increment,
@@ -77,6 +78,11 @@ insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Datashow
 insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Datashow 3', 'Datashow', 1);
 insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Lab. 1', 'Laboratório de informática 1', 2);
 insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Lab. DI', 'Laboratório de Design 2', 2);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 1', 'Sala de aula 1', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 2', 'Sala de aua 2', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 3', 'Sala de aua 3', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 4', 'Sala de aua 4', 3);
+insert into `sgrp`.`recurso`(nome, descricao, codigo_categoria) values('Sala 5', 'Sala de aua 5', 3);
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`acesso_recurso` (
   `codigo` INT NOT NULL auto_increment,
@@ -201,7 +207,6 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (1,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (2,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (3,1);
@@ -212,6 +217,7 @@ insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (8,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (9,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (10,1);
+
 
 create table `sgrp`.`reserva`(
 	codigo int not null auto_increment primary key,
@@ -237,14 +243,49 @@ insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario
 insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(1, '2024-10-01', '12:00', '15:00');
 insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
 insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(2, '2024-10-01', '12:00', '22:00');
-insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 3, 2);
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 3, 6);
 insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(3, '2024-10-01', '15:00', '22:00');
-insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 4, 2);
+insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 4, 7);
 insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(4, '2024-10-01', '15:00', '16:00');
-insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
-insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(5, '2024-10-01', '11:00', '12:00');
-insert into sgrp.reserva(justificativa, codigo_usuario_agendador, codigo_usuario_utilizador, codigo_recurso)values('', 1, 2, 2);
-insert into sgrp.data_reserva(codigo_reserva, data, hora_inicial, hora_final)values(6, '2024-10-01', '18:00', '20:00');
+
+
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`ensalamento` (
+  `codigo` INT NOT NULL auto_increment,
+  `dias_semana` CHAR(7) NOT NULL,
+  `hora_inicial` TIME NOT NULL,
+  `hora_final` TIME NOT NULL,
+  `codigo_disciplina` INT NOT NULL,
+  `codigo_sala` INT NOT NULL,
+  PRIMARY KEY (`codigo`), 
+  FOREIGN KEY (`codigo_disciplina`) REFERENCES `sgrp`.`disciplina` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (`codigo_sala`) REFERENCES `sgrp`.`recurso` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NSNNSNN', '18:00', '22:00', 1, 6);
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NNSSNNN', '18:00', '22:00', 2, 7);
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NNSNNSN', '18:00', '22:00', 4, 10);
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`reserva_ensalamento` (
+  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `codigo_reserva` INT NOT NULL,
+  `codigo_ensalamento` INT NOT NULL,
+  PRIMARY KEY (`codigo`),
+  FOREIGN KEY (`codigo_reserva`) REFERENCES `sgrp`.`reserva` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (`codigo_ensalamento`) REFERENCES `sgrp`.`ensalamento` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(3,1);
+insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(4,2);
+
 
 /*
 SELECT 
