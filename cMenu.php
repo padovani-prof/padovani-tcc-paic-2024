@@ -12,7 +12,7 @@ echo $html;
 }else{
     session_start(); 
     // Se o usuario não fez login joge ele para logar
-    header('Location: cLogin.php');
+    header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 
 
