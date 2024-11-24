@@ -39,9 +39,16 @@ else if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
 }
 else
 {
+    $msg = '';
+    if(isset($_GET['msg']))
+    {
+        $msg = $_GET['msg'];
+    }
+
     $msm = file_get_contents('View/vLogin.php');
-    $msm = str_replace('{{mensagem}}','',$msm);
+    $msm = str_replace('{{mensagem}}',$msg, $msm);
     echo $msm;
+
 
 }
 
