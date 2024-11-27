@@ -1,6 +1,5 @@
 <?php
 
-
 session_start();
 if(!isset($_SESSION['codigo_usuario']))
 {   
@@ -9,33 +8,34 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
-
 //include once 'mEnsalamento.php';
 $html = file_get_contents('View/vEnsalamento.php');
+
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
-include_once 'Model/mCategoriaRecurso.php';
+include_once 'Model/mEnsalamento.php';
 
 $lista_de_periodos = carrega_periodo();
 $lista_de_disciplina = carrega_disciplina();
-$lista_de_salas = carrega_categorias_recurso();
+$lista_de_salas = carregar_salas();
 
 $peri = '';
 $disc = '';
 $sala = '';
 $categoria = '';
+$filtra = '';
 
 
-if (isset($_GET['Filtra']))
+
+if (isset($_GET['filtrar']))
 {
-    if (isset($_GET['Periodo']) and isset($_GET['disciplina']) and isset($_GET['sala']))
-    {
-        // insira
-    }
-    else
-    {
-        echo 'tá vazio';
-    }
+   
+    $peri = $_GET['periodo'];
+    $disc = $_GET['disciplina'];
+    $sala = $_GET['sala'];
+
+
+    
 }
 
 $op_p = '';
@@ -54,12 +54,11 @@ $op_s = '';
 foreach($lista_de_salas as $salas)
 {
     $op_s = $op_s.'<option value="' .$salas['codigo'].'"' . ($salas['codigo'] == $sala ? ' selected' : '') . '> '.$salas['nome'].'</option>';
-}// falta fzaer para sala.
+}
 
-$html = str_replace('{{Periodo}}', $op_p, $html);
-$html = str_replace('{{Disciplina}}', $op_d, $html);
-$html = str_replace('{{Sala}}', $op_s, $html);
-// insira aqui pra sala.
+$html = str_replace('{{periodo}}', $op_p, $html);
+$html = str_replace('{{disciplina}}', $op_d, $html);
+$html = str_replace('{{sala}}', $op_s, $html);
 $html = str_replace('{{Categoria}}', $categoria, $html);
 
 echo $html;

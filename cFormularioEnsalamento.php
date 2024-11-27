@@ -1,6 +1,5 @@
 <?php
 
-
 session_start();
 if(!isset($_SESSION['codigo_usuario']))
 {   
@@ -9,17 +8,14 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
-
-
-//include once 'mEnsalamento.php';
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
-include_once 'Model/mCategoriaRecurso.php';
+include_once 'Model/mEnsalamento.php';
 
 $html = file_get_contents('View/vFormularioEnsalamento.php');
 $lista_de_periodos = carrega_periodo();
 $lista_de_disciplina = carrega_disciplina();
-$lista_de_salas = carrega_categorias_recurso();
+$lista_de_salas = carregar_salas();
 
 $mensagem = '';
 $peri = '';
@@ -28,6 +24,7 @@ $sala = '';
 $semana = '';
 $hora_ini = '';
 $hora_fin = '';
+$dia_semana = "";
 
 if (isset($_GET['salvar'])){
 
@@ -37,6 +34,20 @@ if (isset($_GET['salvar'])){
     $semana = (isset($_GET['DiaSemana']))?$_GET['DiaSemana']: [];
     $hora_ini = (isset($_GET['h_inicio']))?$_GET['h_inicio']: null;
     $hora_fin = (isset($_GET['h_fim']))?$_GET['h_fim']: null;
+
+    if ($semana != null and $hora_ini != null and $hora_fin)
+    {
+        for ($y=1; $y <= 7; $y++)
+        {
+            $dia_semana .= in_array($y, $semana) ? 'S' : 'N';
+        }
+        $reserva = ensalamento($peri, $disc, $sala, $dia_semana, $hora_ini, $hora_fin);
+        
+
+    } else{
+        $mensagem='Campo dias da semana ou hora inicial e final vazios';
+    }
+
 
 }
 
@@ -58,19 +69,11 @@ $op_s = '';
 foreach($lista_de_salas as $salas)
 {
     $op_s = $op_s.'<option value="' .$salas['codigo'].'"' . ($salas['codigo'] == $sala ? ' selected' : '') . '> '.$salas['nome'].'</option>';
-}// ainda tá incopleto!!!!!!!!!!!!
+}
 
 $html = str_replace('{{Periodo}}', $op_p, $html);
 $html = str_replace('{{Disciplina}}', $op_d, $html);
 $html = str_replace('{{Sala}}', $op_s, $html);
-
-
-var_dump ($peri);
-var_dump ($disc);
-var_dump ($sala);
-var_dump ($semana);
-var_dump ($hora_ini);
-var_dump ($hora_fin);
-
 $html = str_replace('{{mensagem}}', $mensagem, $html);
+
 echo $html;

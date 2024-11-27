@@ -29,19 +29,19 @@
 
         </select>
         <p>Dias da Semana</p>
-        <input type="checkbox" name="DiaSemana[]" id="domingo">
+        <input type="checkbox" name="DiaSemana[]" value="1">
         <label for="">Domingo</label>
-        <input type="checkbox" name="DiaSemana[]" id="segunda">
+        <input type="checkbox" name="DiaSemana[]" value="2">
         <label for="">Segunda</label>
-        <input type="checkbox" name="DiaSemana[]" id="terça">
+        <input type="checkbox" name="DiaSemana[]" value="3">
         <label for="">Terça</label>
-        <input type="checkbox" name="DiaSemana[]" id="quarta">
+        <input type="checkbox" name="DiaSemana[]" value="4">
         <label for="">Quarta</label>
-        <input type="checkbox" name="DiaSemana[]" id="quinta">
+        <input type="checkbox" name="DiaSemana[]" value="5">
         <label for="">Quinta</label>
-        <input type="checkbox" name="DiaSemana[]" id="sexta">
+        <input type="checkbox" name="DiaSemana[]" value="6">
         <label for="">Sexta</label>
-        <input type="checkbox" name="DiaSemana[]" id="sábado">
+        <input type="checkbox" name="DiaSemana[]" value="7">
         <label for="">Sábado</label>
         
 
