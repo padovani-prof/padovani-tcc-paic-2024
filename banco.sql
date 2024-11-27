@@ -257,22 +257,18 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`ensalamento` (
   `hora_final` TIME NOT NULL,
   `codigo_disciplina` INT NOT NULL,
   `codigo_sala` INT NOT NULL,
-  `codigo_periodo` INT NOT NULL,
   PRIMARY KEY (`codigo`), 
   FOREIGN KEY (`codigo_disciplina`) REFERENCES `sgrp`.`disciplina` (`codigo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   FOREIGN KEY (`codigo_sala`) REFERENCES `sgrp`.`recurso` (`codigo`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  FOREIGN KEY (`codigo_periodo`) REFERENCES `sgrp`.`periodo` (`codigo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala, codigo_periodo)values('NSNNSNN', '18:00', '22:00', 1, 6,1);
-insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala, codigo_periodo)values('NNSSNNN', '18:00', '22:00', 2, 7,1);
-insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala, codigo_periodo)values('NNSNNSN', '18:00', '22:00', 4, 10,1);
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NSNNSNN', '18:00', '22:00', 1, 6);
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NNSSNNN', '18:00', '22:00', 2, 7);
+insert into `sgrp`.`ensalamento`(dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala)values('NNSNNSN', '18:00', '22:00', 4, 10);
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`reserva_ensalamento` (
   `codigo` INT NOT NULL AUTO_INCREMENT,
