@@ -8,8 +8,6 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
-//include once 'mEnsalamento.php';
-$html = file_get_contents('View/vEnsalamento.php');
 
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
@@ -34,28 +32,33 @@ if (isset($_GET['filtrar']))
     $disc = $_GET['disciplina'];
     $sala = $_GET['sala'];
 
+    $filtra = filtrar();
 
-    
+    if (!empty($filtra)) 
+    {
+        $categoria = '<tbody>';
+        foreach ($filtra as $controle){
+            $categoria .= '<tr>
+                    <td>' . $controle['codigo_sala'] . '</td>
+                    <td>'.'</td>
+                    <td>' . $controle['codigo_disciplina'] . '</td>
+                    <td>' . $controle['dias_semana'] . '</td>
+                    <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
+                    <td>'.'</td>
+                    
+                  </tr>';
+        }
+        $categoria .= '<tbody/>';
+    }
+
+ 
 }
 
-$op_p = '';
-foreach($lista_de_periodos as $periodo)
-{
-    $op_p = $op_p.'<option value="' .$periodo['codigo'].'"' . ($periodo['codigo'] == $peri ? ' selected' : '') . '> '.$periodo['nome'].'</option>';
-}
+$op_p = gerarOpcoes($lista_de_periodos, $peri);
+$op_d = gerarOpcoes($lista_de_disciplina, $disc);
+$op_s = gerarOpcoes($lista_de_salas, $sala);
 
-$op_d = '';
-foreach($lista_de_disciplina as $disciplina)
-{
-    $op_d = $op_d .'<option value="' .$disciplina['codigo'].'"' . ($disciplina['codigo'] == $disc ? ' selected' : '') . '> '.$disciplina['nome'].'</option>';
-}
-
-$op_s = '';
-foreach($lista_de_salas as $salas)
-{
-    $op_s = $op_s.'<option value="' .$salas['codigo'].'"' . ($salas['codigo'] == $sala ? ' selected' : '') . '> '.$salas['nome'].'</option>';
-}
-
+$html = file_get_contents('View/vEnsalamento.php');
 $html = str_replace('{{periodo}}', $op_p, $html);
 $html = str_replace('{{disciplina}}', $op_d, $html);
 $html = str_replace('{{sala}}', $op_s, $html);
