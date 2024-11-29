@@ -39,10 +39,10 @@ if (isset($_GET['filtrar']))
         $categoria = '<tbody>';
         foreach ($filtra as $controle){
             $categoria .= '<tr>
-                    <td>' . $controle['codigo_sala'] . '</td>
-                    <td>'.'</td>
-                    <td>' . $controle['codigo_disciplina'] . '</td>
-                    <td>' . $controle['dias_semana'] . '</td>
+                    <td>' . $controle['nome_recurso'] . '</td>
+                    <td>' . $controle['nome_periodo'] . '</td>
+                    <td>' . $controle['nome_disciplina'] . '</td>
+                    <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
                     <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
                     <td>'.'</td>
                     
@@ -50,6 +50,7 @@ if (isset($_GET['filtrar']))
         }
         $categoria .= '<tbody/>';
     }
+	
 
  
 }

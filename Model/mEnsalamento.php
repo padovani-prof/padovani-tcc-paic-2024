@@ -12,8 +12,9 @@ function carregar_salas()
     $resultado = $conecxao->query("SELECT * FROM recurso WHERE codigo_categoria IN (2, 3)");
     //$resultado = $conecxao->query("SELECT * FROM categoria_recurso WHERE ambiente_fisico = 'S' ");
 
-    $todos_dados = [];
-
+    //$todos_dados = $resultado->fetch_all(MYSQLI_ASSOC);
+	
+	$todos_dados = [];
     while ($linha = $resultado->fetch_assoc())
     {
         $todos_dados[] = $linha;
@@ -42,13 +43,17 @@ function filtrar()
     ensalamento.hora_inicial,
     ensalamento.hora_final,
     disciplina.nome AS nome_disciplina,
-    recurso.nome AS nome_recurso
+    recurso.nome AS nome_recurso,
+	periodo.nome AS nome_periodo
     FROM 
         ensalamento
     INNER JOIN 
         disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
     INNER JOIN 
-        recurso ON ensalamento.codigo_sala = recurso.codigo");
+        recurso ON ensalamento.codigo_sala = recurso.codigo
+	INNER JOIN
+		sgrp.periodo ON periodo.codigo = disciplina.codigo_periodo	
+		");
 
     // Verifica se há resultados e retorna um array
     if ($resultado->num_rows > 0) {
@@ -158,5 +163,17 @@ function dias_mês($periodo){
         return 'erro!!';
         //return coloque alguma mensagem de erro;
     }
-
 }
+	function gerarDiasDaSemana($texto_dias){
+		$nomes_dias = ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb"];
+		$dias_selecionados = [];
+		echo "DEBUG1";
+		for ($i = 0; $i < 7; $i++){
+			if ($texto_dias[$i] == "S"){
+				$dias_selecionados[] = $nomes_dias[$i];
+			}
+		}
+		$dias_selecionados = implode (", ", $dias_selecionados);
+		return $dias_selecionados;
+	}
+
