@@ -7,24 +7,32 @@
 </head>
 <body>
   <header>
-      <h1>Retirada e Devolução</h1>
+      <h1>Retirada</h1>
   </header>
 
   <section>
     
         <form action="cFormularioRetirada.php">  
             <p>
-              <label for="">Recurso: </label>
-              <select name="" id="">
-
+              <label for="">Recursos: </label>
+              <select name="recurso" id="">
+              {{recursos}}
+              
               </select>
             </p>
             
-
             <label for="">Retirante: </label>
-            <select name="" id="">
+            <select name="retirante" id="">
+              {{retirante}}
 
             </select>
+
+            
+              <p>
+                Horário Final:
+                <input type="time" name="hora_final"  id="" value="{{hora_fim}}">
+            </p>
+  
               
             <p id="mensagem-{{retorno}}">{{mensagem}}</p>  
 
@@ -42,3 +50,4 @@
   
 </body>
 </html>
+
