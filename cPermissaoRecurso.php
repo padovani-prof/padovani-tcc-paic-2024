@@ -8,6 +8,16 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
+include_once 'Model/mVerificacao_acesso.php';
+# vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'adm_perm_recurso');
+if ($verificar== false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
+
+
 
 
 include_once 'Model/mPermissao.php';
