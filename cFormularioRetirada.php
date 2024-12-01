@@ -6,7 +6,7 @@ $html = file_get_contents('View/vFormulariorRetirada.php');
 
 $msg = '';
 $id_msg = 'erro'; 
-if(isset($_GET['btnConfirmar']))
+if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
 {
     $recurso = $_GET['recurso'];
     $retirante = $_GET['retirante'];
