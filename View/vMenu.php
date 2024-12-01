@@ -15,7 +15,7 @@
         <div>
             <h2>{{saudacao}}</h2>
         </div>
-
+        <p>{{msg}}</p>
         <div id="menu-principal">
             <h2>Operações</h2>
             <ul>
