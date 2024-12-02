@@ -19,7 +19,7 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
     $data_devolução = new DateTime("$data $hora_fim");
 
     // dados validos
-    if(mb_strlen($hora_fim)==5  and $data_atual < $data_devolução)
+    if(mb_strlen($hora_fim)==5  and $data_atual < $data_devolução )
     {
         $hora_ini =  $data_atual->format('H:i:s');
         $hora_fim = $hora_fim.':00';
@@ -30,7 +30,7 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
         if (count($disponives)>0)
         {
             $data_hora = $data.' '.$hora_ini;
-            $tudo_certo = insere_reserva($retirante, $recurso, $data_hora, $hora_fim);
+            $tudo_certo = insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim,'R');
             if($tudo_certo== true)
             {
                 $msg = 'Recurso Reservado com Sucesso!';
@@ -48,16 +48,7 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
 
 $recursos_reserva = carrega_retirada_disponivel();
 $retirantes = listar_usuarios();
-function optios($lista)
-{
-    $opt = '';
-    foreach($lista as $dados)
-    {
-        $opt .= '<option value="'. $dados['codigo'].'">'.mb_strtoupper($dados['nome'] ).'</option>';
-    }
-    return $opt;
 
-}
 $opicoes_recurso = optios($recursos_reserva);
 $opicoes_retirantes = optios($retirantes);
 
