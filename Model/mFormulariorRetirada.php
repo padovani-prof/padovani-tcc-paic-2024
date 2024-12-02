@@ -41,7 +41,7 @@ function listar_usuarios(){
     return $todos_dados;
 }
 
-function insere_reserva($retirante, $recurso, $data_hora, $hora_fim)
+function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $dr)
 {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
@@ -49,9 +49,40 @@ function insere_reserva($retirante, $recurso, $data_hora, $hora_fim)
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final) VALUES ($retirante, $recurso,  '$data_hora', 'R', 'S','$hora_fim')";
+    $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final) VALUES ($retirante, $recurso,  '$data_hora', '$dr', 'S','$hora_fim')";
     $resultado = $conexao->query($sql);
     return $resultado;
 }
+
+function carrega_recursos_emprestados()
+{
+    include 'confg_banco.php';
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $cone->query("SELECT * from(
+    select codigo, nome, (
+        select tipo from retirada_devolucao where recurso.codigo = codigo_recurso order by datahora desc limit 1
+        ) as ultima_movimentacao from recurso) as rec
+    where rec.ultima_movimentacao = 'R' ;");
+    $todos_dados = [];
+    while ($dados = $resulta->fetch_assoc())
+    {
+        
+        $todos_dados[] = $dados;
+    }
+    return $todos_dados;
+}
+
+function optios($lista)
+{
+    $opt = '';
+    foreach($lista as $dados)
+    {
+        $opt .= '<option value="'. $dados['codigo'].'">'.mb_strtoupper($dados['nome'] ).'</option>';
+    }
+    return $opt;
+
+}
+
+
 
 ?>
