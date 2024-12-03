@@ -6,7 +6,6 @@ $msg = '';
 $msg_resp = 'erro';
 if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
 {
-
     $recurso = $_GET['recurso'];
     $devolvente = $_GET['devolvente'];
     date_default_timezone_set('America/Manaus'); 
@@ -16,14 +15,7 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
     $tudo_certo = insere_reserva_devolucao($devolvente, $recurso, $data_hora, $hora, "D");
     $msg = 'Recurso devolvido com Sucesso!';
     $msg_resp = 'sucesso';
-
-
 }
-
-
-
-
-
 $recursos = carrega_recursos_emprestados();
 $devolventes = listar_usuarios();
 $recursos = optios($recursos);
