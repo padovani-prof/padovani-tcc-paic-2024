@@ -28,7 +28,7 @@ function listar_perfil(){
         die("Falha na conexão: " . $conexao->connect_error);
     }
 
-    $resultado = $conexao->query("SELECT * FROM perfil_usuario");
+    $resultado = $conexao->query("SELECT * FROM perfil_usuario ORDER BY nome ASC");
 
     $todos_dados = [];
 

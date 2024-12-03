@@ -6,7 +6,7 @@ function listar_funcionalidade(){
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $resultado = $conexao->query("SELECT * FROM funcionalidade");
+    $resultado = $conexao->query("SELECT * FROM funcionalidade ORDER BY nome ASC");
 
     $todos_dados = [];
 
