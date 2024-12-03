@@ -163,12 +163,13 @@ insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Sistemas 
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade` (
   `codigo` INT NOT NULL AUTO_INCREMENT,
-  `sigla` VARCHAR(20) NOT NULL,
+  `sigla` VARCHAR(30) NOT NULL,
   `nome` VARCHAR(60) NOT NULL,
   `descricao` VARCHAR(200) NOT NULL,
   `ativa` CHAR(1) NOT NULL,
   PRIMARY KEY (`codigo`))
 ENGINE = InnoDB;
+
 
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
 	values ('cad_recurso', 'Cadastrar recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
@@ -185,12 +186,48 @@ insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa)
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
 	values ('apag_categoria_rec', 'Apagar categoria de recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_perfil', 'Cadastrar perfil de usuário', 'O usuário pode cadastrar os perfis do usuário no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('alt_perfil', 'Alterar perfil de usuário', 'O usuário pode alterar as informações do perifl no sistema', 'S');
+	values ('alt_perfil', 'Alterar Perfil de usuário', 'O usuário pode alterar as informações do perifl no sistema', 'S');
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
 	values ('apag_perfil', 'Apagar perfil de usuário', 'O usuário pode apagar o perifl do sistema', 'S');
     
+
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_perfil', 'Listar Perfiis de Usuário', 'O usuário ver a listagem de perfis', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_perfil', 'Cadastrar Perfil de usuário', 'O usuário pode cadastrar os perfis do usuário no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_usuario', 'Listar Usuários', 'O usuário ver a listagem de usuarios', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_usuario', 'Cadastrar usuário', 'O usuário pode cadastrar um novo usuário no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_categoria_rec', 'Listar Categorias do Recurso', 'O usuário ver a listagem de categorias', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('adm_checklist_rec', 'Administrar Checklist da cada recurso', 'O usuário pode administrar as checklista de cada recurso', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cons_disponibilidade', 'Consultar A Disponibilidade', 'O usuário consulta as disponibiliadades', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_retir_devoluc', 'Cadastrar Retirada e Devolução', 'O usuário pode cadastrar uma nova retirada e devolução', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_reserva', 'Listar Reservas', 'O usuário ver a listagem de reserva', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_reserva', 'Cadastrar reserva', 'O usuário pode cadastrar uma nova reserva', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_ensalamento', 'Listar Ensalamentos', 'O usuário ver a listagem de ensalamentos', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_ensalamento', 'Cadastrar Ensalamento', 'O usuário pode cadastrar novo ensalamento', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_periodo', 'Listar Períodos', 'O usuário ver a listagem de periodos', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_periodo', 'Cadastrar Período', 'O usuário pode cadastrar novo período', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_disciplina', 'Listar Disciplinas', 'O usuário ver a listagem de disciplinas', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_disciplina', 'Cadastrar Disciplina', 'O usuário pode cadastrar nova disciplina', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_recurso', 'Listar Recursos', 'O usuário ver a listagem de recursos', 'S');
+
+
+
 CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
   `codigo_funcionalidade` INT NOT NULL,
   `codigo_perfil` INT NOT NULL,
