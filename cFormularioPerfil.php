@@ -9,6 +9,15 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
+# verificação de acesso da fucionalidade
+# vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_perfil');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
 
 include_once 'Model/mPerfilUsuario.php';  
 $funcionalidades = listar_funcionalidade();
