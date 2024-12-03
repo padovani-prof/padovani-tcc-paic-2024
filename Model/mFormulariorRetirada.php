@@ -18,6 +18,25 @@ function carrega_retirada_disponivel()
     return $todos_dados;
 }
 
+
+function verificar_usuario_devolucao($cod_recu, $cod_usua){
+    include 'confg_banco.php';
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $cone->query("SELECT r.codigo as codigo_recurso, codigo_usuario, r.nome as nome_recurso, tipo from sgrp.recurso r, sgrp.retirada_devolucao rd
+    where
+        r.codigo = rd.codigo_recurso and
+        r.codigo = $cod_recu
+    order by rd.datahora desc
+    limit 1");
+    $resulta = $resulta->fetch_assoc();
+    if($resulta['codigo_usuario']==$cod_usua)
+    {
+        return true;
+    }
+    return false;
+}
+
+
 function listar_usuarios(){   
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
