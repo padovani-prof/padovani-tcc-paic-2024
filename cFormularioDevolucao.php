@@ -1,7 +1,6 @@
 <?php 
 include 'Model/mFormulariorRetirada.php';
 $html = file_get_contents('View/vFormularioDevolucao.php');
-
 $msg = '';
 $msg_resp = 'erro';
 if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
@@ -12,9 +11,16 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
     $data_atual = new DateTime();
     $data_hora = $data_atual->format('Y/m/d H:i:s');
     $hora = $data_atual->format('H:i');
-    $tudo_certo = insere_reserva_devolucao($devolvente, $recurso, $data_hora, $hora, "D");
-    $msg = 'Recurso devolvido com Sucesso!';
-    $msg_resp = 'sucesso';
+    $verificacao = verificar_usuario_devolucao($recurso, $devolvente);
+    if($verificacao == true)
+    {
+        $tudo_certo = insere_reserva_devolucao($devolvente, $recurso, $data_hora, $hora, "D");
+        $msg = 'Recurso devolvido com Sucesso!';
+        $msg_resp = 'sucesso';
+    }else
+    {
+        $msg = 'Devolução ínvalida por retirantes diferente!';   
+    }
 }
 $recursos = carrega_recursos_emprestados();
 $devolventes = listar_usuarios();
