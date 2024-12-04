@@ -1,4 +1,18 @@
 <?php 
+session_start();
+if(!isset($_SESSION['codigo_usuario']))
+{   
+    header('Location: cLogin.php?msg=Usuario desconectado!');
+    exit();
+}
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_retir_devoluc');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
+
 include 'Model/mFormulariorRetirada.php';
 $html = file_get_contents('View/vFormularioDevolucao.php');
 $msg = '';
