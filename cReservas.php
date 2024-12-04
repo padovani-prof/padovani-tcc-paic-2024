@@ -8,6 +8,14 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_reserva');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
+
 include_once 'Model/mReserva.php';
 
 if (isset($_GET['codigo_da_reserva'])) {
