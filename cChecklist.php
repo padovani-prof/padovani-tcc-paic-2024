@@ -7,7 +7,13 @@ if(!isset($_SESSION['codigo_usuario']))
     header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 }
-
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'adm_checklist_rec');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
 
 mb_internal_encoding("UTF-8");
 
