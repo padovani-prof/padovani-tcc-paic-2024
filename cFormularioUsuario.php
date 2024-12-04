@@ -8,10 +8,8 @@ if(!isset($_SESSION['codigo_usuario']))
     header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 }
-# verificação de acesso da fucionalidade
-# vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_perfil');
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_usuario');
 if ($verificar == false)
 {
     header('Location: cMenu.php?msg=Acesso negado!');
