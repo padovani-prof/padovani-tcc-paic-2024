@@ -7,6 +7,15 @@ if(!isset($_SESSION['codigo_usuario']))
     header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 }
+
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
+
 $html = file_get_contents('View/vFiltroDisponibildade.php');
 include_once 'Model/mCategoriaRecurso.php';
 include_once 'Model/mRecurso.php';
