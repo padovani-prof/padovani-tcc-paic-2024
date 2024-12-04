@@ -7,6 +7,14 @@ if(!isset($_SESSION['codigo_usuario']))
     header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 }
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_ensalamento');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
+
 
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
