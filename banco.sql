@@ -254,6 +254,22 @@ insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (8,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (9,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (10,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (11,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (12,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (13,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (14,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (15,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (16,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (17,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (18,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (19,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (20,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (21,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (22,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (23,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (24,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (25,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (26,1);
 
 
 create table `sgrp`.`reserva`(
