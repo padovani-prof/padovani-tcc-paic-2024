@@ -9,7 +9,7 @@ function carregar_salas()
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
     
     // Executar a consulta
-    $resultado = $conecxao->query("SELECT * FROM recurso WHERE codigo_categoria IN (2, 3)");
+    $resultado = $conecxao->query("SELECT * FROM recurso WHERE codigo_categoria IN (SELECT codigo FROM categoria_recurso WHERE ambiente_fisico = 'S');");
     //$resultado = $conecxao->query("SELECT * FROM categoria_recurso WHERE ambiente_fisico = 'S' ");
 
     //$todos_dados = $resultado->fetch_all(MYSQLI_ASSOC);
@@ -123,12 +123,24 @@ function gerarOpcoes($lista, $selecionado) {
 }//ok 
 
 
-function dias_mês($periodo){
+function gerarDiasDaSemana($texto_dias){
+    $nomes_dias = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+    $dias_selecionados = [];
+    for ($i = 0; $i < 7; $i++){
+        if ($texto_dias[$i] == "S"){
+            $dias_selecionados[] = $nomes_dias[$i];
+        }
+    }
+    $dias_selecionados = implode (", ", $dias_selecionados);
+    return $dias_selecionados;
+}//ok
+
+function dias_aulas($periodo) {
 
     include 'Model/confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
     
-    $consulta = $conecxao->query("SELECT dt_inicial, dt_final FROM periodo WHERE codigo = '$periodo' ");
+    $consulta = $conecxao->query("SELECT dt_inicial as dat_ini, dt_final as dat_fin FROM periodo WHERE codigo = '$periodo' ");
 
     $todos_dados = [];
 
@@ -137,43 +149,28 @@ function dias_mês($periodo){
         {
             $todos_dados[] = $linha;
         }
-
-        $dt_ini = $todos_dados['dt_inicial'];
-        $dt_fin = $todos_dados['dt_final'];
-
-        // $dt_ini = '2024-12-01';
-       
-        // Obter o dia da semana no formato ISO-8601 (1 = segunda-feira, 7 = domingo)
-        $dia_iso = date('N', strtotime($dt_ini));
-
-        // Ajustar para 1 = domingo e 7 = sábado
-        $dia_da_semana_custom = ($dia_iso == 7) ? 1 : $dia_iso + 1;
-
-        $dias_da_semana = [ '1' => 'don', '2'=>'seg', '3'=>'ter', '4'=>'qua', '5'=>'qui', '6'=>'sex', '7'=>'sab'];
-        
-        
-        
-        
-        
-        return $dia_da_semana_custom;
-
-    
-    }else{
-
-        return 'erro!!';
-        //return coloque alguma mensagem de erro;
     }
-}
-	function gerarDiasDaSemana($texto_dias){
-		$nomes_dias = ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb"];
-		$dias_selecionados = [];
-		echo "DEBUG1";
-		for ($i = 0; $i < 7; $i++){
-			if ($texto_dias[$i] == "S"){
-				$dias_selecionados[] = $nomes_dias[$i];
-			}
-		}
-		$dias_selecionados = implode (", ", $dias_selecionados);
-		return $dias_selecionados;
-	}
 
+    $dt_ini = $todos_dados[0]['dat_ini']; //deixar isso dinamico 
+    $dt_fin = $todos_dados[0]['dat_fin']; //deixar isso dinamico
+    $dias_de_aula = [];
+    $dias = [3,4,7];// deixar isso dinamico
+    
+    
+
+    while (strtotime($dt_ini) <= strtotime($dt_fin)){
+         
+        $dia_iso = date('N', strtotime($dt_ini)); // Dia da semana no formato ISO (1 = segunda-feira, 7 = domingo)
+        $diasemana = ($dia_iso == 7) ? 1 : $dia_iso + 1; // Converte para o sistema personalizado (1=domingo, 7=sábado)
+
+        if (in_array($diasemana, $dias)) { // Verifica se o dia está nos dias de aula
+            $dias_de_aula[] = $dt_ini; // Adiciona a data ao array de dias de aula
+        }
+        
+        $dt_ini = date('Y-m-d', strtotime($dt_ini . "+1 day")); // Incrementa os dias
+
+        
+    }
+    return $dias_de_aula;
+        
+}

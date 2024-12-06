@@ -54,7 +54,11 @@ if (isset($_GET['salvar'])){
             $dia_semana .= in_array($y, $semana) ? 'S' : 'N';
         }
         $reserva = ensalamento($peri, $disc, $sala, $dia_semana, $hora_ini, $hora_fin);
+        
+        $test = dias_aulas($peri);
 
+        var_dump($test);
+        
         $mensagem = $vet_mensagem[$reserva];
         
     } else
