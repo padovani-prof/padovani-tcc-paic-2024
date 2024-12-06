@@ -62,17 +62,17 @@ function Validar_usuario($nome, $senha)
 }
 
 
-function insere_usuario($nome, $email, $senha) 
+function insere_usuario($nome, $email, $senha_usu) 
 {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     if (!$conexao->connect_error) {
 
-        $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
+        $senha_usu = hash('sha256', $senha_usu);
 
         $stmt = $conexao->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $nome, $email, $senha_hash);
+        $stmt->bind_param("sss", $nome, $email, $senha_usu);
 
         if ($stmt->execute()) {
             return $conexao->insert_id; 
