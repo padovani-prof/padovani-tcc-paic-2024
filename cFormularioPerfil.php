@@ -47,7 +47,7 @@ if (isset($_GET["salvar"])) {
         $mensagem = "Você deve selecionar pelo menos uma funcionalidade!";
 
     } else {
-        $resposta = insere_perfil($nome, $descricao);
+        $resposta = insere_perfil($nome, $descricao, $funcionalidades_selecionadas);
 
         if ($resposta == 2) {
             $nome = '';
@@ -55,8 +55,7 @@ if (isset($_GET["salvar"])) {
             $funcionalidades_selecionadas = []; 
             $mensagem = "Perfil cadastrado com sucesso!";
         } else {
-            $mensagens = ['Nome Inválido', 'Descrição Inválida'];
-            $mensagem = $mensagens[$resposta];
+            $mensagem = "Erro ao cadastrar o perfil. Verifique os dados.";
         }
     }
 }

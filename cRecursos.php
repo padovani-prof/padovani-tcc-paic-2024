@@ -8,6 +8,13 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_recurso');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
 
 include_once 'Model/mRecurso.php';
 //mb_internal_encoding("UTF-8");
