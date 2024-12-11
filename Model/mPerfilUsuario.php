@@ -6,7 +6,7 @@ function listar_funcionalidade(){
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $resultado = $conexao->query("SELECT * FROM funcionalidade");
+    $resultado = $conexao->query("SELECT * FROM funcionalidade ORDER BY nome ASC");
 
     $todos_dados = [];
 
@@ -55,6 +55,8 @@ function apagar_perfil($chave_pri) {
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     if (!$conexao->connect_error) {
+        $conexao->query("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = $chave_pri");
+        
         $conexao->query("DELETE FROM usuario_perfil WHERE codigo_perfil = $chave_pri");
         $conexao->query("DELETE FROM perfil_usuario WHERE codigo = $chave_pri");
     }
@@ -75,31 +77,51 @@ function Validar_perfil($nome, $descricao){
 }
 
 
-function insere_perfil($nome, $descricao){
-
+function insere_perfil($nome, $descricao, $funcionalidades_selecionadas) {
+    // Validar os dados antes de inserir
     $validar = Validar_perfil($nome, $descricao);
 
-    if ($validar === true)
-    {
+    if ($validar === true) {
         include 'confg_banco.php';
     
         $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-        if(!$conexao->connect_error)
-        {
-            $resulta = $conexao->query ("INSERT INTO perfil_usuario (nome, descricao) values ('$nome', '$descricao')");
+        if(!$conexao->connect_error) {
+            // Inserir o perfil no banco
+            $stmt = $conexao->prepare("INSERT INTO perfil_usuario (nome, descricao) VALUES (?, ?)");
+            $stmt->bind_param("ss", $nome, $descricao);
 
-            // Adicionou no banco
+            if ($stmt->execute()) {
+                $codigo_perfil = $conexao->insert_id; // Pega o ID do perfil inserido
 
-            return 2; // inserido corretamente
-            
+                foreach ($funcionalidades_selecionadas as $codigo_funcionalidade) {
+                    insere_funcionalidade_perfil($codigo_funcionalidade, $codigo_perfil);
+                }
+
+                return 2; 
+            } else {
+                return 4; 
+            }
         }
     }
 
-    // não adicionou no banco
-    return $validar;
-
+    return $validar; 
 }
 
+function insere_funcionalidade_perfil($codigo_funcionalidade, $codigo_perfil) {
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-?> 
+    if (!$conexao->connect_error) {
+        $stmt = $conexao->prepare("INSERT INTO funcionalidade_perfil (codigo_funcionalidade, codigo_perfil) VALUES (?, ?)");
+        $stmt->bind_param("ii", $codigo_funcionalidade, $codigo_perfil);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true; 
+        }
+    }
+
+    return false; 
+}
+?>

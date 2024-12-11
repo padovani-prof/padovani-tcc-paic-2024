@@ -15,7 +15,7 @@
         <div>
             <h2>{{saudacao}}</h2>
         </div>
-
+        <p>{{msg}}</p>
         <div id="menu-principal">
             <h2>Operações</h2>
             <ul>
@@ -23,7 +23,8 @@
                 <li><a href="cUsuario.php">Usuários</a></li>
                 <li><a href="cRecursos.php">Recursos</a></li>
                 <li><a href="cCategoria.php">Categoria do Recurso</a></li>
-                <li><a href="">Registro de retirada / Devolução</a></li>
+                <li><a href="cFormularioRetirada.php">Registro de Retirada</a></li> 
+                <li><a href="cFormularioDevolucao.php">Registro de  Devolução</a></li> 
                 <li><a href="">Cancelar Retirada / Devolução</a></li>
                 <li><a href="cResultadoDisponibilidade.php">Consultar Disponibilidade</a></li>
                 <li><a href="cReservas.php">Reserva Recurso</a></li>

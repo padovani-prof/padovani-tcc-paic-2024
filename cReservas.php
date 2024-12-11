@@ -1,4 +1,21 @@
 <?php
+
+session_start();
+if(!isset($_SESSION['codigo_usuario']))
+{   
+    // Se o usuario não fez login jogue ele para logar
+    header('Location: cLogin.php?msg=Usuario desconectado!');
+    exit();
+}
+
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_reserva');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
+
 include_once 'Model/mReserva.php';
 
 if (isset($_GET['codigo_da_reserva'])) {

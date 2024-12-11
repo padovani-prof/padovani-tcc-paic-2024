@@ -21,3 +21,5 @@ function listar_funcionalidades(){
     // Retorna o array com todos os dados
     return $todos_dados;
 }
+
+?>

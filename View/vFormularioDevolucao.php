@@ -3,37 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Retirada </title>
+  <title>Devolução</title>
 </head>
 <body>
   <header>
-      <h1>Retirada</h1>
+      <h1>Devolução</h1>
   </header>
 
   <section>
     
-        <form action="cFormularioRetirada.php">  
+        <form action="cFormularioDevolucao.php">  
             <p>
-              <label for="">Recursos: </label>
+              <label for="">Recursos Retirados: </label>
               <select name="recurso" id="">
               {{recursos}}
-              
               </select>
             </p>
             
-            <label for="">Retirante: </label>
-            <select name="retirante" id="">
-              {{retirante}}
-
+            <label for="">Devolvente: </label>
+            <select name="devolvente" id="">
+              {{devolvente}}
             </select>
 
-            
-              <p>
-                Horário Final:
-                <input type="time" name="hora_final"  id="" value="{{hora_fim}}">
-            </p>
-  
-              
             <p id="mensagem-{{retorno}}">{{mensagem}}</p>  
 
             <p>

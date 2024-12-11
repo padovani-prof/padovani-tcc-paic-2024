@@ -1,13 +1,23 @@
 <?php
 
+
 session_start();
 if(!isset($_SESSION['codigo_usuario']))
 {   
-    // Se o usuario não fez login joge ele para logar
-    header('Location: cLogin.php');
+    // Se o usuario não fez login jogue ele para logar
+    header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 }
 
+# verificação de acesso da fucionalidade
+# vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_perfil');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
+}
 
 include_once 'Model/mPerfilUsuario.php';  
 $funcionalidades = listar_funcionalidade();
@@ -37,7 +47,7 @@ if (isset($_GET["salvar"])) {
         $mensagem = "Você deve selecionar pelo menos uma funcionalidade!";
 
     } else {
-        $resposta = insere_perfil($nome, $descricao);
+        $resposta = insere_perfil($nome, $descricao, $funcionalidades_selecionadas);
 
         if ($resposta == 2) {
             $nome = '';
@@ -45,8 +55,7 @@ if (isset($_GET["salvar"])) {
             $funcionalidades_selecionadas = []; 
             $mensagem = "Perfil cadastrado com sucesso!";
         } else {
-            $mensagens = ['Nome Inválido', 'Descrição Inválida'];
-            $mensagem = $mensagens[$resposta];
+            $mensagem = "Erro ao cadastrar o perfil. Verifique os dados.";
         }
     }
 }

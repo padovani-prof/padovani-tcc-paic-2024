@@ -3,62 +3,72 @@
 session_start();
 if(!isset($_SESSION['codigo_usuario']))
 {   
-    // Se o usuario não fez login joge ele para logar
-    header('Location: cLogin.php');
+    // Se o usuario não fez login jogue ele para logar
+    header('Location: cLogin.php?msg=Usuario desconectado!');
+    exit();
+}
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_ensalamento');
+if ($verificar == false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
     exit();
 }
 
-
-//include once 'mEnsalamento.php';
-$html = file_get_contents('View/vEnsalamento.php');
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
-include_once 'Model/mCategoriaRecurso.php';
+include_once 'Model/mEnsalamento.php';
 
 $lista_de_periodos = carrega_periodo();
 $lista_de_disciplina = carrega_disciplina();
-$lista_de_salas = carrega_categorias_recurso();
+$lista_de_salas = carregar_salas();
 
 $peri = '';
 $disc = '';
 $sala = '';
 $categoria = '';
+$filtra = '';
 
+$filtra = filtrar();
 
-if (isset($_GET['Filtra']))
+if (!empty($filtra)) 
 {
-    if (isset($_GET['Periodo']) and isset($_GET['disciplina']) and isset($_GET['sala']))
-    {
-        // insira
+    $categoria = '<tbody>';
+    foreach ($filtra as $controle){
+        $categoria .= '<tr>
+                <td>' . $controle['nome_recurso'] . '</td>
+                <td>' . $controle['nome_periodo'] . '</td>
+                <td>' . $controle['nome_disciplina'] . '</td>
+                <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
+                <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
+                <td>'.'</td>
+                
+                </tr>';
     }
-    else
-    {
-        echo 'tá vazio';
-    }
+    $categoria .= '<tbody/>';
 }
 
-$op_p = '';
-foreach($lista_de_periodos as $periodo)
+
+if (isset($_GET['filtrar']))
 {
-    $op_p = $op_p.'<option value="' .$periodo['codigo'].'"' . ($periodo['codigo'] == $peri ? ' selected' : '') . '> '.$periodo['nome'].'</option>';
+   
+    $peri = $_GET['periodo'];
+    $disc = $_GET['disciplina'];
+    $sala = $_GET['sala'];
+
+	
+
+ 
 }
 
-$op_d = '';
-foreach($lista_de_disciplina as $disciplina)
-{
-    $op_d = $op_d .'<option value="' .$disciplina['codigo'].'"' . ($disciplina['codigo'] == $disc ? ' selected' : '') . '> '.$disciplina['nome'].'</option>';
-}
+$op_p = gerarOpcoes($lista_de_periodos, $peri);
+$op_d = gerarOpcoes($lista_de_disciplina, $disc);
+$op_s = gerarOpcoes($lista_de_salas, $sala);
 
-$op_s = '';
-foreach($lista_de_salas as $salas)
-{
-    $op_s = $op_s.'<option value="' .$salas['codigo'].'"' . ($salas['codigo'] == $sala ? ' selected' : '') . '> '.$salas['nome'].'</option>';
-}// falta fzaer para sala.
-
-$html = str_replace('{{Periodo}}', $op_p, $html);
-$html = str_replace('{{Disciplina}}', $op_d, $html);
-$html = str_replace('{{Sala}}', $op_s, $html);
-// insira aqui pra sala.
+$html = file_get_contents('View/vEnsalamento.php');
+$html = str_replace('{{periodo}}', $op_p, $html);
+$html = str_replace('{{disciplina}}', $op_d, $html);
+$html = str_replace('{{sala}}', $op_s, $html);
 $html = str_replace('{{Categoria}}', $categoria, $html);
 
 echo $html;

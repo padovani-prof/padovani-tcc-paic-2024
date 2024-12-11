@@ -1,18 +1,25 @@
 <?php 
 
+
 session_start();
 if(!isset($_SESSION['codigo_usuario']))
 {   
-    // Se o usuario não fez login joge ele para logar
-    header('Location: cLogin.php');
+    // Se o usuario não fez login jogue ele para logar
+    header('Location: cLogin.php?msg=Usuario desconectado!');
+    exit();
+}
+# verificação de acesso da fucionalidade
+# vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_recurso');
+if ($verificar== false)
+{
+    header('Location: cMenu.php?msg=Acesso negado!');
     exit();
 }
 
 
-
 include_once 'Model/mCategoriaRecurso.php';
-
-
 $Lcategorias = carrega_categorias_recurso();
 $html = file_get_contents('View/vNovoRecurso.php');
 

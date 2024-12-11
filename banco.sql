@@ -163,12 +163,13 @@ insert into `sgrp`.`disciplina` (nome, curso, codigo_periodo) values ('Sistemas 
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade` (
   `codigo` INT NOT NULL AUTO_INCREMENT,
-  `sigla` VARCHAR(20) NOT NULL,
+  `sigla` VARCHAR(30) NOT NULL,
   `nome` VARCHAR(60) NOT NULL,
   `descricao` VARCHAR(200) NOT NULL,
   `ativa` CHAR(1) NOT NULL,
   PRIMARY KEY (`codigo`))
 ENGINE = InnoDB;
+
 
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
 	values ('cad_recurso', 'Cadastrar recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
@@ -185,12 +186,48 @@ insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa)
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
 	values ('apag_categoria_rec', 'Apagar categoria de recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_perfil', 'Cadastrar perfil de usuário', 'O usuário pode cadastrar os perfis do usuário no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('alt_perfil', 'Alterar perfil de usuário', 'O usuário pode alterar as informações do perifl no sistema', 'S');
+	values ('alt_perfil', 'Alterar Perfil de usuário', 'O usuário pode alterar as informações do perifl no sistema', 'S');
 insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
 	values ('apag_perfil', 'Apagar perfil de usuário', 'O usuário pode apagar o perifl do sistema', 'S');
     
+
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_perfil', 'Listar Perfiis de Usuário', 'O usuário ver a listagem de perfis', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_perfil', 'Cadastrar Perfil de usuário', 'O usuário pode cadastrar os perfis do usuário no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_usuario', 'Listar Usuários', 'O usuário ver a listagem de usuarios', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_usuario', 'Cadastrar usuário', 'O usuário pode cadastrar um novo usuário no sistema', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_categoria_rec', 'Listar Categorias do Recurso', 'O usuário ver a listagem de categorias', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('adm_checklist_rec', 'Administrar Checklist da cada recurso', 'O usuário pode administrar as checklista de cada recurso', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cons_disponibilidade', 'Consultar A Disponibilidade', 'O usuário consulta as disponibiliadades', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_retir_devoluc', 'Cadastrar Retirada e Devolução', 'O usuário pode cadastrar uma nova retirada e devolução', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_reserva', 'Listar Reservas', 'O usuário ver a listagem de reserva', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_reserva', 'Cadastrar reserva', 'O usuário pode cadastrar uma nova reserva', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_ensalamento', 'Listar Ensalamentos', 'O usuário ver a listagem de ensalamentos', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_ensalamento', 'Cadastrar Ensalamento', 'O usuário pode cadastrar novo ensalamento', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_periodo', 'Listar Períodos', 'O usuário ver a listagem de periodos', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_periodo', 'Cadastrar Período', 'O usuário pode cadastrar novo período', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_disciplina', 'Listar Disciplinas', 'O usuário ver a listagem de disciplinas', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('cad_disciplina', 'Cadastrar Disciplina', 'O usuário pode cadastrar nova disciplina', 'S');
+insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
+	values ('list_recurso', 'Listar Recursos', 'O usuário ver a listagem de recursos', 'S');
+
+
+
 CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
   `codigo_funcionalidade` INT NOT NULL,
   `codigo_perfil` INT NOT NULL,
@@ -217,6 +254,22 @@ insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (8,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (9,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (10,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (11,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (12,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (13,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (14,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (15,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (16,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (17,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (18,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (19,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (20,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (21,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (22,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (23,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (24,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (25,1);
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (26,1);
 
 
 create table `sgrp`.`reserva`(
@@ -285,6 +338,37 @@ ENGINE = InnoDB;
 
 insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(3,1);
 insert into `sgrp`.`reserva_ensalamento`(codigo_reserva, codigo_ensalamento)values(4,2);
+
+
+CREATE TABLE IF NOT EXISTS `sgrp`.`retirada_devolucao` (
+  `codigo` INT NOT NULL auto_increment,
+  `codigo_usuario` INT NOT NULL,
+  `codigo_recurso` INT NOT NULL,
+  `datahora` DATETIME NOT NULL,
+  `tipo` CHAR(1) NOT NULL,
+  `ativo` CHAR(1) NOT NULL,
+  `hora_final` TIME NOT NULL,
+  PRIMARY KEY (`codigo`),
+  CONSTRAINT `fk_retirada_devolucao_usuario1`  FOREIGN KEY (`codigo_usuario`) REFERENCES `sgrp`.`usuario` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_retirada_devolucao_recurso1`  FOREIGN KEY (`codigo_recurso`) REFERENCES `sgrp`.`recurso` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final)
+	values(2, 1, '2024-11-25 12:30:00', 'R', 'S', '18:00');
+insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final)
+	values(3, 2, '2024-11-26 18:00:00', 'R', 'S', '22:00');
+insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final)
+	values(4, 3, '2024-11-27 18:00:00', 'R', 'S', '22:00');
+insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final)
+	values(2, 4, '2024-11-28 18:30:00', 'R', 'N', '20:00');
+insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final)
+	values(3, 5, '2024-11-29 18:30:00', 'D', 'S', '21:00');
+insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final)
+	values(4, 6, '2024-11-30 18:00:00', 'D', 'N', '22:00');
 
 
 /*

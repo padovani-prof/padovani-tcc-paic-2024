@@ -13,19 +13,22 @@
   <section>
     <form action="cEnsalamento.php">
         <label for="">Período: </label>
-        <select name="" id="">
+        <select name="periodo" id="txtperiodo">
+          {{periodo}}
 
         </select>
         <label for="">Disciplina: </label>
-        <select name="" id="">
+        <select name="disciplina" id="txtdisciplina">
+          {{disciplina}}
 
         </select>
         <label for="">Sala: </label>
-        <select name="" id="">
+        <select name="sala" id="txtsala">
+          {{sala}}
 
         </select>
 
-        <input type="submit" value="Filtrar">
+        <input type="submit" name="filtrar" value="Filtrar">
         <a href="cFormularioEnsalamento.php"><input type="button" value="Novo"></a>
     </form>
 
