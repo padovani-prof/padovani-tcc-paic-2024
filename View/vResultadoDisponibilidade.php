@@ -23,7 +23,7 @@
           </tbody>
           
       </table>
-      <input type="submit" value="Reservar">
+      <a href="cReservaConjunta.php"><input type="button" value="Reservar"></a>
       </form>
       
     </div>    
