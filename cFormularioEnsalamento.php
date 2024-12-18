@@ -7,14 +7,6 @@ if(!isset($_SESSION['codigo_usuario']))
     header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 }
-include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_ensalamento');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
-
 
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
@@ -33,7 +25,11 @@ $semana = '';
 $hora_ini = '';
 $hora_fin = '';
 $dia_semana = "";
-$vet_mensagem = ['Ensalamento feito com sucesso','Erro!!! disciplina não está cadastrada para esse período', 'Verifique se o campo dias da semana e hora inicial/final está preencido !!!'];
+$vet_mensagem = [
+    'Ensalamento feito com sucesso',
+    'Erro!!! disciplina não está cadastrada para esse período', 
+    'Verifique se o campo dias da semana e hora inicial/final está preencido !!!'
+];
 
 if (isset($_GET['salvar'])){
 
@@ -55,11 +51,12 @@ if (isset($_GET['salvar'])){
         }
         $reserva = ensalamento($peri, $disc, $sala, $dia_semana, $hora_ini, $hora_fin);
         
-        $test = dias_aulas($peri);
-
-        var_dump($test);
+        // $test = dias_aulas($peri);
+        // var_dump($test);
         
-        $mensagem = $vet_mensagem[$reserva];
+        var_dump($reserva);
+
+        // $mensagem = $vet_mensagem[$reserva];
         
     } else
     {

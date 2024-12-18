@@ -94,11 +94,14 @@ function ensalamento($periodo, $disciplina, $sala, $dia_semana, $h_ini, $h_fim)
         $codigo_disciplina = $linha['codigo'];
 
         // Insere os dados no banco de dados
-        $resultado = $conecxao->query("INSERT INTO ensalamento (dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala) VALUES ('$dia_semana','$h_ini','$h_fim','$codigo_disciplina','$sala')");
+        $resultado = $conecxao->query("INSERT INTO ensalamento (dias_semana, hora_inicial, hora_final, codigo_disciplina, codigo_sala) 
+        VALUES 
+        ('$dia_semana','$h_ini','$h_fim','$codigo_disciplina','$sala')");
+
 
         // Verifica se o `INSERT` foi bem-sucedido
         if ($resultado) {
-            return 0; // Sucesso
+            return $cod_ensalamento; // manda o codigo do ensalamento
         } else {
             die("Erro ao inserir dados: " . $conecxao->error);
         }
@@ -107,7 +110,29 @@ function ensalamento($periodo, $disciplina, $sala, $dia_semana, $h_ini, $h_fim)
     }
 }// por enquanto ok
 
+function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim)
+{   
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    $cod_ensalamento = $conecxao->query("SELECT codigo
+    FROM ensalamento 
+    WHERE 
+    dias_semana = '$dia_semana' AND hora_inicial = '$h_ini' AND hora_final = '$h_fim' AND codigo_disciplina = $disciplina AND codigo_sala = $sala");
 
+    if ($cod_ensalamento->num_rows > 0) {
+
+        $row = $cod_ensalamento->fetch_assoc();
+        $codigo_ensalamento = $row['codigo'];
+
+        
+    } else {
+        return 3;
+    }
+
+    
+}
+        
 
 function gerarOpcoes($lista, $selecionado) {
     $opcoes = '';
