@@ -101,7 +101,7 @@ function ensalamento($periodo, $disciplina, $sala, $dia_semana, $h_ini, $h_fim)
 
         // Verifica se o `INSERT` foi bem-sucedido
         if ($resultado) {
-            return $cod_ensalamento; // manda o codigo do ensalamento
+            return 0; //para sucesso
         } else {
             die("Erro ao inserir dados: " . $conecxao->error);
         }
@@ -110,11 +110,13 @@ function ensalamento($periodo, $disciplina, $sala, $dia_semana, $h_ini, $h_fim)
     }
 }// por enquanto ok
 
-function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim)
+function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim, $usuario_agendador, $justificativa)
 {   
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
     
+    $cod_reserva = '';
+
     $cod_ensalamento = $conecxao->query("SELECT codigo
     FROM ensalamento 
     WHERE 
@@ -125,13 +127,35 @@ function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim)
         $row = $cod_ensalamento->fetch_assoc();
         $codigo_ensalamento = $row['codigo'];
 
+        // continuar o processo de incerção de informação
+
+        $reserva = $conecxao->query("INSERT INTO reserva (justificativa, codigo_usuario_agendador, codigo_recurso, codigo_usuario_utilizador) 
+        VAlUES ('$justificativa',$usuario_agendador, $sala, $usuario_agendador)");
+
+        if ($reserva === true) {
+
+            $cod_reserva = $conecxao->query("SELECT codigo FROM reserva 
+            WHERE codigo_usuario_agendador = $usuario_agendador AND codigo_recurso = $sala AND codigo_usuario_utilizador = $usuario_agendador");
+
+            if ($cod_reserva->num_rows > 0) {
+
+                $row = $cod_reserva->fetch_assoc();
+                $codigo_reserva = $row['codigo'];
+            }
+
+            $reserva_ensalamento = $conecxao->query("INSERT INTO reserva_ensalamento (codigo_reserva, codigo_ensalamento) 
+            VALUES ($codigo_reserva, $codigo_ensalamento)");
+
+        }
+
+        return $reserva_ensalamento;
         
     } else {
-        return 3;
-    }
 
-    
-}
+        return 3;
+
+    }
+}// ta quase mano
         
 
 function gerarOpcoes($lista, $selecionado) {
@@ -160,7 +184,7 @@ function gerarDiasDaSemana($texto_dias){
     return $dias_selecionados;
 }//ok
 
-function dias_aulas($periodo) {
+function dias_aulas($periodo, $dias_da_semana) {
 
     include 'Model/confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
@@ -176,11 +200,19 @@ function dias_aulas($periodo) {
         }
     }
 
-    $dt_ini = $todos_dados[0]['dat_ini']; //deixar isso dinamico 
-    $dt_fin = $todos_dados[0]['dat_fin']; //deixar isso dinamico
+    $dt_ini = $todos_dados[0]['dat_ini']; //OK
+    $dt_fin = $todos_dados[0]['dat_fin']; //OK
     $dias_de_aula = [];
-    $dias = [3,4,7];// deixar isso dinamico
+    $dias = [];//OK
     
+    for ($i = 0; $i < strlen($dias_da_semana); $i++) {
+
+        if ($dias_da_semana[$i]=== 'S'){
+
+            $dias[]= $i+1;
+
+        }
+    }
     
 
     while (strtotime($dt_ini) <= strtotime($dt_fin)){

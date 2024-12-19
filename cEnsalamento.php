@@ -7,13 +7,7 @@ if(!isset($_SESSION['codigo_usuario']))
     header('Location: cLogin.php?msg=Usuario desconectado!');
     exit();
 }
-include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_ensalamento');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+
 
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
@@ -31,22 +25,22 @@ $filtra = '';
 
 $filtra = filtrar();
 
-if (!empty($filtra)) 
-{
-    $categoria = '<tbody>';
-    foreach ($filtra as $controle){
-        $categoria .= '<tr>
-                <td>' . $controle['nome_recurso'] . '</td>
-                <td>' . $controle['nome_periodo'] . '</td>
-                <td>' . $controle['nome_disciplina'] . '</td>
-                <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
-                <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
-                <td>'.'</td>
-                
-                </tr>';
+    if (!empty($filtra)) 
+    {
+        $categoria = '<tbody>';
+        foreach ($filtra as $controle){
+            $categoria .= '<tr>
+                    <td>' . $controle['nome_recurso'] . '</td>
+                    <td>' . $controle['nome_periodo'] . '</td>
+                    <td>' . $controle['nome_disciplina'] . '</td>
+                    <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
+                    <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
+                    <td>'.'</td>
+                    
+                  </tr>';
+        }
+        $categoria .= '<tbody/>';
     }
-    $categoria .= '<tbody/>';
-}
 
 
 if (isset($_GET['filtrar']))
@@ -56,6 +50,7 @@ if (isset($_GET['filtrar']))
     $disc = $_GET['disciplina'];
     $sala = $_GET['sala'];
 
+    // fazer o dinamico 
 	
 
  
