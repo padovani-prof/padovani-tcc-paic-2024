@@ -23,7 +23,7 @@ $sala = '';
 $categoria = '';
 $filtra = '';
 
-$filtra = filtrar();
+$filtra = filtrar(null, null, null);
 
     if (!empty($filtra)) 
     {
@@ -50,8 +50,30 @@ if (isset($_GET['filtrar']))
     $disc = $_GET['disciplina'];
     $sala = $_GET['sala'];
 
+    var_dump($peri);
+    var_dump($disc);
+    var_dump($sala);
+
     // fazer o dinamico 
 	
+    $filtra = filtrar($peri, $disc, $sala);
+
+    if (!empty($filtra)) 
+    {
+        $categoria = '<tbody>';
+        foreach ($filtra as $controle){
+            $categoria .= '<tr>
+                    <td>' . $controle['nome_recurso'] . '</td>
+                    <td>' . $controle['nome_periodo'] . '</td>
+                    <td>' . $controle['nome_disciplina'] . '</td>
+                    <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
+                    <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
+                    <td>'.'</td>
+                    
+                  </tr>';
+        }
+        $categoria .= '<tbody/>';
+    }
 
  
 }

@@ -21,14 +21,13 @@ function carregar_salas()
     }
     return $todos_dados; // retorna todos os daddos da tabela recurso do banco em formato de lista
    
-} //mais ou menos 
+} //ok
 
-function filtrar()
+function filtrar($periodo=null, $disciplina=null, $sala=null)
 {
     // Inclui o arquivo de configuração do banco
     include 'confg_banco.php';
-
-    // Cria a conexão com o banco de dados
+    // Cria a conexão com o banco de dados 
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     // Verifica se houve erro na conexão
@@ -36,36 +35,310 @@ function filtrar()
         die("Falha na conexão: " . $conexao->connect_error);
     }
 
-    // Executa a consulta SQL
-    $resultado = $conexao->query("SELECT 
-    ensalamento.codigo,
-    ensalamento.dias_semana,
-    ensalamento.hora_inicial,
-    ensalamento.hora_final,
-    disciplina.nome AS nome_disciplina,
-    recurso.nome AS nome_recurso,
-	periodo.nome AS nome_periodo
-    FROM 
-        ensalamento
-    INNER JOIN 
-        disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
-    INNER JOIN 
-        recurso ON ensalamento.codigo_sala = recurso.codigo
-	INNER JOIN
-		sgrp.periodo ON periodo.codigo = disciplina.codigo_periodo	
-		");
+//========================================================================== 1 caso ok
 
-    // Verifica se há resultados e retorna um array
-    if ($resultado->num_rows > 0) {
-        $dados = [];
-        while ($linha = $resultado->fetch_assoc()) {
-            $dados[] = $linha;
+    if ($periodo == null && $disciplina == null && $sala == null){
+
+        echo "bah meu";
+        echo "<br>";
+
+        // Executa a consulta SQL
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON periodo.codigo = disciplina.codigo_periodo ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
         }
-        return $dados; // Retorna os dados encontrados
-    } else {
-        return []; // Retorna um array vazio se não houver resultados
     }
-}// faltar analisar
+
+//======================================================================== 2 caso ok
+
+    if ($periodo != null && $disciplina == null && $sala == null){
+        // Executa a consulta SQL
+
+        echo "oh meh";
+
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON sgrp.periodo.codigo = disciplina.codigo_periodo	
+        WHERE
+            ensalamento.codigo_disciplina = disciplina.codigo and disciplina.codigo_periodo = '$periodo' ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
+        }
+    }
+
+//========================================================================= 3 caso ok
+
+    if ($periodo == null && $disciplina != null && $sala == null){
+        // Executa a consulta SQL
+
+        echo "oh meh";
+
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON sgrp.periodo.codigo = disciplina.codigo_periodo	
+        WHERE 
+            ensalamento.codigo_disciplina = '$disciplina'  ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
+        }
+    }
+
+//========================================================================== 4 caso ok
+
+    if ($periodo == null && $disciplina == null && $sala != null){
+        // Executa a consulta SQL
+
+        echo "oh meh";
+
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON sgrp.periodo.codigo = disciplina.codigo_periodo	
+        WHERE 
+            ensalamento.codigo_sala = '$sala'  ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
+        }
+    }
+
+ //========================================================================== 5 caso ok
+
+    if ($periodo != null && $disciplina != null && $sala == null){
+        // Executa a consulta SQL
+
+        echo "oh meu ta foda";
+
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON sgrp.periodo.codigo = disciplina.codigo_periodo	
+        WHERE 
+            ensalamento.codigo_disciplina = disciplina.codigo and disciplina.codigo_periodo = '$periodo' and ensalamento.codigo_disciplina = '$disciplina' ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
+        }
+    }
+
+//========================================================================== 6 ok
+
+    if ($periodo == null && $disciplina != null && $sala != null){
+        // Executa a consulta SQL
+
+        echo "oh meh";
+
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON sgrp.periodo.codigo = disciplina.codigo_periodo	
+        WHERE 
+            ensalamento.codigo_disciplina = '$disciplina' and ensalamento.codigo_sala = '$sala'  ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
+        }
+    }
+
+//========================================================================== 7 caso ok
+
+    if ($periodo != null && $disciplina == null && $sala != null){
+        // Executa a consulta SQL
+
+        echo "oh meh";
+
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON sgrp.periodo.codigo = disciplina.codigo_periodo	
+        WHERE 
+            ensalamento.codigo_disciplina = disciplina.codigo and disciplina.codigo_periodo = '$periodo' and ensalamento.codigo_sala = '$sala'  ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
+        }
+    }
+
+//========================================================================== 8 caso pendente
+
+    if ($periodo != null && $disciplina != null && $sala != null){
+        // Executa a consulta SQL
+
+        echo "oh meh meu deus";
+
+        $resultado = $conexao->query("SELECT 
+        ensalamento.codigo,
+        ensalamento.dias_semana,
+        ensalamento.hora_inicial,
+        ensalamento.hora_final,
+        disciplina.nome AS nome_disciplina,
+        recurso.nome AS nome_recurso,
+        periodo.nome AS nome_periodo
+        FROM 
+            ensalamento
+        INNER JOIN 
+            disciplina ON ensalamento.codigo_disciplina = disciplina.codigo
+        INNER JOIN 
+            recurso ON ensalamento.codigo_sala = recurso.codigo
+        INNER JOIN
+            sgrp.periodo ON sgrp.periodo.codigo = disciplina.codigo_periodo	
+        WHERE 
+            ensalamento.codigo_disciplina = '$disciplina' and ensalamento.codigo_sala = '$sala' and ensalamento.codigo_disciplina = '$disciplina' and ensalamento.codigo_sala = '$sala'  ");
+
+        // Verifica se há resultados e retorna um array
+        if ($resultado->num_rows > 0) {
+            $dados = [];
+            while ($linha = $resultado->fetch_assoc()) {
+                $dados[] = $linha;
+            }
+            return $dados; // Retorna os dados encontrados
+        } else {
+            return []; // Retorna um array vazio se não houver resultados
+        }
+    }
+
+}// faltar melhorar
 
 
 function ensalamento($periodo, $disciplina, $sala, $dia_semana, $h_ini, $h_fim) 
@@ -110,8 +383,8 @@ function ensalamento($periodo, $disciplina, $sala, $dia_semana, $h_ini, $h_fim)
     }
 }// por enquanto ok
 
-function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim, $usuario_agendador, $justificativa)
-{   
+function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim, $usuario_agendador, $justificativa, $dts_aula)
+{
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
     
@@ -143,12 +416,20 @@ function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim, $usua
                 $codigo_reserva = $row['codigo'];
             }
 
-            $reserva_ensalamento = $conecxao->query("INSERT INTO reserva_ensalamento (codigo_reserva, codigo_ensalamento) 
-            VALUES ($codigo_reserva, $codigo_ensalamento)");
+                $reserva_ensalamento = $conecxao->query("INSERT INTO reserva_ensalamento (codigo_reserva, codigo_ensalamento) 
+                VALUES ($codigo_reserva, $codigo_ensalamento)");
 
+                if ($reserva_ensalamento === true) {
+
+                    foreach($dts_aula as $dt_dia){
+                        $dt_reservas = $conecxao->query("INSERT INTO data_reserva (data, hora_inicial, hora_final, codigo_reserva) 
+                        VALUES ('$dt_dia', '$h_ini', '$h_fim', $codigo_reserva)");
+                    }
+
+                }
         }
 
-        return $reserva_ensalamento;
+        return 6;
         
     } else {
 
@@ -159,7 +440,7 @@ function cod_ensalamento ($disciplina, $sala, $dia_semana, $h_ini, $h_fim, $usua
         
 
 function gerarOpcoes($lista, $selecionado) {
-    $opcoes = '';
+    $opcoes = '<option value="">...</option>'; 
     foreach ($lista as $item) {
         $opcoes .= sprintf(
             '<option value="%s"%s>%s</option>',
@@ -206,28 +487,21 @@ function dias_aulas($periodo, $dias_da_semana) {
     $dias = [];//OK
     
     for ($i = 0; $i < strlen($dias_da_semana); $i++) {
-
         if ($dias_da_semana[$i]=== 'S'){
-
             $dias[]= $i+1;
-
         }
     }
     
-
     while (strtotime($dt_ini) <= strtotime($dt_fin)){
-         
         $dia_iso = date('N', strtotime($dt_ini)); // Dia da semana no formato ISO (1 = segunda-feira, 7 = domingo)
         $diasemana = ($dia_iso == 7) ? 1 : $dia_iso + 1; // Converte para o sistema personalizado (1=domingo, 7=sábado)
-
+        
         if (in_array($diasemana, $dias)) { // Verifica se o dia está nos dias de aula
             $dias_de_aula[] = $dt_ini; // Adiciona a data ao array de dias de aula
         }
         
         $dt_ini = date('Y-m-d', strtotime($dt_ini . "+1 day")); // Incrementa os dias
-
-        
     }
     return $dias_de_aula;
         
-}
+}//ok

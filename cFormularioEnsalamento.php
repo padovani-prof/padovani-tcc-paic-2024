@@ -48,7 +48,7 @@ if (isset($_GET['salvar'])){
 
     $mensagem = '';
 
-    if ($semana != null and $hora_ini != null and $hora_fin)
+    if ($semana != null and $hora_ini != null and $hora_fin != null)
     {
         for ($y=1; $y <= 7; $y++)
         {
@@ -56,9 +56,9 @@ if (isset($_GET['salvar'])){
         }
         $reserva = ensalamento($peri, $disc, $sala, $dia_semana, $hora_ini, $hora_fin);
 
-        $cod_reserva = cod_ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $usuario_agendador, $justificativa);
-
         $datas_de_aula = dias_aulas($peri, $dia_semana);
+
+        $cod_reserva = cod_ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $usuario_agendador, $justificativa, $datas_de_aula);
         
         // $test = dias_aulas($peri);
         // var_dump($test);
