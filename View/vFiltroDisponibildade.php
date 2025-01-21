@@ -12,7 +12,7 @@
 
   <section>
 
-    <form action="cResultadoDisponibilidade.php">
+    <form action="cFiltroDisponibildade.php">
       <div>
         <table border="1">
           <tr>
