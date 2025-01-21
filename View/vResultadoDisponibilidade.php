@@ -12,7 +12,7 @@
 
   <section>
     <div>
-      <form action="">
+      <form action="cReservaConjunta.php">
         <table border="1">
           <tr>
             <th>Recurso</th>
@@ -23,7 +23,7 @@
           </tbody>
           
       </table>
-      <a href="cReservaConjunta.php"><input type="button" value="Reservar"></a>
+      <input type="submit" value="Reservar">
       </form>
       
     </div>    
@@ -32,8 +32,5 @@
       
   </section>
 
-
-
-  
 </body>
 </html>
