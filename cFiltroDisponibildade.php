@@ -1,4 +1,7 @@
+
+
 <?php 
+//  cFiltroDisponibildade.php
 
 session_start();
 if(!isset($_SESSION['codigo_usuario']))
@@ -8,150 +11,438 @@ if(!isset($_SESSION['codigo_usuario']))
     exit();
 }
 
-
-function transformar_em_lista($str)
-
+include_once 'Model/mVerificacao_acesso.php';
+$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade');
+if ($verificar == false)
 {
-    $lista  = explode(',', $str);
-    for ($i=0; $i < count($lista); $i++) { 
-        $dado =  str_replace('[','',$lista[$i]);
-        $dado =  str_replace(']','',$dado);
-        $dado = str_replace('"', '',$dado);
-
-        $lista[$i] = $dado;
-
-    }
-    return $lista;
+    header('Location: cMenu.php?msg=Acesso negado!');
+    exit();
 }
 
+$html = file_get_contents('View/vFiltroDisponibildade.php');
+include_once 'Model/mCategoriaRecurso.php';
+include_once 'Model/mRecurso.php';
 
 
-function chaves($lista)
+$categorias = carrega_categorias_recurso();
+$recursos = Carregar_recursos();
+$mensagem = '';
+
+$id_erro = 'erro';
+
+
+function ja_ta_adicionado($cate_recu, $lista_cate_recu)
 {
-    $lista_chaves = array();
-    if(count($lista)>=3)
-    {
-        
-        for ($i=0; $i < count($lista); $i = $i + 3) 
-        { 
-            $lista_chaves[] = $lista[$i+2];
-        }
-    }
-    return $lista_chaves;
-
-}
-
-
-
-function ta_livre($codigo, $data, $h_ini, $h_fim, $disponives)
-{
-    
-    foreach($disponives as $livre)
-    {
-        if($livre['codigo_recurso']===$codigo and trim($livre["data_alvo"])=== trim($data) and trim($livre['hora_inicial_alvo'])===trim($h_ini) and trim($livre['hora_final_alvo'])===trim($h_fim))
-        {
+   for ($i=0; $i < count($lista_cate_recu) ; $i++) 
+   {
+      if($lista_cate_recu[$i] != 0)
+      {
+         $dado = explode(',',$lista_cate_recu[$i]);
+         if($cate_recu == $dado[1])
+         {
             return true;
-        }
-    }
-    return false;
+         }
+      }
+     
+   }
+   return false;
+
 }
 
-include_once 'Model/mDisponibilidade.php';
-$html = file_get_contents('View/vResultadoDisponibilidade.php');
-
-
-
-$categorias =  $_GET['categorias'];
-$recursos = $_GET['recursos'];
-$periodos = $_GET['periodos'];
-
-
-
-
-
-
-
-$categorias = transformar_em_lista($categorias);
-$recursos = transformar_em_lista($recursos);
-$periodos = transformar_em_lista($periodos);
-
-
-
-
-
-
-
-$chaves_cate = chaves($categorias);
-$chaves_recursos =  chaves($recursos);
-
-
-
-
-$disponives = Disponibilidade($periodos, $chaves_cate, $chaves_recursos);
-
-
-$recurso_catego = adicionados($chaves_recursos, $chaves_cate);
-
-
-
-
-
-$coluna = '';
-
-
-for($i = 0; $i < count($periodos); $i += 3)
+function remover_recurso_categoria($lista_recurso_cate)
 {
-    $data = explode('-', $periodos[$i]);
-    $coluna = $coluna.'<th>'. $periodos[$i + 1] . ' até ' . $periodos[$i+2].' de '.$data[2].'/'.$data[1].'/'.$data[0].'</th>';
+   try
+   {
+      if($lista_recurso_cate[0]!=0)
+      {
+         foreach ($lista_recurso_cate as $i => $item)
+         {
+            $nameParts = explode(',', $item);
+            $name = str_replace(' ','', $nameParts[1]);
+            $name = preg_replace("/[^a-zA-Z0-9]/", "", $name);
+            if (isset($_GET[$name])) 
+            {
+               return $i; 
+            }
+         }
+
+      }
+      
+   return -1;
+
+   }catch (Exception $e) 
+   {
+      return -1;
+     
+  }
+   
+  
+}
+
+
+function remover_periodo($lista_periodos)
+{
+   for ($i=0; $i < count($lista_periodos); $i=$i+3) 
+   {
+
+      $name = $lista_periodos[$i].$lista_periodos[$i+1].$lista_periodos[$i+2];
+      if (isset($_GET[$name])) 
+      {
+         return $i; 
+      }
+   }
 }
 
 
 
-$recurs_dados = '';
-for ($i=0; $i < count($recurso_catego); $i++) 
-{ 
-    $recurs_dados .= ' <tr> <td>'. $recurso_catego[$i]['nome_recurso'].'</td>';
-    for ($d=0; $d < count($periodos) ; $d+=3) 
-    { 
+// mandar dados para filtro disponibidade
+if(isset($_GET['btnConsultar']))
+{
+   if (isset($_GET['lsrecursos-categorias']) and  $_GET['lsrecursos-categorias'][0] != 0 and isset($_GET['lista_periodos']) and  $_GET['lista_periodos'][0] != 0)
+   {
 
-        $recurs_dados .= ' <td> ';
-        if( ta_livre($recurso_catego[$i]['codigo_recurso'], $periodos[$d], $periodos[$d+1].':00', $periodos[$d+2].':00', $disponives))
-        {
-            $recurs_dados .='<label>
-            <input type="checkbox" name="marcas[]" value="'.'">
+      // vai jogar dados pra proxima pagina
 
-            </label>
-        </td>';
-        }
-        else{
-            $recurs_dados .='X';
-        }
+     // Converte a lista para JSON e faz o encode para URL
 
+      $lista_categoria_recuso = $_GET['lsrecursos-categorias'];
+      $lista_periodo = urlencode(json_encode($_GET['lista_periodos']));
+      $cate = [];
+      $recu = [];
+
+      foreach($lista_categoria_recuso as $cate_recu)
+      {
+         if($cate_recu[0]=='C')
+         {
+            $cate[] = $cate_recu;
+
+         }
+         else
+         {
+            $recu[] =  $cate_recu;
+         }
+
+      }      
+         header("Location:  cResultadoDisponibilidade.php?categorias=" . urlencode(json_encode($cate)) . 
+         "&recursos=" . urlencode(json_encode($recu)) . 
+         "&periodos=" .$lista_periodo);
+         exit();
+
+   }
+   else
+   {
+      if(isset($_GET['lsrecursos-categorias']) and  $_GET['lsrecursos-categorias'][0] == 0 )
+      {
+         $mensagem = 'Adicione alguma categoria ou recurso';
+
+      }
+      if( isset($_GET['lista_periodos']) and  $_GET['lista_periodos'][0] == 0)
+      {
+         $mensagem = 'Adicione alguma periodo';
+      }
+
+
+      
+   }
+}
+
+
+// recursos e categorias
+// inicia da primeira requisiçã
+
+if(!isset($_GET['lsrecursos-categorias']))
+{
+   $lista_recurso_cate = '<input type="hidden" name="lsrecursos-categorias[]" value="0">';
+
+   $html = str_replace('{{dados-catego-recu}}', $lista_recurso_cate, $html);
+
+   // carregando as opções categorias
+   $op_categorias = '';
+   foreach($categorias as $categora)
+   {
+      $op_categorias .= '<option value="Categoria,' .$categora['nome'].',' .$categora['codigo']  .'">  '.$categora['nome'].' </option>';
+      
+   }
+      
+
+   // carregando as opções recuso
+   $op_recuso = '';
+   foreach($recursos as $recurso)
+   {
+
+      $op_recuso .='<option value="Recurso,' .$recurso['nome'].',' .$recurso['codigo']  .'">  '.$recurso['nome'].' </option>';
+
+      
+      
+   }
+
+}
+else
+{
+   $lista_cate_recu = $_GET['lsrecursos-categorias'];
+   // adiciona categoria
+   if(isset($_GET['btnCategoria']) and isset($_GET['categoria']))
+   {
+      if($lista_cate_recu[0]==0)
+      {
+         $lista_cate_recu[0] = $_GET['categoria'];
+      }
+      else
+      {
+         $lista_cate_recu[] = $_GET['categoria'];
+      }
+      $mensagem = 'Categoria adicionada com Sucesso';
+      $id_erro = 'sucesso';
+
+
+   }
+
+   // adiciona recuso
+   if(isset($_GET['btnRecursos']) and isset($_GET['recurso']))
+   {
+      if($lista_cate_recu[0]==0)
+      {
+         $lista_cate_recu[0] = $_GET['recurso'];
+      }
+      else
+      {
+         $lista_cate_recu[] = $_GET['recurso'];
+      }
+      $mensagem = 'Recurso adicionado com Sucesso';
+      $id_erro = 'sucesso';
+
+      
+   }
+}
+$salvos_recu_cate = '';
+
+
+// retrasmite dados para frente
+if(isset($_GET['lsrecursos-categorias']))
+{
+   if(!isset($_GET['btnCategoria']) and !isset($_GET['btnRecursos'])  and !isset($_GET['btnPeriodos'])  and !isset($_GET['btnConsultar']) )
+      {
+         
+         $id = remover_recurso_categoria($lista_cate_recu);
+
+         
+
+         if($id != -1)
+            {
+               unset($lista_cate_recu[$id]);
+               $lista_cate_recu = array_values($lista_cate_recu);
+               $mensagem = 'Recurso removido com sucesso';
+               $id_erro = 'sucesso';
+            }
+         if(count($lista_cate_recu)==0)
+         {
+            $lista_recurso_cate = '<input type="hidden" name="lsrecursos-categorias[]" value="0">';
+            $html = str_replace('{{dados-catego-recu}}', $lista_recurso_cate, $html);
+         }
         
-    }
-    $recurs_dados .= '</tr>';
+      }
+  
+
+   $lista_recurso_cate ='';
+   foreach($lista_cate_recu as $cate_recu)
+   {
+      $lista_recurso_cate .= "<input type='hidden' name='lsrecursos-categorias[]' value='$cate_recu'>";
+   }
+   $html = str_replace('{{dados-catego-recu}}', $lista_recurso_cate, $html);
+   
+   // carregando as opções categorias
+   $op_categorias = '';
+   foreach($categorias as $categora)
+   {
+      if(ja_ta_adicionado($categora['nome'], $lista_cate_recu) == false)
+      {
+         $op_categorias .= '<option value="Categoria,' .$categora['nome'].',' .$categora['codigo']  .'">  '.$categora['nome'].' </option>';
+      }
+   }
+     
+
+   // carregando as opções recuso
+   $op_recuso = '';
+   foreach($recursos as $recurso)
+   {
+
+      if(ja_ta_adicionado($recurso['nome'], $lista_cate_recu) == false)
+      {
+         $op_recuso .='<option value="Recurso,' .$recurso['nome'].',' .$recurso['codigo']  .'">  '.$recurso['nome'].' </option>';
+
+      }
+     
+   }
+
+   if(count($lista_cate_recu)>0)
+   {
+      if($lista_cate_recu[0] != 0)
+      {
+          // carrega tabela
+         foreach($lista_cate_recu  as $recu_cate)
+         {
+            $dados = explode(',', $recu_cate );
+            $dado_s = str_replace(' ','', $dados[1]);
+            $dado_s = preg_replace("/[^a-zA-Z0-9]/", "", $dado_s);
+            $salvos_recu_cate .= '<tr> <td> '.$dados[0].': '. $dados[1].'</td> <td>
+   <input type="submit" name="'.$dado_s.'" value="Remover"> </td> </tr>';
+         }
+   
+   
+      }
+
+   }
+  
+  
+}
+
+// periodos
+
+$marca_periodo = '';
+
+if(!isset($_GET['lista_periodos']))
+{
+   $lperiodos = '<input type="hidden" name="lista_periodos[]" value="0">';
+   $html = str_replace('{{peridos-salvos}}', $lperiodos, $html);
+
+
+}
+else
+{
+   $lista_periodos = $_GET['lista_periodos'];
+
+   
+   if(isset($_GET['btnPeriodos']))
+   {
+
+      $data = $_GET['p-data'];
+      $hora_ini =  $_GET['p-hora-ini']; 
+      $hora_fim =  $_GET['p-hora-fim'];
+
+      $data_d = $data;
+      $hora_ini_d = $hora_ini;
+      $hora_fim_d = $hora_fim;
+      $l_mensagem = ['Periodo adicionado com sucesso','Periodo invalido', 'Preencha todos os campos'];
+
+      $mensagem = $l_mensagem[2];
+
+      if (mb_strlen($data)>0)
+      {
+        if(mb_strlen($hora_ini)>0)
+        {
+          if (mb_strlen($hora_fim)>0)
+          {
+            $mensagem = $l_mensagem[1];
+            date_default_timezone_set('America/Manaus'); 
+            $data_atual = new DateTime();
+            $data_ini = new DateTime("$data $hora_ini");
+            if($data_atual <= $data_ini)
+            {
+               $data_fim = new DateTime("$data $hora_fim");
+               if($data_ini < $data_fim)
+               {
+
+                  if ($lista_periodos[0] == 0)
+                  {
+                     $lista_periodos[0] =  $data;
+
+                  }
+                  else
+                  {
+                     $lista_periodos[] =  $data;
+                  }
+                  $lista_periodos[] =  $hora_ini;
+                  $lista_periodos[] =  $hora_fim;
+
+
+                  $data_d = '';
+                  $hora_ini_d = '';
+                  $hora_fim_d = '';
+                  $mensagem = $l_mensagem[0];
+                  $id_erro = 'sucesso';
+
+               }
+
+            }
+          }
+
+        }
+      }
+      
+
+
+      $html = str_replace('{{data}}', $data_d, $html );
+      $html = str_replace('{{hora_ini}}', $hora_ini_d, $html );
+      $html = str_replace('{{hora_fim}}', $hora_fim_d, $html );
+
+      // adiciona os periodos
+
+   }
+
+   // remover periodos
+
+   if(!isset($_GET['btnCategoria']) and !isset($_GET['btnRecursos'])  and !isset($_GET['btnPeriodos'])  and !isset($_GET['btnConsultar']) and $id==-1)
+   {
+      $id = remover_periodo($lista_periodos);
+      unset($lista_periodos[$id]);
+      $lista_periodos = array_values($lista_periodos);
+      unset($lista_periodos[$id]);
+      $lista_periodos = array_values($lista_periodos);
+      unset($lista_periodos[$id]);
+      $lista_periodos = array_values($lista_periodos);
+
+      $mensagem = 'Período removido com sucesso';
+      $id_erro = 'sucesso';
+
+      
+      if(count($lista_periodos) == 0)
+      {
+         $lperiodos = '<input type="hidden" name="lista_periodos[]" value="0">';
+         $html = str_replace('{{peridos-salvos}}', $lperiodos, $html);
+
+      }
+      
+
+   }
+   
+
+  
+
+   if(count($lista_periodos)>1)
+   {
+      for ($i=0; $i < count($lista_periodos); $i=$i+3)
+      { 
+         $data = explode('-', $lista_periodos[$i]);
+         $marca_periodo .= '<tr> <td>'.$lista_periodos[$i+1] .' até '.$lista_periodos[$i+2] .' de '.$data[2].'/'.$data[1].'/'.$data[0].' </td>  <td> <input type="submit" value="Remover" name="'. $lista_periodos[$i]. $lista_periodos[$i+1].$lista_periodos[$i+2].'"> </td>  </tr>';
+      }
+   }
+
+
+   // retrasmitir os periodos
+   $lperiodos = '';
+   foreach($lista_periodos as $periodo)
+   {
+      $lperiodos .= '<input type="hidden" name="lista_periodos[]" value="'.$periodo.'">';
+   }
+   $html = str_replace('{{peridos-salvos}}', $lperiodos, $html);
+
+
+
 }
 
 
-/*
-// SELECT rec.codigo AS codigo_recurso, rec.nome AS nome_recurso FROM recurso rec WHERE rec.codigo IN (1) OR rec.codigo_categoria IN (1);
-
-SELECT rec.codigo AS codigo_recurso, rec.nome AS nome_recurso FROM sgrp.recurso rec WHERE rec.codigo IN (1) OR rec.codigo_categoria IN (1)
-*/
 
 
 
-$html = str_replace('{{Colunas}}',$coluna,$html);
-$html = str_replace('{{Disponibilidades}}', $recurs_dados, $html);
+$html = str_replace('{{retorno}}', $id_erro, $html );
 
+$html = str_replace('{{Períodos}}', $marca_periodo, $html );
 
+$html = str_replace('{{mensagem}}', $mensagem, $html );
+$html = str_replace('{{RecursoCategoria}}', $salvos_recu_cate, $html);
 
+$html = str_replace('{{op-categoria}}', $op_categorias, $html);
+$html = str_replace('{{op-recurso}}', $op_recuso, $html);
 
 echo $html;
-
 ?>
-
-
-
-
-     
