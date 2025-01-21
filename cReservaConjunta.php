@@ -1,5 +1,5 @@
 <?php
-    <?php 
+
 include 'Model/mFormulariorRetirada.php';
 include  'Model/mReservaConjunta.php';
 
@@ -33,4 +33,3 @@ if(isset($_GET['reservar'])){
 }
 ?>
 
-?>
