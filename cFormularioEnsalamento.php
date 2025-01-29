@@ -57,7 +57,7 @@ if (isset($_GET['salvar'])){
 
         $consulta = cosultas ($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $datas_de_aula);
         
-        var_dump($consulta);
+        // var_dump($consulta);
 
         if ($consulta !== null){
             $reserva = ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin);

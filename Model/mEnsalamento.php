@@ -394,30 +394,30 @@ function apagar($cod_ensalamento)
         }
     }
 
-    var_dump($dados);
+    // var_dump($dados);
 
     $cod_reserva = $dados['0']['codigo_reserva'];
 
-    var_dump($cod_reserva);
+    // var_dump($cod_reserva);
 
     $apagar = $conecxao->query("DELETE FROM sgrp.reserva_ensalamento
     WHERE  codigo_ensalamento = '$cod_ensalamento' and codigo_reserva = '$cod_reserva'");
 
-    var_dump($apagar);
-    echo '<br>';
+    // var_dump($apagar);
+    // echo '<br>';
 
     $apagar = $conecxao->query("DELETE FROM sgrp.data_reserva WHERE codigo_reserva = '$cod_reserva' ");
 
-    var_dump($apagar);
-    echo '<br>';
+    // var_dump($apagar);
+    // echo '<br>';
 
     $apagar = $conecxao->query("DELETE FROM sgrp.reserva WHERE codigo = '$cod_reserva' ");
 
-    var_dump($apagar);
-    echo '<br>';
+    // var_dump($apagar);
+    // echo '<br>';
     
     $apagar = $conecxao->query("DELETE FROM sgrp.ensalamento WHERE codigo = '$cod_ensalamento'");
 
-    var_dump($apagar);
-    echo '<br>';
+    // var_dump($apagar);
+    // echo '<br>';
 }// fazer
