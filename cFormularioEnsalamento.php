@@ -18,7 +18,6 @@ $lista_de_disciplina = carrega_disciplina();
 $lista_de_salas = carregar_salas();
 
 $mensagem = '';
-$peri = '';
 $disc = '';
 $sala = '';
 $semana = '';
@@ -36,10 +35,9 @@ $vet_mensagem = [
 ];
 $justificativa = 'Ensalamento de períodos';
 
+
 if (isset($_GET['salvar'])){
 
-
-    $peri = $_GET['periodo'];
     $disc = $_GET['disciplina'];
     $sala = $_GET['sala'];
     $semana = (isset($_GET['DiaSemana']))?$_GET['DiaSemana']: [];
@@ -54,20 +52,23 @@ if (isset($_GET['salvar'])){
         {
             $dia_semana .= in_array($y, $semana) ? 'S' : 'N';
         }
-        $reserva = ensalamento($peri, $disc, $sala, $dia_semana, $hora_ini, $hora_fin);
 
-        $datas_de_aula = dias_aulas($peri, $dia_semana);
+        $datas_de_aula = dias_aulas($disc, $dia_semana);
 
-        $cod_reserva = cod_ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $usuario_agendador, $justificativa, $datas_de_aula);
+        $consulta = cosultas ($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $datas_de_aula);
         
-        // $test = dias_aulas($peri);
-        // var_dump($test);
-        
-        
-        var_dump($cod_reserva);
-        $mensagem = $vet_mensagem[$reserva];
+        var_dump($consulta);
 
-        $peri = '';
+        if ($consulta !== null){
+            $reserva = ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin);
+
+            $cod_reserva = cod_ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $usuario_agendador, $justificativa, $datas_de_aula);
+            $mensagem = $vet_mensagem[$reserva];
+
+        }
+
+        
+
         $disc = '';
         $sala = '';
         $semana = '';
@@ -86,14 +87,10 @@ if (isset($_GET['salvar'])){
 
 }
 
-
-
-$op_p = gerarOpcoes($lista_de_periodos, $peri);
 $op_d = gerarOpcoes($lista_de_disciplina, $disc);
 $op_s = gerarOpcoes($lista_de_salas, $sala);
 
 
-$html = str_replace('{{Periodo}}', $op_p, $html);
 $html = str_replace('{{Disciplina}}', $op_d, $html);
 $html = str_replace('{{Sala}}', $op_s, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);

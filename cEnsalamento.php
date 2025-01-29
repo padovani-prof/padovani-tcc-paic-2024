@@ -23,6 +23,18 @@ $sala = '';
 $categoria = '';
 $filtra = '';
 
+if(isset($_GET['apagar']))
+{
+    $cod_ensalamento = $_GET['codigo_do_periodo'];
+
+    $teste = apagar($cod_ensalamento);
+//     if(apagar($cod_ensalamento) === true)
+//     {
+//         //ver uma mensagem para usar
+//         echo 'sucesso';
+//     }
+}
+
 $filtra = filtrar(null, null, null);
 
     if (!empty($filtra)) 
@@ -34,8 +46,13 @@ $filtra = filtrar(null, null, null);
                     <td>' . $controle['nome_periodo'] . '</td>
                     <td>' . $controle['nome_disciplina'] . '</td>
                     <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
-                    <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
-                    <td>'.'</td>
+                    <td>' . $controle['hora_inicial'] . ' até ' .$controle['hora_final'] . '</td>
+                    <td> 
+                        <form action="cEnsalamento.php">   
+                            <input type="hidden" name="codigo_do_periodo" value="' .$controle['codigo'].  '"> 
+                            <input type="submit" name="apagar" value="Apagar">
+                        </form> 
+                    </td>
                     
                   </tr>';
         }
@@ -50,11 +67,6 @@ if (isset($_GET['filtrar']))
     $disc = $_GET['disciplina'];
     $sala = $_GET['sala'];
 
-    var_dump($peri);
-    var_dump($disc);
-    var_dump($sala);
-
-    // fazer o dinamico 
 	
     $filtra = filtrar($peri, $disc, $sala);
 
@@ -68,9 +80,13 @@ if (isset($_GET['filtrar']))
                     <td>' . $controle['nome_disciplina'] . '</td>
                     <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
                     <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
-                    <td>'.'</td>
-                    
-                  </tr>';
+                    <td> 
+                        <form action="cEnsalamento.php">   
+                            <input type="hidden" name="codigo_ensalamento" value="' .$controle['cod_ensalamento'].  '"> 
+                            <input type="submit" name="apagar" value="Apagar">
+                        </form> 
+                    </td>
+                </tr>';
         }
         $categoria .= '<tbody/>';
     }
