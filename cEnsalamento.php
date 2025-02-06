@@ -82,7 +82,7 @@ if (isset($_GET['filtrar']))
                     <td>' . $controle['hora_inicial'] . ' ' .$controle['hora_final'] . '</td>
                     <td> 
                         <form action="cEnsalamento.php">   
-                            <input type="hidden" name="codigo_ensalamento" value="' .$controle['cod_ensalamento'].  '"> 
+                            <input type="hidden" name="codigo_ensalamento" value="' .$controle['codigo'].  '"> 
                             <input type="submit" name="apagar" value="Apagar">
                         </form> 
                     </td>
