@@ -29,6 +29,7 @@ function apagar_categoria($chave_pri)
 
 
     $resulta = $conecxao->query("DELETE from categoria_recurso where codigo=$chave_pri");
+    return $resulta;
 }
 
 
