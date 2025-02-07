@@ -146,6 +146,52 @@ function apagar_recurso($chave_pri)
 
 }
 
+function mandar_dados($chave){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulata = $conecxao->query("SELECT * from recurso where codigo=$chave");
+    $resulata = $resulata->fetch_assoc();
+    return $resulata;
+
+}
+
+function atualizar_dados($chave, $nome, $descre, $cCatego){
+    include 'confg_banco.php';
+    
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    $resulta = $conecxao->query ("SELECT codigo FROM recurso  WHERE nome='$nome'");
+    if ($resulta->num_rows == 0 or $resulta->num_rows == 1 and $resulta->fetch_assoc()['codigo']==$chave){
+        $resulta = $conecxao->query("UPDATE recurso set nome='$nome', descricao='$descre', codigo_categoria=$cCatego where codigo=$chave");
+        return 0;
+    }else{
+        return 4;
+
+    }
+    
+
+}
+
+
+
+function verificar_atualizar($chave, $nome, $des, $cCatego){
+    $nome = trim(mb_strtoupper($nome));
+    $descre = trim($des);
+
+    
+    // ver se os dados estão condisentes retornando true ou false
+    $valido = Validar_recurso($nome, $descre, $cCatego);
+    
+    if ($valido === true )
+ 
+    {
+        return atualizar_dados($chave, $nome, $descre, $cCatego);
+    }
+    return $valido;
+}
+
+
+
    
    
 
