@@ -11,9 +11,11 @@
      <header>
       <h1>Recursos</h1>
      </header>
+
      
      <section> <!--Inicio Section-->
         <form action="cFormularioRecurso.php">
+          {{tipo_tela}}
           <label for="">Nome:</label>
           <input type="text" name="nome" value = "{{campoNome}}" id="">
           <label for="">Descrição: </label>
@@ -29,7 +31,7 @@
 
         
         <a href="cRecursos.php"><input type="button" value="Voltar"></a>
-        <input type="submit" value="Salvar">
+        <input type="submit" name="salvar" value="Salvar">
        
 
         </form>
