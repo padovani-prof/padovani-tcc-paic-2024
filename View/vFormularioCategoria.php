@@ -12,6 +12,7 @@
 
   <section>
       <form action="cFormularioCategoria.php">
+        {{tipo_tela}}
         <label for="">Nome: </label>
         <input type="text" name="nome" id="txtnome" value="{{Camponome}}">
         <label for="">Descrição: </label>
