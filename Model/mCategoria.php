@@ -1,9 +1,5 @@
 <?php 
 
-
-
-    
-
 function Validar_categoria($nome, $desc)
 {
     // retorna se os nomes dos dados são validos é para a inserção
@@ -67,6 +63,60 @@ function insere_categoria_recurso($nome, $descre, $ambF)
 
     
    
+}
+
+function pegar_dados($chave){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $conecxao->query ("SELECT * FROM categoria_recurso WHERE codigo=$chave");
+    return $resulta->fetch_assoc();
+    
+
+}
+
+
+function atualizar_dados($chave, $nome, $descre, $ambF){
+    $nome = trim(mb_strtoupper($nome));
+    $descre = trim($descre);
+
+    $valido = Validar_categoria($nome, $descre);
+
+    if($valido===true)
+    {
+        if($ambF=== 'on')
+        {
+            $ambF = 'S';
+        }
+        else
+        {
+            $ambF = 'N';
+        }
+        include 'confg_banco.php';
+        $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+        if (!$conecxao->connect_error) 
+        {
+            $resulta = $conecxao->query ("SELECT codigo FROM categoria_recurso WHERE nome='$nome'");
+            if ($resulta->num_rows == 0 or $resulta->num_rows == 1 and $resulta->fetch_assoc()['codigo']==$chave)
+            {
+
+                $resulta = $conecxao->query("UPDATE categoria_recurso set nome = '$nome', descricao='$descre', ambiente_fisico='$ambF' WHERE codigo=$chave");
+
+                // Adicionou no banco
+                $valido = 0;
+            
+            }
+            else
+            {
+                $valido = 3; // nome repetido
+            }
+        }
+
+    }
+    return $valido;
+   
+    
+    
+
 }
 
 
