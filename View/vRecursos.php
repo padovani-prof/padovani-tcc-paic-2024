@@ -18,13 +18,12 @@
         <table border="1">
             <tr>
               <th>Nome</th>
-              <th>Alterar</th>
-              <th>Apagar</th>
+              <th>Operações</th>
+              
               <th>Ver Log</th>
               <th>Checklist</th>
               <th>Permissão</th>
             </tr> 
-       
             {{recursos}}
         </table>
        
@@ -39,6 +38,8 @@
 
                  
       </section>  
+
+      <p id="resposta-{{repos}}">{{msg}}</p>
     
     <script src="script.js"></script>
 </body>
