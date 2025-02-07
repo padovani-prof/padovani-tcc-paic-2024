@@ -41,7 +41,7 @@ $recurso = Carregar_recursos();
 $recursos = '<tbody>';
 foreach ($recurso as $nome) {
     $recursos = $recursos. '<tr>
-        <td>'.$nome["nome"].'</td>
+        <td>'.mb_strtoupper($nome["nome"]).'</td>
         <td> <form action="cRecursos.php"> 
                 <input type="hidden" name="codigo_do_recurso" value="' .$nome['codigo'].'"> 
                 <input type="submit" name="altera" value="Alterar"> 
