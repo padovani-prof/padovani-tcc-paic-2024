@@ -25,7 +25,7 @@ if (isset($_GET['apagar']))
 
     // $retorno =  ($resposta>0)?'erro':'sucesso';
     $id_resposta = ($resposta)?'sucesso':'erro';
-    $resposta = ($resposta)?'Categoria apagada com Sucesso':'A categoria não pode ser apagada por está sendo ultilizada por outros rescursos.';
+    $resposta = ($resposta)?'Categoria apagada com Sucesso':'A categoria não pode ser apagada por está sendo ultilizada por outros recursos.';
     
 }
 if(isset($_GET['alterar'])){
