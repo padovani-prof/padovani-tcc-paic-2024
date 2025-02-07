@@ -142,6 +142,7 @@ function apagar_recurso($chave_pri)
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
     
     $resulata = $conecxao->query("DELETE from recurso where codigo=$chave_pri");
+    return $resulata;
 
 }
 
