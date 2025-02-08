@@ -1,10 +1,13 @@
 <?php
 
-if (isset($_GET['desconectar'])){
-    session_start();
-    session_destroy();
+if (isset($_GET['desconectar']) or isset($_GET['msg'])){
+    if (isset($_GET['desconectar'])){
+        session_start();
+        session_destroy();
+    }
     $msm = file_get_contents('View/vLogin.php');
     $msm = str_replace('{{mensagem}}','Desconectado do sistema!',$msm);
+    $msm = str_replace('{{resp}}', 'sair', $msm);
     echo $msm;
 }
 else if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
@@ -25,6 +28,8 @@ else if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
     if ($usuario === null) {
         // Login falhou, carrega o vLogin.php e insere a mensagem de erro
         $html = file_get_contents('View/vLogin.php');
+        $html = str_replace('{{resp}}', 'erro', $html);
+
         $html = str_replace('{{mensagem}}', 'Falha de autenticação!', $html);
         echo $html;
     } else {
