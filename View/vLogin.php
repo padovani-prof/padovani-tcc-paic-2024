@@ -20,7 +20,7 @@
             <h1>Bem Vindo</h1>
             <h2>Login</h2>
         </div>
-        <p>{{mensagem}}</p>
+       <p id='{{resp}}'>{{mensagem}}</p>
         <form action="cLogin.php">
             E-mail:
             <input type="email" name="txtemail" id="txtemail"> <br> <br>
