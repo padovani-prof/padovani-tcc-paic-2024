@@ -35,13 +35,13 @@
           
               <div>
                   <label for="">Dia da Semana</label>
-                  <input type="checkbox" name="domi" {{marca1}} id="">D
-                  <input type="checkbox" name="segu" {{marca2}} id="">S
-                  <input type="checkbox" name="terc" {{marca3}} id="">T
-                  <input type="checkbox" name="quar" {{marca4}} id="">Q
-                  <input type="checkbox" name="quin" {{marca5}} id="">Q
-                  <input type="checkbox" name="sext" {{marca6}} id="">S
-                  <input type="checkbox" name="saba" {{marca7}} id="">S
+                  <input type="checkbox" name="dia0" {{0}} id="">D
+                  <input type="checkbox" name="dia1" {{1}} id="">S
+                  <input type="checkbox" name="dia2" {{2}} id="">T
+                  <input type="checkbox" name="dia3" {{3}} id="">Q
+                  <input type="checkbox" name="dia4" {{4}} id="">Q
+                  <input type="checkbox" name="dia5" {{5}} id="">S
+                  <input type="checkbox" name="dia6" {{6}} id="">S
               </div>
               <label for="">Data Inicial:</label>
               <input type="date" name="data_ini" value="{{dataIni}}}" id="#">
@@ -57,7 +57,7 @@
               
           </form>
 
-            <p> {{mensagemAnomalia}} </p>
+            <p id="{{rep}}">{{mensagemAnomalia}}</p>
 
           <table border="1">
             <tr>
