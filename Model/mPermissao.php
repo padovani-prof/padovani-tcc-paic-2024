@@ -1,20 +1,21 @@
 <?php 
-function dias_da_semana($lista_sema)
+function dias_da_semana()
 {
     $semana = '';
     $cont = 0;
  
     
-    foreach($lista_sema as $dia)
-    {
-        if ($dia == NULL)
+    for ($i=0; $i < 7; $i++){
+        if (isset($_GET["dia$i"]))
         {
-            $cont +=1;
-            $semana = $semana.'N';
+            $semana = $semana.'S';
+
+            
         }
         else
         {
-            $semana = $semana.'S';
+            $cont +=1;
+            $semana = $semana.'N';
         }
     }
     if ($cont>=7)
@@ -22,6 +23,7 @@ function dias_da_semana($lista_sema)
         $semana = '';
     }
     return $semana;
+    
 }
 
 
