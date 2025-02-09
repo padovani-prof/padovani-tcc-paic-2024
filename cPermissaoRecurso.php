@@ -25,14 +25,14 @@ $html = file_get_contents('View/vPermissao.php');
 
 $perfi = '';
 $mensAnom = '';
+$id_resp = 'nada';
 
 
 if (isset($_GET['salvar']))
 {
-    $dia_semana = [$_GET['domi'], $_GET['segu'],$_GET['terc'],$_GET['quar'],$_GET['quin'],$_GET['sext'],$_GET['saba']] ;
 
-   
-    $dia_semana =  dias_da_semana($dia_semana);
+    $dia_semana =  dias_da_semana();
+    
 
 
     $codigo =  $_GET['codi_recurso'];
@@ -54,8 +54,10 @@ if (isset($_GET['salvar']))
         }
         
         
-        $mensAnom = 'Permissão de recurso salvo com Sucesso!!'; // salvo co Sucesso
+        
         cadastra_acesso_recurso($codigo, $perfi, $h_ini, $h_fim,$dia_semana, $d_ini, $d_fim, $d );
+        $mensAnom = 'Permissão de recurso salvo com Sucesso!!'; // salvo co Sucesso
+        $id_resp='sucesso';
         $perfi = '';  
         
     }
@@ -65,18 +67,19 @@ if (isset($_GET['salvar']))
     
         $semana = str_split($dia_semana);
 
-        $cont = 1;
+        $cont = 0;
         foreach ($semana as $dia) 
         {
             if($dia=='S')
             {
-                $html = str_replace("{{marca$cont}}", ' checked', $html);
+                $html = str_replace("{{{$cont}}}", 'checked', $html);
             }
             $cont ++;
            
         }
 
-        $mensAnom = 'Voçê não preecheu algun dos campos necessarios';
+        $mensAnom = 'Por favor preecha todos os campos.';
+        $id_resp = 'erro';
 
         $html = str_replace('{{horaInicial}}', $h_ini, $html);
         $html = str_replace('{{horaFinal}}}', $h_fim, $html);
@@ -90,21 +93,18 @@ if (isset($_GET['salvar']))
     }
 }
 
-else
+//Açessou  Permissão de Recurso pela primeira / vai apagar
+elseif (isset($_GET['apagar']))
 {
-    //Açessou  Permissão de Recurso pela primeira / vai apagar
-
-    $codigo = $_GET ['codigo'];
-
-    if (isset($_GET['apagar']))
-    {
-        $codigo = $_GET['codigo_recurso'];
-        $acesso_recurso_apaga = $_GET['codigo_acesso_ao_recurso'];
-        
-        apagar_acesso_ao_recurso($acesso_recurso_apaga);
-    }
+    $codigo = $_GET['codigo_recurso'];
+    $acesso_recurso_apaga = $_GET['codigo_acesso_ao_recurso'];
     
+    apagar_acesso_ao_recurso($acesso_recurso_apaga);
+}else{
+    $codigo = $_GET['codigo'];
+
 }
+
 
 
 
@@ -151,12 +151,10 @@ $informa = $informa.'<tbody>';
 
 
 $html = str_replace('{{mensagemAnomalia}}', $mensAnom, $html);
-
+$html = str_replace('{{rep}}', $id_resp, $html);
 $html = str_replace('{{nomerecurso}}', $recurso['nome'], $html);
 $html = str_replace('{{perfis}}', $usua, $html);
-
 $html = str_replace('{{permissoes}}', $informa, $html);
-
 $html = str_replace('{{codigo_recurso_atual}}', $codigo , $html);
 
 echo $html;
