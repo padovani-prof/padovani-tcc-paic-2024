@@ -1,19 +1,11 @@
 <?php 
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'adm_checklist_rec');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'adm_checklist_rec', 2);
+
+
 
 mb_internal_encoding("UTF-8");
 
@@ -21,10 +13,13 @@ mb_internal_encoding("UTF-8");
 include_once 'Model/mChecklist.php';
 
 
+$codigo = $_GET ['codigo'];
+Existe_essa_chave_na_tabela($codigo, 'recurso', "cRecursos.php");
+
 if (isset($_GET['apagar']))
 {
     $chave_pri = $_GET['codigo_item'];
-
+    Existe_essa_chave_na_tabela($chave_pri, 'checklist', "cChecklist.php?codigo=$codigo");
     apagar_acesso_ao_recurso($chave_pri);
 
 }
@@ -33,17 +28,16 @@ if(isset($_GET['adicionar']) and isset($_GET['txtitem']) and strlen($_GET['txtit
 {
     //adiciona no banco
     $item = $_GET['txtitem'];
-    $codigo = $_GET['codigo'];
     
     salva_no_banco($item, $codigo);
-
-    header('Location: cChecklist.php?codigo='.$codigo);
 
 }
 
 
 
-$codigo = $_GET ['codigo'];
+
+
+
 $recurso = carrega_recurso($codigo);
 $dados_checlist = cerrega_dados_checklist($codigo);
 
@@ -94,7 +88,4 @@ echo $html;
 
 
 ?>
-
-
-
 
