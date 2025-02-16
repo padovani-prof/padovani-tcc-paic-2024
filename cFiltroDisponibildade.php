@@ -1,23 +1,10 @@
 
 
 <?php 
-//  cFiltroDisponibildade.php
-
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
 
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 
 $html = file_get_contents('View/vFiltroDisponibildade.php');
 include_once 'Model/mCategoriaRecurso.php';
