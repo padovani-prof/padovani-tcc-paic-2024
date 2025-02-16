@@ -57,4 +57,15 @@ function apagar_acesso_ao_recurso($chave_pri)
 }
 
 
+function Existe_essa_chave_na_tabela($chave, $tabela, $jogar_pra_onde){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulata = $conecxao->query("SELECT * from $tabela where codigo=$chave");
+    if($resulata->num_rows == 0){
+        header("Location: $jogar_pra_onde");
+        exit();
+    }
+
+}
+
 ?>
