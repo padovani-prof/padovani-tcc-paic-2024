@@ -1,12 +1,8 @@
 <?php
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+include_once 'Model/mVerificacao_acesso.php';
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'list_ensalamento', 2);
 
 
 include_once 'Model/mPeriodo.php';
