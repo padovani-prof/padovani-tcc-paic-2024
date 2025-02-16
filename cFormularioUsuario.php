@@ -1,20 +1,10 @@
 <?php
 
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_usuario');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'cad_usuario', 2);
+
 
 
 include_once 'Model/mUsuario.php';  
@@ -26,13 +16,14 @@ $senha = '';
 $conf_senha = '';
 $perfis_selecionados = [];
 $mensagem = '';
+$id_resposta = 'nada';
 
 
 $html = file_get_contents('View/vFormularioUsuario.php'); 
 
 if (isset($_GET["salvar"])) {
     include_once 'Model/mUsuario.php';
-
+    $id_resposta = 'erro';
     $nome = $_GET['nome'];
     $email = $_GET['email'];
     $senha = $_GET['senha'];
@@ -65,10 +56,11 @@ if (isset($_GET["salvar"])) {
             $senha = '';
             $conf_senha = '';
             $perfis_selecionados = []; // Limpa a seleção de perfis ao cadastrar com sucesso
+            $id_resposta = 'sucesso';
         }
 
         // Definindo mensagens para mostrar
-        $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!'];
+        $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!','Nome já ultilizado. Por favor ensira outro nome.', 'E-mail já foi cadastrado. Por favor ensira outro E-mail.'];
         $mensagem = $men[$resposta];
     }
 
@@ -97,5 +89,6 @@ $html = str_replace('{{campoSenha}}', $senha, $html);
 $html = str_replace('{{campoConfirma}}', $conf_senha, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);
 $html = str_replace('{{perfis}}', $perfis, $html);
+$html = str_replace('{{retorno}}', $id_resposta, $html);
 echo $html;
 ?>
