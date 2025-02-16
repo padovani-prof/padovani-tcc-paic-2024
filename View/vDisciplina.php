@@ -14,13 +14,14 @@
     <table border="1">
       <tr>
         <th>Nome</th>
-        <th>Alterar</th>
-        <th>Apagar</th>
+        <th>Operações</th>
+        
       </tr>
           {{disciplinas}}
 
       
   </table>
+  <p id="{{resp}}">{{msg}}</p>
 
 
     <a href="cFormularioDisciplina.php"><input type="button" value="Nova Disciplina"></a> 
