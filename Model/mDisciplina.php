@@ -4,13 +4,12 @@
 
 function apagar_diciplina($chave_pri)
 {
-   
     include 'confg_banco.php';
-    
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
     $resulta = $conecxao->query("DELETE from disciplina where codigo=$chave_pri");
+    return $resulta;
+   
 
     
 
@@ -103,6 +102,52 @@ function insere_disciplina($nome, $curso, $codi_pere)
 
 }
 
+
+function mandar_informações($chave, $tabela){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    $resulata = $conecxao->query("SELECT * from $tabela where codigo=$chave");
+    return $resulata->fetch_assoc();
+
+}
+
+function atualizar_disciplina($chave, $nome, $curso, $peri){
+     // Trata os dados
+     $nome = mb_strtoupper(trim($nome));
+     $curso = mb_strtoupper(trim($curso));
+     $validar = Validar_recurso($nome, $curso);
+     
+     if ($validar === true)
+     {
+         include 'confg_banco.php';
+     
+         $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+ 
+         if(!$conecxao->connect_error)
+         {
+             $resulta = $conecxao->query ("SELECT * FROM disciplina WHERE nome='$nome' and codigo!=$chave");
+             if ($resulta->num_rows == 0)
+             {
+ 
+                 $resulta = $conecxao->query ("UPDATE disciplina set nome='$nome', curso='$curso', codigo_periodo=$peri where codigo=$chave");
+                 // Adicionou no banco
+                 $validar = 0; // inserido corretamente
+             }
+             else
+             {
+                 $validar = 3;
+                 // nome repetido
+             }
+             
+         }
+     }
+ 
+     
+     // não adicionou no banco
+     return $validar;
+
+}
 
 ?>
 
