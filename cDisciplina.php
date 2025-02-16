@@ -1,29 +1,29 @@
 <?php
 
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_disciplina');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'list_disciplina', 2);
+
 
 include_once 'Model/mDisciplina.php';
 $html = file_get_contents('View/vDisciplina.php');
 
-if (isset($_GET['codigoPrim']))
+$msg = '';
+$id_msg = 'nada';
+if (isset($_GET['apagar']))
 {
-    $chave = $_GET['codigoPrim'];
-    apagar_diciplina($chave);
     
+    $msg = apagar_diciplina($_GET['codigoPrim']);
+    $id_msg = ($msg)?'sucesso':'erro';
+    $msg = ($msg)?'Disciplina apagada com Sucesso':'Essa disciplina não pode ser apagada por esta sendo referênciada no Ensalamento.';
+
+    // apagar ta ok
+}else if(isset($_GET['alterar'])){
+    $codigo = $_GET['codigoPrim'];
+    header("Location: cFormularioDisciplina.php?codigo=$codigo");
+    exit();
 }
 
 
@@ -36,12 +36,12 @@ $disciplinas = '<tbody>';
 foreach ($disciplina as $nome)
 {
     $disciplinas = $disciplinas. '<tr>
-        <td>'. $nome["nome"].'</td>
-        <td>  Altera  </td>                                
+        <td>'. $nome["nome"].'</td>                             
         <td> 
             <form action="cDisciplina.php">
                 <input type="hidden" name="codigoPrim" value="'.$nome['codigo']. '">
-                <input type="submit" value="Apagar">
+                <input type="submit" value="Alterar" name="alterar">
+                <input type="submit" value="Apagar" name="apagar">
             </form> 
         </td>
     </tr>';
@@ -52,7 +52,8 @@ foreach ($disciplina as $nome)
 
 $disciplinas = $disciplinas. '<tbody/>';
 
-
+$html = str_replace('{{resp}}', $id_msg, $html);
+$html = str_replace('{{msg}}', $msg, $html);
 $html = str_replace('{{disciplinas}}', $disciplinas, $html);
 echo $html; // Exibe o HTML atualizado
 ?>
