@@ -44,8 +44,14 @@ function listar_perfil(){
 
 }
 
-function Validar_usuario($nome, $senha)
+function Validar_usuario($nome, $senha, $email)
 {
+
+    $nome = str_replace(' ','',$nome);
+    $senha = str_replace(' ', '', $senha);
+    $email = str_replace(' ', '',$email);
+   
+
     if (strlen($nome) < 2 || strlen($nome) > 50) {
         return 0; // Nome inválido
     }
@@ -57,6 +63,16 @@ function Validar_usuario($nome, $senha)
     if (strlen($senha) > 50 || strlen($senha) < 3) {
         return 2; // Senha inválida
     }
+    if(verificar_existencia($nome, 'nome')){
+        return 4; // nome repetido
+       
+   
+   }
+   if(verificar_existencia($email, 'email')){
+    return 5; // email  repetido
+            
+    
+   }
 
     return true; // Dados válidos
 }
@@ -105,11 +121,11 @@ function insere_usuario_perfil($codigo_usuario, $codigo_perfil)
 
 function cadastrar_usuario($nome, $email, $senha, $perfis_selecionados) 
 {
-    $valido = Validar_usuario($nome, $senha);
 
+    $valido = Validar_usuario($nome, $senha, $email);
+    
     if ($valido === true) {
         $codigo_usuario = insere_usuario($nome, $email, $senha);
-
         if ($codigo_usuario) {
             foreach ($perfis_selecionados as $codigo_perfil) {
                 if (!insere_usuario_perfil($codigo_usuario, $codigo_perfil)) {
@@ -117,9 +133,7 @@ function cadastrar_usuario($nome, $email, $senha, $perfis_selecionados)
                 }
             }
             return 3; // Usuário cadastrado com sucesso
-        } else {
-            return 4; // Erro ao cadastrar no banco de dados
-        }
+        }   
     }
     return $valido; 
 }
@@ -131,7 +145,33 @@ function apagar_usuario($chave_pri) {
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     if (!$conexao->connect_error) {
-        $conexao->query("DELETE FROM usuario_perfil WHERE codigo_usuario = $chave_pri");
-        $conexao->query("DELETE FROM usuario WHERE codigo = $chave_pri");
-    } 
+
+        $qdt_ultilizada = $conexao->query("SELECT *  from retirada_devolucao WHERE retirada_devolucao.codigo_usuario=$chave_pri;"); 
+    
+        if($qdt_ultilizada->num_rows > 0){
+            return 1;
+            
+        }
+        $qdt_ultilizada = $conexao->query("SELECT * from reserva WHERE reserva.codigo_usuario_utilizador=$chave_pri or reserva.codigo_usuario_agendador=$chave_pri;");
+        if($qdt_ultilizada->num_rows>0){
+            return 2;
+        }else{
+            $conexao->query("DELETE FROM usuario_perfil WHERE codigo_usuario = $chave_pri");
+            $conexao->query("DELETE FROM usuario WHERE codigo = $chave_pri");
+            return 0;
+
+        }
+          
+    }
+        
+}
+
+function verificar_existencia($dado, $coluna){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $conecxao->query("SELECT * from usuario where $coluna='$dado'");
+    if($resulta->num_rows > 0){
+        return true;
+    }
+    return false;
 }
