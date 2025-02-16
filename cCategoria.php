@@ -1,31 +1,25 @@
 <?php
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_categoria_rec');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'list_categoria_rec', 2);
+
 
 $id_resposta = '';
 $resposta = '';
 include_once 'Model/mCategoriaRecurso.php';
 if (isset($_GET['apagar']))
 {
+   verificação_acesso($_SESSION['codigo_usuario'], 'apag_categoria_rec', 2);
+
     $codi = $_GET['codigo_da_categoria'];
     $resposta = apagar_categoria($codi);
 
     // $retorno =  ($resposta>0)?'erro':'sucesso';
     $id_resposta = ($resposta)?'sucesso':'erro';
-    $resposta = ($resposta)?'Categoria apagada com Sucesso':'A categoria não pode ser apagada por está sendo ultilizada por outros recursos.';
+    $resposta = ($resposta)?'A categoria foi removida com sucesso.':'Esta categoria não pode ser apagada, pois está vinculada a recursos.';
     
 }
 if(isset($_GET['alterar'])){
@@ -44,7 +38,7 @@ foreach ($categoria as $nome) {
             <form action="cCategoria.php">   
                 <input type="hidden" name="codigo_da_categoria" value="'.$nome['codigo'].'"> 
                 <input class="btn btn-outline-secondary" type="submit" name="alterar" value="Alterar">&nbsp;
-                <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar"> 
+                <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
             </form> 
         </td>
 
