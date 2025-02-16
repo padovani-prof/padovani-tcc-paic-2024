@@ -91,17 +91,39 @@ function carrega_recursos_emprestados()
     return $todos_dados;
 }
 
-function optios($lista)
-{
-    $opt = '';
-    foreach($lista as $dados)
+
+
+function optios($dados){
+    $opt = '<option value="NULL">...</option>';
+    foreach($dados as $dado)
     {
-        $opt .= '<option value="'. $dados['codigo'].'">'.mb_strtoupper($dados['nome'] ).'</option>';
+        $opt .= '<option value="'. $dado['codigo'].'">'.mb_strtoupper($dado['nome'] ).'</option>';
     }
     return $opt;
 
 }
 
+
+
+
+function verificar_reserva_do_retirante($periodo, $retirante, $recurso){
+
+    $data = str_replace('/','-', $periodo[0]);
+    $h_ini = $periodo[1];
+    $h_fim = $periodo[2];
+    $sql = "SELECT * from reserva WHERE codigo_recurso=$recurso and codigo_usuario_utilizador = $retirante and codigo in (SELECT data_reserva.codigo_reserva from data_reserva where data_reserva.data = '$data' and hora_inicial <='$h_fim' and hora_final >= '$h_ini');";
+    include 'confg_banco.php';
+    //echo $sql;
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $cone->query($sql);
+
+    if ($resulta->num_rows == 1){
+        return true;
+
+    }
+    return false;
+    
+}
 
 
 ?>
