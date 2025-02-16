@@ -55,11 +55,19 @@ function apagar_perfil($chave_pri) {
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     if (!$conexao->connect_error) {
-        $conexao->query("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = $chave_pri");
+
+        $qdt_lk_fucicionalidades =  $conexao->query("SELECT COUNT(*) as 'qdt_fucionalidades_linkadas' from usuario_perfil WHERE codigo_perfil=$chave_pri;")->fetch_assoc()['qdt_fucionalidades_linkadas'] + $conexao->query("SELECT COUNT(*) as 'qdt_fucionalidades_linkadas' from  acesso_recurso WHERE codigo_perfil=$chave_pri;")->fetch_assoc()['qdt_fucionalidades_linkadas']; //quantidades de dados que estão lincados com essa chave primario
+        if($qdt_lk_fucicionalidades==0){
+            $conexao->query("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = $chave_pri");
         
-        $conexao->query("DELETE FROM usuario_perfil WHERE codigo_perfil = $chave_pri");
-        $conexao->query("DELETE FROM perfil_usuario WHERE codigo = $chave_pri");
+            $conexao->query("DELETE FROM usuario_perfil WHERE codigo_perfil = $chave_pri");
+            $conexao->query("DELETE FROM perfil_usuario WHERE codigo = $chave_pri");
+            return true;
+        }
+        return false;
+
     }
+        
 }
 
 function Validar_perfil($nome, $descricao){
@@ -85,8 +93,8 @@ function insere_perfil($nome, $descricao, $funcionalidades_selecionadas) {
         include 'confg_banco.php';
     
         $conexao = new mysqli($servidor, $usuario, $senha, $banco);
-
-        if(!$conexao->connect_error) {
+        
+        if(!verificar_existencia_nome_perfio($nome)) {
             // Inserir o perfil no banco
             $stmt = $conexao->prepare("INSERT INTO perfil_usuario (nome, descricao) VALUES (?, ?)");
             $stmt->bind_param("ss", $nome, $descricao);
@@ -103,6 +111,7 @@ function insere_perfil($nome, $descricao, $funcionalidades_selecionadas) {
                 return 4; 
             }
         }
+        $validar = 3;
     }
 
     return $validar; 
@@ -124,4 +133,64 @@ function insere_funcionalidade_perfil($codigo_funcionalidade, $codigo_perfil) {
 
     return false; 
 }
+
+function mandar_dados_da_tabela($chave){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulata = $conecxao->query("SELECT * from perfil_usuario where codigo=$chave");
+    $resulata = $resulata->fetch_assoc();
+    $dados = [];
+    $dados[] = $resulata;
+    $resulata = $conecxao->query("SELECT * from funcionalidade_perfil where codigo_perfil=$chave");
+    $fucionalidades = [];
+    while ($fucionalidade = $resulata->fetch_assoc()) {
+        $fucionalidades[] = $fucionalidade['codigo_funcionalidade'];
+    }
+    $dados[] = $fucionalidades;
+    return $dados;
+
+}
+
+
+function atualizar_fucionalidade($codigo, $nome, $descricao, $lista_funcionalidades){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    if(!verificar_existencia_nome_perfio_para_atualizar($nome, $codigo)){
+        $resulta = $conecxao->query("UPDATE perfil_usuario set nome='$nome', descricao='$descricao' where codigo=$codigo");
+        $resulta = $conecxao->query("DELETE from funcionalidade_perfil where codigo_perfil=$codigo");
+        foreach($lista_funcionalidades as $fucionalidade){
+            insere_funcionalidade_perfil($fucionalidade, $codigo);
+        }
+        return 2;
+
+    }
+    return 3;
+    
+
+
+
+}
+
+
+function verificar_existencia_nome_perfio_para_atualizar($nome, $codigo){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $conecxao->query("SELECT * from perfil_usuario where nome='$nome' and codigo!=$codigo");
+    if($resulta->num_rows > 0){
+        return true;
+    }
+    return false;
+
+}
+
+function verificar_existencia_nome_perfio($nome){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $conecxao->query("SELECT * from perfil_usuario where nome='$nome'");
+    if($resulta->num_rows > 0){
+        return true;
+    }
+    return false;
+}
+
 ?>
