@@ -152,16 +152,17 @@ function inserir_reserva($justificativa, $recurso, $usuario_utilizador, $lista_d
     return 5; 
 }
 
-function apagar_reserva($codigo) {
+function apagar_reserva($codigo_reserva) {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if (!$conexao->connect_error) {
-        $conexao->query("DELETE FROM data_reserva WHERE codigo_reserva = $codigo");
-        $conexao->query("DELETE FROM reserva WHERE codigo = $codigo");
-    } else {
-        echo "Erro de conexão: " . $conexao->connect_error;
+    $resposta = $conexao->query("SELECT * FROM reserva_ensalamento WHERE codigo_reserva = $codigo_reserva");
+    if ($resposta->num_rows == 0) {
+        $conexao->query("DELETE FROM data_reserva WHERE codigo_reserva =  $codigo_reserva");
+        $conexao->query("DELETE FROM reserva WHERE codigo = $codigo_reserva");
+        return true;
     }
+    return false;
 }
 
 ?>
