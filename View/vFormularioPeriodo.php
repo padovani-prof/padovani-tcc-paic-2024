@@ -9,11 +9,12 @@
 </head>
 <body>
   <header>
-      <h1>Cadastrar Período</h1>
+      <h1>{{tela}} Período</h1>
   </header>
 
   <section>
       <form action="cFormularioPeriodo.php">
+          {{tipo_tela}}
           <label for="">Nome: </label>
           <input type="text" name="txtnome" id="txtnome" value="{{nomePeriodo}}">
 
