@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil USuário</title>
+    <title>Perfil Usuário</title>
 </head>
 <body>
     <h1>Perfil de Usuário</h1>
@@ -12,13 +12,11 @@
         <tr>
           <th>Nome</th>
           <th>Descrição</th>
-          <th>Alterar</th>
-          <th>Apagar</th>
+          <th>Operações</th>
         </tr>
         {{perfis}}
       </table>
-
-      
+      <p id="{{resp}}">{{msg}}</p>
       <a href="cMenu.php"><button>Voltar</button></a>
       
       <div id="bt-nov-perfil">
