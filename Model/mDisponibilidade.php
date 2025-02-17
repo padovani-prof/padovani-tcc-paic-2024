@@ -118,14 +118,54 @@ function adicionados($recurso, $categorias)
 
     return $todos_dados;
     
+}
 
 
 
 
 
+function transformar_em_lista($str)
+
+{
+    $lista  = explode(',', $str);
+    for ($i=0; $i < count($lista); $i++) { 
+        $dado =  str_replace('[','',$lista[$i]);
+        $dado =  str_replace(']','',$dado);
+        $dado = str_replace('"', '',$dado);
+
+        $lista[$i] = $dado;
+
+    }
+    return $lista;
+}
 
 
+
+function chaves($lista)
+{
+    $lista_chaves = array();
+    if(count($lista)>=3)
+    {
+        
+        for ($i=0; $i < count($lista); $i = $i + 3) 
+        { 
+            $lista_chaves[] = $lista[$i+2];
+        }
+    }
+    return $lista_chaves;
 
 }
 
+function ta_livre($codigo, $data, $h_ini, $h_fim, $disponives)
+{
+    
+    foreach($disponives as $livre)
+    {
+        if($livre['codigo_recurso']===$codigo and trim($livre["data_alvo"])=== trim($data) and trim($livre['hora_inicial_alvo'])===trim($h_ini) and trim($livre['hora_final_alvo'])===trim($h_fim))
+        {
+            return true;
+        }
+    }
+    return false;
+}
 ?>
