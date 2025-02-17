@@ -1,24 +1,27 @@
 <?php
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario', 2);
 
+$msg = '';
+$id_msg = 'nada';
 include_once 'Model/mUsuario.php';
-if (isset($_GET['codigo_do_usuario'])) {
-
+if (isset($_GET['apagar'])) {
+    verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario', 2); // apagar_usu
+    
+    $l_msg = ['O usuário foi removido com sucesso.','O usuário não pode ser excluído, pois possui retiradas vinculadas a ele.','O usuário não pode ser removido, pois há reservas associadas a ele.'];
     $cod_usuario = $_GET['codigo_do_usuario'];
-    apagar_usuario($cod_usuario);
+    $msg = apagar_usuario($cod_usuario);
+    
+    $id_msg = ($msg==0)?'sucesso':'erro';
+    $msg = $l_msg[$msg];
+
+
+}elseif(isset($_GET["atualizar"])){
+    $cod_usuario = $_GET['codigo_do_usuario'];
+    header("Location: cFormularioUsuario.php?codigo=$cod_usuario");
+    exit();
 }
 
 $usuario = listar_usuarios();
@@ -29,11 +32,12 @@ foreach ($usuario as $user) {
         $usuarios = $usuarios. '<tr>
             <td>'.$user["nome"].'</td>
             <td>'.$user["email"].'</td>
-            <td><a href="#">alterar</a></td>
+            
             <td>
                 <form action="cUsuario.php">   
                     <input type="hidden" name="codigo_do_usuario" value="'. $user["codigo"] . '"> 
-                    <input type="submit" name="apagar" value="Apagar">
+                    <input class="btn btn-outline-secondary" type="submit" name="atualizar" value="Atualizar">&nbsp;
+                    <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
                 </form> 
             </td>
         </tr>';
@@ -41,6 +45,9 @@ foreach ($usuario as $user) {
 $usuarios = $usuarios. '<tbody/>';
 
 $html = file_get_contents('View/vUsuario.php');
+$html = str_replace('{{msg}}', $msg, $html);
+$html = str_replace('{{resp}}', $id_msg, $html);
+
 $html = str_replace('{{usuarios}}', $usuarios, $html);
 echo $html;
 ?>
