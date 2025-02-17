@@ -7,10 +7,11 @@
 </head>
 <body>
   <header>
-    <h1>Cadastrar Disciplina </h1>
+    <h1>{{tela}} Disciplina </h1>
   </header>
   <section>
       <form action="cFormularioDisciplina.php">
+        {{tipo_tela}}
         <label for="">Nome: </label>
         <input type="text" name="nome" id="txtnome" value="{{Camponome}}">
         <label for="">Curso: </label>
