@@ -1,23 +1,10 @@
 <?php 
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
 
 include_once 'Model/mVerificacao_acesso.php';
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'adm_perm_recurso', 2);
 # vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'adm_perm_recurso');
-if ($verificar== false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
-
-
 
 
 include_once 'Model/mPermissao.php';
@@ -36,6 +23,7 @@ if (isset($_GET['salvar']))
 
 
     $codigo =  $_GET['codi_recurso'];
+    Existe_essa_chave_na_tabela($codigo, 'recurso', 'cRecursos.php');
     $perfi = $_GET['perfio_usuario'];
     $h_ini = $_GET['hora_ini'];
     $h_fim = $_GET['hora_fim'];
@@ -97,11 +85,14 @@ if (isset($_GET['salvar']))
 elseif (isset($_GET['apagar']))
 {
     $codigo = $_GET['codigo_recurso'];
+    Existe_essa_chave_na_tabela($codigo, 'recurso', 'cRecursos.php');
     $acesso_recurso_apaga = $_GET['codigo_acesso_ao_recurso'];
+    Existe_essa_chave_na_tabela($acesso_recurso_apaga, 'acesso_recurso', "cPermissaoRecurso.php?codigo=$codigo");
     
     apagar_acesso_ao_recurso($acesso_recurso_apaga);
 }else{
     $codigo = $_GET['codigo'];
+    Existe_essa_chave_na_tabela($codigo, 'recurso', 'cRecursos.php');
 
 }
 
@@ -166,5 +157,3 @@ echo $html;
 
 
 ?>
-
-
