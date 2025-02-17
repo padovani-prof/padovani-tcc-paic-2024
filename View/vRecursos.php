@@ -19,14 +19,12 @@
             <tr>
               <th>Nome</th>
               <th>Operações</th>
-              
-              <th>Ver Log</th>
               <th>Checklist</th>
               <th>Permissão</th>
             </tr> 
             {{recursos}}
         </table>
-       
+       <p id="resposta-{{repos}}">{{msg}}</p> 
 
         <div>
           <a href="cMenu.php"><input type="button" value="Voltar"></a>
