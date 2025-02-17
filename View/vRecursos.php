@@ -37,7 +37,6 @@
                  
       </section>  
 
-      <p id="resposta-{{repos}}">{{msg}}</p>
     
     <script src="script.js"></script>
 </body>
