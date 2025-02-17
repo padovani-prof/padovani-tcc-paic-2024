@@ -1,21 +1,9 @@
 <?php 
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
 
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_retir_devoluc');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
-
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'cad_retir_devoluc', 2);
 
 include 'Model/mFormulariorRetirada.php';
 include 'Model/mDisponibilidade.php';
@@ -37,29 +25,33 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
     $data_devolução = new DateTime("$data $hora_fim");
 
     // dados validos
-    if(mb_strlen($hora_fim)==5  and $data_atual < $data_devolução )
+
+    if(mb_strlen($hora_fim)==5  and $data_atual < $data_devolução and $recurso != 'NULL' and $retirante != 'NULL')
     {
         $hora_ini =  $data_atual->format('H:i:s');
         $hora_fim = $hora_fim.':00';
-        
-
         // verificar se o recurso não está reservado
         $disponives = Disponibilidade([$data, $hora_ini, $hora_fim], [], [$recurso]);
-        if (count($disponives)>0)
+        $sua_reserva = verificar_reserva_do_retirante([$data, $hora_ini, $hora_fim], $retirante, $recurso);
+        if (count($disponives)> 0 or $sua_reserva)
         {
             $data_hora = $data.' '.$hora_ini;
             $tudo_certo = insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim,'R');
-            if($tudo_certo== true)
+            if($tudo_certo==true)
             {
-                $msg = 'Recurso Reservado com Sucesso!';
+                $msg = 'Recurso retirado com Sucesso!';
                 $id_msg = 'sucesso'; 
             }  
-        }else{
-            $msg = 'Recurso já foi reservado';
+        }
+        else{
+            $msg = 'Esse recurso está reservado para outro úsuario.';
 
         }
+        
+        
     }else{
-        $msg = 'Horário de devolução ínvalido.'; 
+        
+        $msg = (mb_strlen($hora_fim)!=5  or $recurso == 'NULL' or $retirante == 'NULL')?'Por favor preenxa todos os dados. ':' Horário de devolução ínvalido.'; 
     }
     
 }
@@ -75,7 +67,6 @@ $html = str_replace('{{recursos}}',$opicoes_recurso , $html);
 $html = str_replace('{{mensagem}}',$msg, $html);
 
 echo $html;
-
 ?>
 
 
