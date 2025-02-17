@@ -14,14 +14,12 @@
     <table border="1">
       <tr>
         <th>Nome</th>
-        <th>Alterar</th>
-        <th>Apagar</th>
+        <th>Operações</th>
+        
       </tr>
           {{Categoria}}
-
-    <p id="mensagem-{{retorno}}">{{mensagem}}</p>
-        
   </table>
+  <p id="mensagem-{{retorno}}">{{mensagem}}</p>
   <a href="cFormularioPeriodo.php"><input type="button" value="Novo"></a>
   <a href="cMenu.php"><input type="button" value="Voltar"></a>
       
