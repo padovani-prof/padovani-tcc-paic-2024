@@ -1,5 +1,10 @@
 <?php
 
+include_once 'Model/mVerificacao_acesso.php';
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
+
+
 include 'Model/mFormulariorRetirada.php';
 include  'Model/mReservaConjunta.php';
 
