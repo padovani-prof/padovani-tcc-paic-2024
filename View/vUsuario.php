@@ -15,9 +15,11 @@
           <th>Alterar</th>
           <th>Apagar</th>
         </tr>
-        {{usuarios}}
+        <tbody>
+            {{usuarios}}
+        </tbody>  
       </table>
-
+        <p id="{{resp}}">{{msg}}</p>
 
       <a href="cMenu.php"><button>Voltar</button></a>
       
