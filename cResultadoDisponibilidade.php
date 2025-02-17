@@ -1,61 +1,11 @@
 <?php 
 
-// cResultadoDisponibilidade.php
 
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+include_once 'Model/mVerificacao_acesso.php';
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 
-
-function transformar_em_lista($str)
-
-{
-    $lista  = explode(',', $str);
-    for ($i=0; $i < count($lista); $i++) { 
-        $dado =  str_replace('[','',$lista[$i]);
-        $dado =  str_replace(']','',$dado);
-        $dado = str_replace('"', '',$dado);
-
-        $lista[$i] = $dado;
-
-    }
-    return $lista;
-}
-
-
-
-function chaves($lista)
-{
-    $lista_chaves = array();
-    if(count($lista)>=3)
-    {
-        
-        for ($i=0; $i < count($lista); $i = $i + 3) 
-        { 
-            $lista_chaves[] = $lista[$i+2];
-        }
-    }
-    return $lista_chaves;
-
-}
-
-function ta_livre($codigo, $data, $h_ini, $h_fim, $disponives)
-{
-    
-    foreach($disponives as $livre)
-    {
-        if($livre['codigo_recurso']===$codigo and trim($livre["data_alvo"])=== trim($data) and trim($livre['hora_inicial_alvo'])===trim($h_ini) and trim($livre['hora_final_alvo'])===trim($h_fim))
-        {
-            return true;
-        }
-    }
-    return false;
-}
 
 include_once 'Model/mDisponibilidade.php';
 $html = file_get_contents('View/vResultadoDisponibilidade.php');
@@ -84,8 +34,10 @@ $coluna = '';
 
 for($i = 0; $i < count($periodos); $i += 3)
 {
+    // 01/10/2024 das 12:00:00 às 15:00:00
+
     $data = explode('-', $periodos[$i]);
-    $coluna = $coluna.'<th>'. $periodos[$i + 1] . ' até ' . $periodos[$i+2].' de '.$data[2].'/'.$data[1].'/'.$data[0].'</th>';
+    $coluna = $coluna.'<th>'.$data[2].'/'.$data[1].'/'.$data[0].' das '. $periodos[$i + 1] . ' ás ' . $periodos[$i+2].'</th>';
 }
 
 
@@ -114,15 +66,6 @@ for ($i=0; $i < count($recurso_catego); $i++)
     }
     $recurs_dados .= '</tr>';
 }
-
-
-/*
-// SELECT rec.codigo AS codigo_recurso, rec.nome AS nome_recurso FROM recurso rec WHERE rec.codigo IN (1) OR rec.codigo_categoria IN (1);
-
-SELECT rec.codigo AS codigo_recurso, rec.nome AS nome_recurso FROM sgrp.recurso rec WHERE rec.codigo IN (1) OR rec.codigo_categoria IN (1)
-*/
-
-
 
 $html = str_replace('{{Colunas}}',$coluna,$html);
 $html = str_replace('{{Disponibilidades}}', $recurs_dados, $html);
