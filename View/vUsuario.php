@@ -12,8 +12,7 @@
         <tr>
           <th>Nome</th>
           <th>E-mail:</th>
-          <th>Alterar</th>
-          <th>Apagar</th>
+          <th>Operações</th>
         </tr>
         <tbody>
             {{usuarios}}
