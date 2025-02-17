@@ -69,13 +69,67 @@ function insere_periodo($nome, $data_ini, $data_final)
 }
 
 
+function mandar_dados($chave){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulata = $conecxao->query("SELECT * from periodo where codigo=$chave");
+    $resulata = $resulata->fetch_assoc();
+    return $resulata;
+
+}
+
+function atualizar_periodo($chave, $nome, $dataIn, $dataFim){
+
+    include 'confg_banco.php';
+
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    if(!$conecxao->connect_error)
+    {
+        $resulta = $conecxao->query ("SELECT * FROM periodo WHERE nome='$nome' and codigo!=$chave ");
+        if ($resulta->num_rows == 0)
+        {
+            $conecxao->query ("UPDATE periodo set nome='$nome',  dt_inicial='$dataIn', dt_final='$dataFim' WHERE codigo=$chave");
+            return 0;
+            // salvo
+
+        }
+        else
+        {
+            return 1;
+            // nome repetido
+        }
+
+    }
+
+
+}
+
+
+function Existe_esse_periodo($chave){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulata = $conecxao->query("SELECT * from periodo where codigo=$chave");
+    if($resulata->num_rows == 0){
+        return false;
+    }
+    return true;
+
+}
 
 
 
 
+function Existe_essa_chave_na_tabela($chave, $tabela, $jogar_pra_onde){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulata = $conecxao->query("SELECT * from $tabela where codigo=$chave");
+    if($resulata->num_rows == 0){
+        header("Location: $jogar_pra_onde");
+        exit();
+    }
 
-
-
+}
 
 
 ?>
