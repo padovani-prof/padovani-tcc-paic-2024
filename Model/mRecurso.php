@@ -33,6 +33,7 @@ function tem_banco($categoria)
 
 function Validar_recurso($nome, $desc, $cCatego)
 {
+    
     // retorna se o dado é valido
 
    if ( mb_strlen($nome) < 3 or mb_strlen($nome) > 50) 
@@ -45,11 +46,12 @@ function Validar_recurso($nome, $desc, $cCatego)
         return 1; // passou do numero maximo de caracter da descrição
    }
    
-   
+
    if (tem_banco($cCatego) === false)
    {
         return 2; // categoria não consta no banco
    }
+   
    
    
    return true; // recurso valido
@@ -137,14 +139,48 @@ function Carregar_recursos()
 function apagar_recurso($chave_pri)
 {
    
+
+
     include 'confg_banco.php';
-    
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+
+
+    $resulata = $conecxao->query("SELECT * FROM retirada_devolucao where codigo_recurso=$chave_pri");
+    if($resulata->num_rows >0){
+        return 1; // possui retirada
+    }
+
+    $resulata = $conecxao->query("SELECT * FROM ensalamento where codigo_sala=$chave_pri");
+    if($resulata->num_rows >0){
+        return 2; // possui ensalamento
+    }
+
+    $resulata = $conecxao->query("SELECT * FROM reserva where codigo_recurso=$chave_pri");
+    if($resulata->num_rows > 0){
+        return 3;// possui reserva
+    }
     
+    
+    $conecxao->query("DELETE from checklist where codigo_recurso=$chave_pri");
+    $conecxao->query("DELETE from acesso_recurso where codigo_recurso=$chave_pri");
     $resulata = $conecxao->query("DELETE from recurso where codigo=$chave_pri");
-    return $resulata;
+    if($resulata == true){
+        return 0; // recurso apagado
+
+    }
+    
+    
 
 }
+
+
+
+
+
+
+
+
 
 function mandar_dados($chave){
     include 'confg_banco.php';
@@ -175,6 +211,7 @@ function atualizar_dados($chave, $nome, $descre, $cCatego){
 
 
 function verificar_atualizar($chave, $nome, $des, $cCatego){
+   
     $nome = trim(mb_strtoupper($nome));
     $descre = trim($des);
 
@@ -193,7 +230,16 @@ function verificar_atualizar($chave, $nome, $des, $cCatego){
 
 
    
-   
+function Existe_esse_recurso($chave){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulata = $conecxao->query("SELECT * from recurso where codigo=$chave");
+    if($resulata->num_rows == 0){
+        return false;
+    }
+    return true;
+
+}
 
 
    
