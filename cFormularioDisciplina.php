@@ -1,18 +1,9 @@
 <?php
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_disciplina');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'cad_disciplina', 2);
+
 
 
 include_once 'Model/mPeriodo.php';
@@ -22,11 +13,54 @@ $peri = '';
 $nome = '';
 $curso = '';
 $mens = '';
+$tipo_tela = '';
+$id_resp = 'nada';
+$tela = 'Cadastrar';
+
+include 'Model/mDisciplina.php';
+if(isset($_GET['codigo']) or isset($_GET['cod'])){
+    $id_resp = 'erro';
+    $tela = 'Atualizar';
+    if(isset($_GET['codigo'])){
+
+        $chave = $_GET['codigo'];
+        
+        $dados = mandar_informações($chave, 'disciplina');
+        $tipo_tela = '<input type="hidden" name="cod" value="'.$chave.'">';
+        $nome = $dados['nome'];
+        $curso = $dados['curso'];
+        $peri = $dados['codigo_periodo'];
+
+    }else{
+        
+        $chave = $_GET['cod'];
+        $tipo_tela = '<input type="hidden" name="cod" value="'.$chave.'">';
+        $nome = $_GET['nome'];
+        $curso = $_GET['curso'];
+        $peri = $_GET['periodo'];
+        $resp = atualizar_disciplina($chave, $nome, $curso, $peri);
+
+        if($resp==0)
+        {
+            $peri = '';
+            $nome = '';
+            $curso = '';
+            $id_resp = 'sucesso';
+        }
+    
+
+        $lMensa = ['Disciplina atualizada com Sucesso!!', 'Nome do curso inválido','Nome da diciplina inválido', 'Nome da diciplina já está cadastrada'];
 
 
-if(isset($_GET['salvar']))
+        $mens = $lMensa[$resp];
+
+    }
+    
+}
+
+else if(isset($_GET['salvar']))
 {
-    include 'Model/mDisciplina.php';
+    $id_resp = 'erro';
     $nome = $_GET['nome'];
     $curso = $_GET['curso'];
     $peri = $_GET['periodo'];
@@ -37,6 +71,7 @@ if(isset($_GET['salvar']))
         $peri = '';
         $nome = '';
         $curso = '';
+        $id_resp = 'sucesso';
     }
  
 
@@ -62,7 +97,9 @@ $html = str_replace('{{Camponome}}', $nome, $html);
 $html = str_replace('{{Campocurso}}', $curso, $html);
 $html = str_replace('{{Periodo}}', $op, $html);
 $html = str_replace('{{mensagem}}', $mens, $html);
-
+$html = str_replace('{{tipo_tela}}', $tipo_tela, $html);
+$html = str_replace('{{retorno}}', $id_resp, $html);
+$html = str_replace('{{tela}}', $tela, $html);
 
 echo $html;
 ?>
