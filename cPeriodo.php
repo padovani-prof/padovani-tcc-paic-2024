@@ -1,37 +1,31 @@
 <?php
 
-session_start();
-if(!isset($_SESSION['codigo_usuario']))
-{   
-    // Se o usuario não fez login jogue ele para logar
-    header('Location: cLogin.php?msg=Usuario desconectado!');
-    exit();
-}
+
 
 include_once 'Model/mVerificacao_acesso.php';
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'list_periodo');
-if ($verificar == false)
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+Esta_logado();
+verificação_acesso($_SESSION['codigo_usuario'], 'list_periodo', 2);
+
 
 include_once 'Model/mPeriodo.php';
 
 $men = '';
-$idmen = '';
+$idmen = 'nada';
 
 if(isset($_GET['apagar']))
 {
-    $cod_peri = $_GET['codigo_do_periodo'];
-    if (apagar_periodo($cod_peri) === true)
-    {
-        $men = 'Perido apagado com Sucesso!!';
-        $idmen = 'sucesso';
+    $chave = $_GET['codigo_do_periodo'];
+    Existe_essa_chave_na_tabela($chave, "periodo", "cPeriodo.php");
+    $men = apagar_periodo($chave);
+    $idmen = ($men)?'sucesso':'erro';
+    $men = ($men)?'Perido apagado com Sucesso!!':'Esse periodo não pode ser apagado pois está sendo referenciado na Disciplina.';
 
 
-    }
-
+}
+elseif(isset($_GET['atualizar'])){
+    $codigo = $_GET['codigo_do_periodo'];
+    header("Location: cFormularioPeriodo.php?codigo=$codigo");
+    exit();
 }
 
 $periodo = carrega_periodo();
@@ -41,13 +35,11 @@ $periodos = '<tbody>';
 foreach ($periodo as $nome)
 {
     $periodos = $periodos. '<tr>
-        <td>'
-            . $nome["nome"].
-        '</td>
-        <td> #altera </td>                                
+        <td>'. $nome["nome"].'</td>                           
         <td> 
             <form action="cPeriodo.php">   
                 <input type="hidden" name="codigo_do_periodo" value="' .$nome['codigo'].  '"> 
+                <input type="submit" name="atualizar" value="Atualizar">
                 <input type="submit" name="apagar" value="Apagar">
             </form> 
         </td>
@@ -65,4 +57,3 @@ $html = str_replace('{{retorno}}', $idmen, $html); // id de estilização da men
 $html = str_replace('{{Categoria}}', $periodos, $html);
 echo $html; // Exibe o HTML atualizado
 ?>
-
