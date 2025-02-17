@@ -12,7 +12,7 @@
 
 
   <section>
-    
+  <p id="mensagem-{{retorno}}">{{mensagem}}</p>  
     <form action="cReservas.php">  
       <div>
         <table border="1">  
@@ -33,7 +33,7 @@
         <a href="cFormularioReserva.php"><input type="button" value="Nova Reserva" name="btnNovaReserva"></a>
       </div>
      
-    <p id="mensagem-{{retorno}}">{{mensagem}}</p>  
+    
     </form> 
 
     <a href="cMenu.php"><input type="button" value="Voltar"></a> 
