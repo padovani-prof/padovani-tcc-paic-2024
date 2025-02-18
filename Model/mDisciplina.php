@@ -41,7 +41,7 @@ function carrega_disciplina()
 
 
 
-function Validar_recurso($nome, $curso)
+function Validar_recurso($nome, $curso, $peri)
 {
     // retorna se o dado é valido
 
@@ -53,6 +53,9 @@ function Validar_recurso($nome, $curso)
    if (mb_strlen($curso) > 100  or (mb_strlen($curso) < 5 ))
    {
         return 1; // nome do curso invalido
+   }
+   if($peri == 'NULL'){
+        return 4;
    }
    
    
@@ -69,7 +72,7 @@ function insere_disciplina($nome, $curso, $codi_pere)
     // Trata os dados
     $nome = mb_strtoupper(trim($nome));
     $curso = mb_strtoupper(trim($curso));
-    $validar = Validar_recurso($nome, $curso);
+    $validar = Validar_recurso($nome, $curso, $codi_pere);
     
     if ($validar === true)
     {
@@ -116,7 +119,7 @@ function atualizar_disciplina($chave, $nome, $curso, $peri){
      // Trata os dados
      $nome = mb_strtoupper(trim($nome));
      $curso = mb_strtoupper(trim($curso));
-     $validar = Validar_recurso($nome, $curso);
+     $validar = Validar_recurso($nome, $curso, $peri);
      
      if ($validar === true)
      {
