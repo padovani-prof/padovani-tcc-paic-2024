@@ -7,7 +7,7 @@ verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 
 include 'Model/mFormulariorRetirada.php';
 include  'Model/mReservaConjunta.php';
-
+$dados = $_GET['marcas'];
 $marca_ult = '';
 $marca_agen = '';
 
@@ -43,8 +43,15 @@ if(isset($_GET['reservar'])){
     }
     
     
+}else{
+    
+    $dados = string_pra_lista($dados);
 }
-$dados = $_GET['marcas'];
+
+
+
+
+
 $html = file_get_contents('View/vReservaConjunta.php');
 $usuarios =  listar_usuarios();
 $usuarios_agendador = mandar_options($usuarios, $marca_agen);

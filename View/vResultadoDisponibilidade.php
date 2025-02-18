@@ -12,7 +12,7 @@
 
   <section>
     <div>
-      <form action="cReservaConjunta.php">
+      <form action="cResultadoDisponibilidade.php">
         <table border="1">
           <tr>
             <th>Recurso</th>
@@ -21,9 +21,17 @@
           <tbody>
             {{Disponibilidades}}
           </tbody>
+
+          {{cate}}
+
+          {{recu}}
+
+          {{periodo}}
+          
           
       </table>
-      <input type="submit" value="Reservar">
+      <p id='erro'>{{msg}}</p>
+      <input type="submit" value="Reservar" name="reserva">
       </form>
       
     </div>    

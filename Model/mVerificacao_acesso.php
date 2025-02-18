@@ -54,9 +54,11 @@ function mandar_options($lista, $marcar=''){
 
     $opt = '<option value="NULL">...</option>';
     
+    
         foreach($lista as $dados)
         {
             if($marcar==$dados['codigo']){
+               
                 $opt .= '<option selected value="'. $dados['codigo'].'">'.mb_strtoupper($dados['nome'] ) .'</option>'; 
 
             }else{

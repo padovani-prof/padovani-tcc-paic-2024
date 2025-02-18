@@ -104,6 +104,24 @@ function Reserva_conjunta ($dados, $agendador, $utilizador, $justific){
     }
 }
 
+
+function string_pra_lista($string){
+    $string = str_replace('[', '', $string);
+    $string = str_replace(']', '',$string);
+    $string = str_replace('"', '', $string);
+    $string = explode(',', $string);
+    $dado = []; 
+    // esta removendo da estring os simbolos
+    for ($i=0; $i < count($string); $i+=5) { 
+
+        $dado[] = $string[$i+0].','.$string[$i+1].','.$string[$i+2].','.$string[$i+3].','.$string[$i+4];
+        
+    }
+    return $dado;
+
+
+}
+
 ?>
 
 

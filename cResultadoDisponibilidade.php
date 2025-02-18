@@ -11,15 +11,37 @@ include_once 'Model/mDisponibilidade.php';
 $html = file_get_contents('View/vResultadoDisponibilidade.php');
 
 
+$msg = '';
 
-$categorias =  $_GET['categorias'];
-$recursos = $_GET['recursos'];
-$periodos = $_GET['periodos'];
+if(!isset($_GET['reserva'])){
+    $categorias =  $_GET['categorias'];
+    $recursos = $_GET['recursos'];
+    $periodos = $_GET['periodos'];
 
 
-$categorias = transformar_em_lista($categorias);
-$recursos = transformar_em_lista($recursos);
-$periodos = transformar_em_lista($periodos);
+    $categorias = transformar_em_lista($categorias);
+    $recursos = transformar_em_lista($recursos);
+    $periodos = transformar_em_lista($periodos);
+
+}
+else if(isset($_GET['marcas'])){
+    $dados = $_GET['marcas'];
+    header("Location: cReservaConjunta.php?marcas=".urlencode(json_encode($dados)));
+    exit();
+    
+}else{
+    $msg = 'Por favor selecione algum recurso.';
+    $categorias =  $_GET['categorias'];
+    $recursos = $_GET['recursos'];
+    $periodos = $_GET['periodos'];
+}
+
+
+$hid_recu = mandar_hindem($recursos, 'recursos[]');
+$hid_cate = mandar_hindem($periodos, 'periodos[]');
+$hid_peri = mandar_hindem($categorias, 'categorias[]');
+
+
 
 
 $chaves_cate = chaves($categorias);
@@ -67,6 +89,10 @@ for ($i=0; $i < count($recurso_catego); $i++)
     $recurs_dados .= '</tr>';
 }
 
+$html = str_replace('{{msg}}',$msg, $html);
+$html = str_replace('{{cate}}',$hid_cate, $html);
+$html = str_replace('{{recu}}', $hid_recu, $html);
+$html = str_replace('{{periodo}}',$hid_peri, $html);
 $html = str_replace('{{Colunas}}',$coluna,$html);
 $html = str_replace('{{Disponibilidades}}', $recurs_dados, $html);
 

@@ -168,4 +168,16 @@ function ta_livre($codigo, $data, $h_ini, $h_fim, $disponives)
     }
     return false;
 }
+
+
+
+function mandar_hindem($lista, $name){
+    $inpu = ''; 
+    foreach($lista as $dado){
+        $inpu.="<input type='hidden' name='$name' value='$dado'>";
+    }
+    return $inpu;
+    
+
+}
 ?>
