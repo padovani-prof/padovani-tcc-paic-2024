@@ -57,7 +57,7 @@ function dados_hidem($dados){
 
     $ht_dados = '';
     foreach($dados as $dado){
-        $ht_dados.= '<input type="hidden" name="dados[]" value="'. $dado.'" >';
+        $ht_dados.= '<input type="hidden" name="marcas[]" value="'. $dado.'" >';
     }
     return $ht_dados;
 }
