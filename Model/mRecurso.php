@@ -257,6 +257,16 @@ function Existe_esse_recurso($chave){
 
 
    
+function Carregar_recursos_dados(){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $conecxao->query("SELECT * from recurso");
+    $dados_recurso = [];
+    while ($recurso = $resulta->fetch_assoc()){
+        $dados_recurso[] = $recurso;
+    }
+    return $dados_recurso;
+}
 
 
 
