@@ -123,13 +123,27 @@ function Carregar_recursos()
     // Executar a consulta
     $resultado = $conecxao->query("SELECT * FROM recurso");
 
-    $todos_dados = [];
+    $recursos = '';
 
-    while ($linha = $resultado->fetch_assoc())
+    // Substitui os recursos no template HTML
+    while ($nome = $resultado->fetch_assoc())
     {
-        $todos_dados[] = $linha;
+        // onclick="deseja_apagar()">  chama a função de java escripit
+        $recursos .= '<tr>
+        <td>'.mb_strtoupper($nome["nome"]).'</td>
+        <td> <form action="cRecursos.php"> 
+                <input type="hidden" name="codigo_do_recurso" value="' .$nome['codigo'].'"> 
+
+                <input class="btn btn-outline-secondary" type="submit" name="altera" value="Alterar">&nbsp;
+                <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
+            </form> 
+        </td>
+        <td> <a href="cChecklist.php?codigo=' . $nome["codigo"] . ' "> Checklist</a> </td>
+        <td> <a href="cPermissaoRecurso.php?codigo_recurso=' . $nome["codigo"] . ' ">Permissões</a> </td>
+    </tr>';
+       
     }
-    return $todos_dados; // retorna todos os daddos da tabela recurso do banco em formato de lista
+    return $recursos; // retorna os dados em html
    
     
     
