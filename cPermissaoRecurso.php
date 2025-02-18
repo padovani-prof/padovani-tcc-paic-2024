@@ -5,155 +5,108 @@ include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'adm_perm_recurso', 2);
 # vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
-
-
 include_once 'Model/mPermissao.php';
+$recurso_codigo  = $_GET['codigo_recurso'];
+Existe_essa_chave_na_tabela($recurso_codigo , 'recurso', 'cRecursos.php');// verifica se existe a chave do recurso
 $html = file_get_contents('View/vPermissao.php');
 
-$perfi = '';
-$mensAnom = '';
-$id_resp = 'nada';
 
 
-if (isset($_GET['salvar']))
-{
-
-    $dia_semana =  dias_da_semana();
-    
-
-
-    $codigo =  $_GET['codi_recurso'];
-    Existe_essa_chave_na_tabela($codigo, 'recurso', 'cRecursos.php');
-    $perfi = $_GET['perfio_usuario'];
-    $h_ini = $_GET['hora_ini'];
-    $h_fim = $_GET['hora_fim'];
-    $d_ini = $_GET['data_ini'];
-    $d_fim =  $_GET['data_fim'];
+$marcar = '';
+$id_msg = 'erro';
+$msg = '';
+$hora_ini = '';
+$hora_fim = '';
+$data_ini = '';
+$data_fim = '';
+$tabela = '';
 
 
-    if((isset($_GET['codi_recurso'])) and isset($_GET['perfio_usuario']) and (!$_GET['hora_ini'] == '') and (!$_GET['hora_fim']== '') and (!$_GET['data_ini']== '' and (!$dia_semana == '')))
-    {
-        // salva no banco 
-        $d = 's';
-        if ($d_fim === '') 
-        {
-            $d_fim = NULL;
-            $d = 'd';
+if(isset($_GET['salvar'])){
+    // VERIFICAR DADOS
+    $marcar = $_GET['perfio_usuario'];
+    $hora_ini = $_GET['hora_ini'];
+    $hora_fim = $_GET['hora_fim'];
+    $semanas = dias_da_semana();
+    $data_ini = $_GET['data_ini'];
+    $data_fim = $_GET['data_fim'];
+
+   
+
+    if($marcar != 'NULL' and mb_strlen($hora_ini)==5  and mb_strlen($hora_fim)==5 and mb_strlen($data_ini)==10 and $semanas !=''){
+        
+        date_default_timezone_set('America/Manaus'); 
+        $periodo_H_ini = new DateTime("$data_ini $hora_ini");
+        $periodo_H_fim = new DateTime("$data_ini $hora_fim");
+        $data_atual = new DateTime();
+        $data_ine = new DateTime("$data_ini 23:59");
+        if($periodo_H_ini > $periodo_H_fim ){
+            
+            // horario inicial invalido
+            $msg = 'Não podemos cadastrar o horario final que seja aterior ao horario inicial.';
+
+        }else if($data_atual > $data_ine){
+            
+            // data inicial invalida
+            $msg = 'Não podemos cadastrar uma data inicial que seja anterior a hoje.';
         }
+        else{
+            $data_ine = new DateTime("$data_ini 00:00");
+            $periodo_D_fim = new DateTime("$data_fim 23:59");
+            if(mb_strlen($data_fim)==10 and $periodo_D_fim < $data_ine){
+                    // verificação da data final
+                    $msg = 'Não podemos cadastrar uma data final que seja anterior a hoje ou que seja anterior a data inicial.';   
+            }else{
+                cadastra_acesso_recurso($recurso_codigo, $marcar, $hora_ini, $hora_fim, $semanas, $data_ini, $data_fim);
         
-        
-        
-        cadastra_acesso_recurso($codigo, $perfi, $h_ini, $h_fim,$dia_semana, $d_ini, $d_fim, $d );
-        $mensAnom = 'Permissão de recurso salvo com Sucesso!!'; // salvo co Sucesso
-        $id_resp='sucesso';
-        $perfi = '';  
-        
-    }
-    else
-    {
-        // Deixou algun campo vazio
-    
-        $semana = str_split($dia_semana);
+                $msg = 'Acesso ao recurso cadastrado com sucesso.';
+                $id_msg = 'sucesso';
 
-        $cont = 0;
-        foreach ($semana as $dia) 
-        {
-            if($dia=='S')
-            {
-                $html = str_replace("{{{$cont}}}", 'checked', $html);
+                $hora_ini = '';
+                $hora_fim = '';
+                $data_ini = '';
+                $data_fim = '';
+                $marcar = '';
             }
-            $cont ++;
-           
+            
         }
-
-        $mensAnom = 'Por favor preecha todos os campos.';
-        $id_resp = 'erro';
-
-        $html = str_replace('{{horaInicial}}', $h_ini, $html);
-        $html = str_replace('{{horaFinal}}}', $h_fim, $html);
-        $html = str_replace('{{dataIni}}}', $d_ini, $html);
-        $html = str_replace('{{dataFinal}}}', $d_fim, $html);
-
-        
-        
-
+    }else{
+        // todos os dados não foram preechidos
+        $msg = 'Por favor peenxa todos os dados que são exenciais para o cadastro.';
+    }
+    if($id_msg=='erro' and strlen($semanas) !=0){
+        $html = marcar_semana($semanas, $html);
+        // se foi marcado a semana
         
     }
-}
-
-//Açessou  Permissão de Recurso pela primeira / vai apagar
-elseif (isset($_GET['apagar']))
-{
-    $codigo = $_GET['codigo_recurso'];
-    Existe_essa_chave_na_tabela($codigo, 'recurso', 'cRecursos.php');
-    $acesso_recurso_apaga = $_GET['codigo_acesso_ao_recurso'];
-    Existe_essa_chave_na_tabela($acesso_recurso_apaga, 'acesso_recurso', "cPermissaoRecurso.php?codigo=$codigo");
-    
-    apagar_acesso_ao_recurso($acesso_recurso_apaga);
-}else{
-    $codigo = $_GET['codigo'];
-    Existe_essa_chave_na_tabela($codigo, 'recurso', 'cRecursos.php');
-
+}else if(isset($_GET['apagar'])){
+    // apagar
+    verificação_acesso($_SESSION['codigo_usuario'], 'adm_perm_recurso', 2);
+    $chave_ac = $_GET['codigo_acesso_ao_recurso'];
+    apagar_acesso_ao_recurso($chave_ac);
+    $msg = 'Acesso ao recurso removido com sucesso.';
+    $id_msg = 'sucesso';
 }
 
 
 
+$nome_recurso =  nome_recurso($recurso_codigo); 
+$tabela = Tabela_acesso_recurso_carrega($recurso_codigo);
+$opt = opition($marcar);
 
+$html = str_replace('{{permissoes}}', $tabela, $html);
+$html = str_replace('{{perfis}}',$opt, $html);
+$html = str_replace('{{nomerecurso}}', $nome_recurso, $html);
 
-$recurso = carrega_recurso($codigo);
-$perfil_usu =  carrega_perfil_usuario();
-$acessos = carrega_acesso_recurso($codigo);
+$html = str_replace('{{rep}}', $id_msg, $html);
+$html = str_replace('{{mensagemAnomalia}}', $msg, $html);
+$html = str_replace('{{codigorecurso}}', $recurso_codigo, $html);
 
-
-$usua = '';
-$perfil_nomes = [];
-
-foreach ($perfil_usu as $linha)
-{
-    
-
-
-    $usua = $usua. '<option value="' .$linha['codigo'].'"' . ($linha['codigo'] ==  $perfi? ' selected' : '') . '> '.$linha['nome'].'</option>';
-    $perfil_nomes[] = $linha['nome'];
-}
-
-
-
-
-$informa = '<tbody>';
-foreach($acessos as $linha)
-{
-    $informa = $informa . '<tr>';
-    $informa = $informa . '<td> '. $perfil_nomes[$linha['codigo_perfil'] - 1] .'</td>'; // coluna nome
-
-    $informa = $informa . '<td> '.$linha['hr_inicial'] . ' - '. $linha['hr_final'].'</td>'; // coluna horarios
-
-    $informa = $informa . '<td> <form action="cPermissaoRecurso.php">   
-                                    <input type="hidden" name="codigo_recurso" value="' .$linha['codigo_recurso'].  '"> 
-                                    <input type="hidden" name="codigo_acesso_ao_recurso" value="' .$linha['codigo'].  '"> 
-                                    <input type="submit" name="apagar" value="Apagar">
-                                    </form> 
-                            </td>'; // coluna de ação para apagar
-    $informa = $informa . '<tr/>';
-    
-}
-$informa = $informa.'<tbody>';
-
-
-
-$html = str_replace('{{mensagemAnomalia}}', $mensAnom, $html);
-$html = str_replace('{{rep}}', $id_resp, $html);
-$html = str_replace('{{nomerecurso}}', $recurso['nome'], $html);
-$html = str_replace('{{perfis}}', $usua, $html);
-$html = str_replace('{{permissoes}}', $informa, $html);
-$html = str_replace('{{codigo_recurso_atual}}', $codigo , $html);
+$html = str_replace('{{horaInicial}}', $hora_ini, $html);
+$html = str_replace('{{horaFinal}}}', $hora_fim, $html);
+$html = str_replace('{{dataIni}}}', $data_ini, $html);
+$html = str_replace('{{dataFinal}}}', $data_fim, $html);
 
 echo $html;
-
-
-
-
-
-
-
 ?>
+
