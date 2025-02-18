@@ -27,30 +27,12 @@ if (isset($_GET['apagar']))
 }
 
 
-$disciplina = carrega_disciplina();
+$disciplinas = carrega_disciplina();
+$disciplinas = tabela_disciplina($disciplinas);
 
 
 
-// Substitui os recursos no template HTML
-$disciplinas = '<tbody>';
-foreach ($disciplina as $nome)
-{
-    $disciplinas = $disciplinas. '<tr>
-        <td>'. $nome["nome"].'</td>                             
-        <td> 
-            <form action="cDisciplina.php">
-                <input type="hidden" name="codigoPrim" value="'.$nome['codigo']. '">
-                <input type="submit" value="Alterar" name="alterar">
-                <input type="submit" value="Apagar" name="apagar">
-            </form> 
-        </td>
-    </tr>';
 
-}
-
-
-
-$disciplinas = $disciplinas. '<tbody/>';
 
 $html = str_replace('{{resp}}', $id_msg, $html);
 $html = str_replace('{{msg}}', $msg, $html);
