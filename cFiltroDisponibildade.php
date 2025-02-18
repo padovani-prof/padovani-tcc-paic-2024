@@ -12,7 +12,15 @@ include_once 'Model/mRecurso.php';
 
 
 $categorias = carrega_categorias_recurso();
-$recursos = Carregar_recursos();
+$recursos = Carregar_recursos_dados();
+
+
+$op_recuso = '';
+   foreach($recursos as $recurso)
+   {
+      $op_recuso .='<option value="Recurso,' .$recurso['nome'].',' .$recurso['codigo']  .'">  '.$recurso['nome'].' </option>'; 
+   }
+
 $mensagem = '';
 
 $id_erro = 'erro';
@@ -153,15 +161,7 @@ if(!isset($_GET['lsrecursos-categorias']))
       
 
    // carregando as opções recuso
-   $op_recuso = '';
-   foreach($recursos as $recurso)
-   {
-
-      $op_recuso .='<option value="Recurso,' .$recurso['nome'].',' .$recurso['codigo']  .'">  '.$recurso['nome'].' </option>';
-
-      
-      
-   }
+   
 
 }
 else
