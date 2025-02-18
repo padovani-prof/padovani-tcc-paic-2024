@@ -29,12 +29,13 @@
         </select><br>
 
         <label for="">Justificativa: </label>
-        <input type="text" name="justfc"><br>
+        <input type="text" name="justfc" value="{{just}}"><br>
 
         <label for="">Agendado para:</label>
             <select name="utilizador" id="">
             {{usuario}}
         </select>
+        <p id="erro">{{msg}}</p>
         {{dados}}
         <div>
             <input type="submit" name="reservar" value="Reservar">
