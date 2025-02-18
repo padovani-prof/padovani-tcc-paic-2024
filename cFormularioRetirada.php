@@ -12,16 +12,24 @@ $html = file_get_contents('View/vFormulariorRetirada.php');
 
 $msg = '';
 $id_msg = 'erro'; 
+$marca_recu = '';
+$marca_reti = '';
+$mar_hora = '';
 if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
 {
     $recurso = $_GET['recurso'];
     $retirante = $_GET['retirante'];
+    $hora_fim = $_GET['hora_final'];
+    $marca_recu = $recurso;
+    $marca_reti = $retirante;
+    $mar_hora = $hora_fim;
+
     date_default_timezone_set('America/Manaus'); 
     $data_atual = new DateTime();
 
     $data = new DateTime();
     $data = $data->format('Y/m/d');
-    $hora_fim = $_GET['hora_final'];
+    
     $data_devolução = new DateTime("$data $hora_fim");
 
     // dados validos
@@ -41,6 +49,9 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
             {
                 $msg = 'Recurso retirado com Sucesso!';
                 $id_msg = 'sucesso'; 
+                $marca_recu = '';
+                $marca_reti = '';
+                $mar_hora = '';
             }  
         }
         else{
@@ -59,12 +70,16 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
 $recursos_reserva = carrega_retirada_disponivel();
 $retirantes = listar_usuarios();
 
-$opicoes_recurso = optios($recursos_reserva);
-$opicoes_retirantes = optios($retirantes);
+$opicoes_recurso = mandar_options($recursos_reserva, $marca_recu);
+$opicoes_retirantes = mandar_options($retirantes, $marca_reti);
 
 $html = str_replace('{{retirante}}', $opicoes_retirantes, $html);
 $html = str_replace('{{recursos}}',$opicoes_recurso , $html);
 $html = str_replace('{{mensagem}}',$msg, $html);
+
+$html = str_replace('{{hora_fim}}',$mar_hora, $html);
+
+
 
 echo $html;
 ?>
