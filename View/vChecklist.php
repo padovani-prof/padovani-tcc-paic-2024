@@ -17,7 +17,7 @@
             <div>
                 <p>Recurso: {{nomerecurso}}</p>  
                 <label for="txtitem">Item:</label>
-                <input type="text" name="txtitem" id="txtitem">
+                <input type="text" name="txtitem" id="txtitem" value="{{item}}">
                 <input type="hidden" name='codigo' value="{{codigo}}">
               </div>
 
@@ -27,15 +27,17 @@
 
 
           </form>
-           
+           <p id="resp-{{respe}}">{{msg}}</p>
 
             <table border="1">
               <tr>
                 <th>Itens</th>
                 <th>Ação</th>
               </tr>
-
-              {{itens}}
+              <tbody>
+                  {{itens}}
+              </tbody>
+              
             </table>
             
 
