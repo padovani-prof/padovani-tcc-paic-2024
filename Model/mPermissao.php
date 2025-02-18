@@ -3,19 +3,17 @@ function dias_da_semana()
 {
     $semana = '';
     $cont = 0;
- 
-    
     for ($i=0; $i < 7; $i++){
         if (isset($_GET["dia$i"]))
         {
-            $semana = $semana.'S';
+            $semana = $semana.'S,';
 
             
         }
         else
         {
             $cont +=1;
-            $semana = $semana.'N';
+            $semana = $semana.'N,';
         }
     }
     if ($cont>=7)
@@ -30,7 +28,7 @@ function dias_da_semana()
 
 
 
-function cadastra_acesso_recurso($cod_re, $codigo_per, $h_ini, $h_fim, $lis_sema, $data_ini, $data_fim , $op)
+function cadastra_acesso_recurso($cod_re, $codigo_per, $h_ini, $h_fim, $lis_sema, $data_ini, $data_fim)
 {
     
     include 'confg_banco.php';
@@ -38,12 +36,12 @@ function cadastra_acesso_recurso($cod_re, $codigo_per, $h_ini, $h_fim, $lis_sema
 
     if(!$conecxao->connect_error)
     {
-        $resulta = $conecxao->prepare("INSERT INTO acesso_recurso (codigo_recurso, codigo_perfil, hr_inicial, hr_final, dias_semana, dt_inicial, dt_final) values (?, ?, ?, ?, ?, ?, ?)");
+        $lis_sema = str_replace(',','',$lis_sema);
 
+        $sql = "INSERT INTO acesso_recurso (codigo_recurso, codigo_perfil, hr_inicial, hr_final, dias_semana, dt_inicial, dt_final) values ($cod_re, $codigo_per, '$h_ini', ' $h_fim', '$lis_sema', '$data_ini', ".(strlen($data_fim) == 10?"'$data_fim'":"null" ).")";
 
-        $resulta->bind_param("iissss$op", $cod_re, $codigo_per, $h_ini, $h_fim, $lis_sema, $data_ini, $data_fim);
+        $resposta = $conecxao->query($sql);
         
-        $resulta->execute();
 
         
     }
@@ -51,58 +49,38 @@ function cadastra_acesso_recurso($cod_re, $codigo_per, $h_ini, $h_fim, $lis_sema
 
 }
 
-
-
-
-function carrega_perfil_usuario()
+function Tabela_acesso_recurso_carrega($codigo)
 {
-    
-    
-
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    $resultado = $conecxao->query("SELECT codigo, nome from perfil_usuario");
+            $resultado = $conecxao->query("SELECT perfil_usuario.nome as 'perfio', 
+            acesso_recurso.hr_inicial as 'ini', 
+            acesso_recurso.hr_final as 'fim', 
+            acesso_recurso.codigo as 'cod'
+            FROM `acesso_recurso` 
+        INNER JOIN perfil_usuario
+        on perfil_usuario.codigo = acesso_recurso.codigo_perfil
+        WHERE acesso_recurso.codigo_recurso =$codigo;");
 
-    $perfil = [];
-    while ($linha = $resultado->fetch_assoc())
+    $informa = '';
+    while ($dados = $resultado->fetch_assoc())
     {
-        $perfil[] = $linha;
+        $informa .= '<tr>';
+        $informa .= '<td> '. $dados ["perfio"].'</td>'; // coluna nome
+        $informa .= '<td> '.$dados ['ini'] . ' - '.$dados ['fim'].'</td>'; // coluna horarios
+        $informa .=  '<td> <form action="cPermissaoRecurso.php">   
+                        <input type="hidden" name="codigo_recurso" value="' .$codigo.'"> 
+                        <input type="hidden" name="codigo_acesso_ao_recurso" value="'.$dados['cod'].  '"> 
+                        <input type="submit" name="apagar" value="Apagar">
+                    </form> </td>'; // coluna de ação para apagar
+        $informa = $informa . '<tr/>';
+        
     }
-    // vai retorna uma lista com todas as informações do perfil de usuario
-    return $perfil;
-}
-
-
-function carrega_recurso($codigo)
-{
+        
     
-    include 'confg_banco.php';
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-
-    $resultado = $conecxao->query("SELECT nome from recurso where codigo=$codigo");
-
-    return $resultado->fetch_assoc();
-    // vai retorna uma lista com o nome do recurso
-
-}
-
-
-function carrega_acesso_recurso($codigo)
-{
-    include 'confg_banco.php';
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-
-    $resultado = $conecxao->query("SELECT * from acesso_recurso where codigo_recurso=$codigo");
-
-    $acesso_rec = [];
-    while ($linha = $resultado->fetch_assoc())
-    {
-        $acesso_rec[] = $linha;
-    }
-    // vai retorna uma lista com todas as informações dos acessos aos recursos
-    return $acesso_rec;
-}
+    return $informa;
+}  
 
 
 
@@ -110,7 +88,6 @@ function apagar_acesso_ao_recurso($chave_pri)
 {
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-
     $conecxao->query("DELETE from acesso_recurso where codigo=$chave_pri");
 
 }
@@ -126,4 +103,49 @@ function Existe_essa_chave_na_tabela($chave, $tabela, $jogar_pra_onde){
 
 }
 
+function opition($perfi){
+
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $lista = $conecxao->query("SELECT codigo, nome from perfil_usuario");
+
+    $usua = '<option value="NULL">...</option>';
+    while ($dados = $lista->fetch_assoc())
+    {
+
+        $usua .='<option value="' .$dados ['codigo'].'"' . ($dados ['codigo'] ==  $perfi? ' selected' : '') . '> '.$dados ['nome'].'</option>';
+    }
+    
+    return $usua;
+}
+
+
+function nome_recurso($codigo){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $lista = $conecxao->query("SELECT nome from recurso where codigo=$codigo;");
+    return $lista->fetch_assoc()['nome'];
+
+}
+
+
+
+
+function marcar_semana($semanas, $html){
+    $semanas = explode(',', $semanas);
+   
+    for ($i=0; $i < 7; $i++) { 
+        if($semanas[$i] == 'S'){
+            
+            $html = str_replace("{{{$i}}}", "checked", $html);
+        }
+    }
+    return $html;
+    
+
+}
+
+
+
 ?>
+
