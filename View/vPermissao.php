@@ -15,7 +15,7 @@
      <section> <!--Inicio Section-->
      
           <form action="cPermissaoRecurso.php">
-              <input type="hidden" name="codigorecurso" value="{{codigorecurso}}">
+              <input type="hidden" name="codigo_recurso" value="{{codigorecurso}}">
               <p>Recurso: {{nomerecurso}}</p>
 
               <div>
@@ -47,9 +47,6 @@
               <input type="date" name="data_ini" value="{{dataIni}}}" id="#">
               <label for="">Data Final:</label>
               <input type="date" name="data_fim" value="{{dataFinal}}}" id="#">
-              
-
-              <input type="hidden" name="codi_recurso" value="{{codigo_recurso_atual}}">
 
               <div>
                 <input type="submit" name="salvar" value="Salvar">
@@ -66,7 +63,10 @@
                 <th>Ação</th>
             </tr>
 
-            {{permissoes}}
+            <tbody>
+              {{permissoes}}
+            </tbody>
+            
             
           </table>
           
