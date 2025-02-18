@@ -10,7 +10,7 @@ function carrega_recurso($codigo)
 
     $resultado = $conecxao->query("SELECT nome from recurso where codigo=$codigo");
 
-    return $resultado->fetch_assoc();
+    return $resultado->fetch_assoc()['nome'];
     // vai retorna uma lista com o nome do recurso
 
 }
@@ -23,13 +23,21 @@ function cerrega_dados_checklist($codigo)
     $resultado = $conecxao->query("SELECT * from checklist where codigo_recurso= $codigo");
 
 
-    $dados = [];
+    $dados = '';
     while ($linha = $resultado->fetch_assoc())
     {
-        $dados[] = $linha;
+        $dados .='<tr>';
+        $dados .= '<td>  '.mb_strtoupper($linha['item']).'</td>';
+        $dados .='<td> <form action="cChecklist.php">   
+                                    <input type="hidden" name="codigo_item" value="' .$linha['codigo'].  '"> 
+                                    <input type="hidden" name="codigo" value="'  .$codigo.  '"> 
+                                    <input type="submit" name="apagar" value="Apagar">
+                                    </form> 
+                            </td>';
+        $dados .='</tr>';
     }
 
-    return $dados;
+    return $dados; // mada os dados em html
 
 }
 
