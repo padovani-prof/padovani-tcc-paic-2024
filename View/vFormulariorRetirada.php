@@ -26,8 +26,6 @@
               {{retirante}}
 
             </select>
-
-            
               <p>
                 Horário Final:
                 <input type="time" name="hora_final"  id="" value="{{hora_fim}}">
