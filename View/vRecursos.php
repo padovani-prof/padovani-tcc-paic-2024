@@ -21,8 +21,11 @@
               <th>Operações</th>
               <th>Checklist</th>
               <th>Permissão</th>
-            </tr> 
-            {{recursos}}
+            </tr>
+            <tbody>
+              {{recursos}}
+            </tbody> 
+            
         </table>
        <p id="resposta-{{repos}}">{{msg}}</p> 
 
