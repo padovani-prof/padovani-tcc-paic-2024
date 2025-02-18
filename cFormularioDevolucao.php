@@ -12,13 +12,17 @@ $recursos = carrega_recursos_emprestados();
 $msg = (count($recursos)==0)?'Nomento não temos nem um recurso emprestado.':'';
 $msg_resp = 'erro';
 
+$recurso = '';
+$devolvente = '';
+
 if(isset($_GET['btnConfirmar']))
 
 {
-        if($_GET['recurso']!='NULL' and  $_GET['devolvente'] !='NULL')
-    {
-        $recurso = $_GET['recurso'];
-        $devolvente = $_GET['devolvente'];
+    $recurso = $_GET['recurso'];
+    $devolvente = $_GET['devolvente'];
+        if($_GET['recurso']!='NULL' and  $_GET['devolvente'] !='NULL'){
+        
+
         date_default_timezone_set('America/Manaus'); 
         $data_atual = new DateTime();
         $data_hora = $data_atual->format('Y/m/d H:i:s');
@@ -29,20 +33,22 @@ if(isset($_GET['btnConfirmar']))
             $tudo_certo = insere_reserva_devolucao($devolvente, $recurso, $data_hora, $hora, "D");
             $msg = 'Recurso devolvido com Sucesso!';
             $msg_resp = 'sucesso';
+            $recurso = '';
+            $devolvente = '';
         }else
         {
-            $msg = 'Devolução ínvalida por retirantes diferente!';   
+            $msg = 'Devolução inválida, pois o retirante não é a mesma pessoa que está devolvendo.';   
         }
     }
     else {
-        $msg = 'Por favor preenxa todos os dados.';
+        $msg = 'Por favor adicione todas as informações.';
     }
 }
 
 
 $devolventes = listar_usuarios();
-$recursos = optios($recursos);
-$devolventes = optios($devolventes);
+$recursos = mandar_options($recursos, $recurso);
+$devolventes = mandar_options($devolventes, $devolvente);
 $html = str_replace('{{devolvente}}', $devolventes, $html);
 $html = str_replace('{{recursos}}', $recursos, $html);
 $html = str_replace('{{retorno}}', $msg_resp, $html);
