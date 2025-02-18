@@ -47,7 +47,7 @@ foreach ($recurso as $nome) {
 
         
         <td> <a href="cChecklist.php?codigo=' . $nome["codigo"] . ' "> Checklist</a> </td>
-        <td> <a href="cPermissaoRecurso.php?codigo=' . $nome["codigo"] . ' ">Permissões</a> </td>
+        <td> <a href="cPermissaoRecurso.php?codigo_recurso=' . $nome["codigo"] . ' ">Permissões</a> </td>
     </tr>';
     
 }
