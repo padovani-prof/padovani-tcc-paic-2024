@@ -17,7 +17,10 @@
         <th>Operações</th>
         
       </tr>
-          {{disciplinas}}
+      <tbody>
+        {{disciplinas}}
+      </tbody>
+          
 
       
   </table>
