@@ -9,9 +9,6 @@ function insere_reserva($justificativa, $usuario_agendador, $usuario_utilizador,
     $resulta = $conexao->query("SELECT LAST_INSERT_ID() as codigo;");
     $id = $resulta->fetch_assoc()['codigo'];
     return $id;
-
-    
-   
 }
 
 
@@ -54,7 +51,6 @@ function tabe_html($dados)
 
 
 function dados_hidem($dados){
-
     $ht_dados = '';
     foreach($dados as $dado){
         $ht_dados.= '<input type="hidden" name="marcas[]" value="'. $dado.'" >';
@@ -105,22 +101,7 @@ function Reserva_conjunta ($dados, $agendador, $utilizador, $justific){
 }
 
 
-function string_pra_lista($string){
-    $string = str_replace('[', '', $string);
-    $string = str_replace(']', '',$string);
-    $string = str_replace('"', '', $string);
-    $string = explode(',', $string);
-    $dado = []; 
-    // esta removendo da estring os simbolos
-    for ($i=0; $i < count($string); $i+=5) { 
 
-        $dado[] = $string[$i+0].','.$string[$i+1].','.$string[$i+2].','.$string[$i+3].','.$string[$i+4];
-        
-    }
-    return $dado;
-
-
-}
 
 ?>
 
