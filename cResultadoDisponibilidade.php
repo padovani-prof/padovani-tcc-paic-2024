@@ -17,11 +17,12 @@ if(!isset($_GET['reserva'])){
     $categorias =  $_GET['categorias'];
     $recursos = $_GET['recursos'];
     $periodos = $_GET['periodos'];
-
+    
 
     $categorias = transformar_em_lista($categorias);
-    $recursos = transformar_em_lista($recursos);
-    $periodos = transformar_em_lista($periodos);
+    $recursos =  transformar_em_lista($recursos);
+    $periodos = json_decode(urldecode($periodos));
+    
 
 }
 else if(isset($_GET['marcas'])){
@@ -30,7 +31,7 @@ else if(isset($_GET['marcas'])){
     exit();
     
 }else{
-    $msg = 'Por favor selecione algum recurso.';
+    $msg = 'Por favor selecione algum recurso disponivel.';
     $categorias =  $_GET['categorias'];
     $recursos = $_GET['recursos'];
     $periodos = $_GET['periodos'];
@@ -57,8 +58,8 @@ $coluna = '';
 for($i = 0; $i < count($periodos); $i += 3)
 {
     // 01/10/2024 das 12:00:00 às 15:00:00
-
     $data = explode('-', $periodos[$i]);
+
     $coluna = $coluna.'<th>'.$data[2].'/'.$data[1].'/'.$data[0].' das '. $periodos[$i + 1] . ' ás ' . $periodos[$i+2].'</th>';
 }
 
