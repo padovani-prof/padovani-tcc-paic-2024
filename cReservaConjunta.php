@@ -8,6 +8,7 @@ verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 include 'Model/mFormulariorRetirada.php';
 include  'Model/mReservaConjunta.php';
 $dados = $_GET['marcas'];
+
 $marca_ult = '';
 $marca_agen = '';
 
@@ -45,7 +46,11 @@ if(isset($_GET['reservar'])){
     
 }else{
     
-    $dados = string_pra_lista($dados);
+    
+
+    $dados = json_decode(urldecode($dados)); //transforma um array string para
+    
+    
 }
 
 
