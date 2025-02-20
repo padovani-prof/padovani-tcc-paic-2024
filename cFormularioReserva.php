@@ -6,7 +6,11 @@ include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'cad_reserva', 2);
 
+
+
 include_once 'Model/mReserva.php'; 
+
+include 'Model/mDisponibilidade.php';
 
 $html = file_get_contents('View/vFormularioReserva.php');
 
@@ -18,6 +22,8 @@ $mensagem = '';
 $recurso = '';
 $usuario_utilizador = '';
 $data_reserva = '';
+
+$id_retorno = 'erro';
 $lista_datas = isset($_GET['lista_datas']) ? json_decode(urldecode($_GET['lista_datas']), true) : [];
 
 
@@ -54,11 +60,13 @@ if (isset($_GET['btnSalvar'])) {
         'Data e hora são obrigatórios!',
         'Data não pode ser no passado!',
         'Hora inicial deve ser antes da hora final!',
-        'Reserva cadastrada com sucesso!'
+        'Reserva cadastrada com sucesso!',
+        'Este recurso já está reservado.'
     ];
     $mensagem = $mensagens[$resultado];
 
     if ($resultado == 5) {
+        $id_retorno = 'sucesso';
         $justificativa = '';
         $recurso = '';
         $usuario_utilizador = '';
@@ -152,6 +160,9 @@ $html = str_replace('{{Recursos}}', $sel_recursos, $html);
 $html = str_replace('{{Usuarios}}', $sel_usuarios, $html);
 $html = str_replace('{{Datas Reservas}}', $data_reserva, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);
+
+$html = str_replace('{{retorno}}', $id_retorno, $html);
+
 
 echo $html;
 ?>
