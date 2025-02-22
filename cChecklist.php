@@ -1,16 +1,34 @@
 <?php 
 
+function cerrega_dados_checklist($lista, $codigo){
+    $dados = '';
+    foreach($lista as $linha){
+        $dados .='<tr>';
+        $dados .= '<td>  '.mb_strtoupper($linha['item']).'</td>';
+        $dados .='<td> <form action="cChecklist.php">   
+                        <input type="hidden" name="codigo_item" value="' .$linha['codigo'].  '"> 
+                        <input type="hidden" name="codigo" value="' .$codigo.  '"> 
+                        <input type="submit" name="apagar" value="Apagar"></form> 
+                </td>';
+        $dados .='</tr>';
+
+    }
+    return $dados;
+        
+}
+
 
 include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'adm_checklist_rec', 2);
-
-
 include_once 'Model/mChecklist.php';
 
+
+
+
 $item = '';
-$msg = '';
-$id_msg = 'erro';
+$msg = (isset($_GET['msg']))?$_GET['msg']: '';
+$id_msg = (isset($_GET['msgId']))?$_GET['msgId']:'erro';
 $codigo = $_GET ['codigo'];
 Existe_essa_chave_na_tabela($codigo, 'recurso', "cRecursos.php");
 
@@ -18,10 +36,11 @@ if (isset($_GET['apagar']))
 {
     // apagar dado do check list
     $chave_pri = $_GET['codigo_item'];
-    Existe_essa_chave_na_tabela($chave_pri, 'checklist', "cChecklist.php?codigo=$codigo");
     apagar_acesso_ao_recurso($chave_pri);
     $msg = 'Item removido do recurso com Sucesso.';
     $id_msg = 'sucesso';
+    header("Location: cChecklist.php?msg=$msg&codigo=$codigo&msgId=$id_msg");
+    exit();
 
 }
 
@@ -32,7 +51,8 @@ else if(isset($_GET['adicionar'])){
         salva_no_banco($item, $codigo);
         $msg = 'Novo item adicionado ao recurso com Sucesso.';
         $id_msg = 'sucesso';
-        $item = '';
+        header("Location: cChecklist.php?msg=$msg&codigo=$codigo&msgId=$id_msg");
+        exit();
     }else{
         // erro
         $msg = 'O nome do item precisa ter no minimo 3 caracter.';
@@ -42,7 +62,8 @@ else if(isset($_GET['adicionar'])){
 }
 
 $recurso_nome = carrega_recurso($codigo);
-$dados_checlist = cerrega_dados_checklist($codigo);
+$lista = carrega_dados($codigo);
+$dados_checlist = cerrega_dados_checklist($lista, $codigo);
 
 
 $html = file_get_contents('View/vChecklist.php');
@@ -61,4 +82,3 @@ echo $html;
 
 
 ?>
-
