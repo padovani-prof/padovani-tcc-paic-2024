@@ -1,4 +1,34 @@
 <?php 
+function opition($perfis){
+
+    $lista =  carrega_opition();
+    $usua = '<option value="NULL">...</option>';
+    foreach($lista as $dados){
+        $usua .='<option value="' .$dados ['codigo'].'"' . ($dados ['codigo'] ==  $perfis? ' selected' : '') . '> '.$dados ['nome'].'</option>';
+    }
+    return $usua;
+}
+
+function Tabela_acesso_recurso_carrega($codigo){
+    $lista = recurso_carrega($codigo);
+    $informa = '';
+    foreach($lista as $dados){
+        $informa .= '<tr>';
+        $informa .= '<td> '. $dados ["perfio"].'</td>'; // coluna nome
+        $informa .= '<td> '.$dados ['ini'] . ' - '.$dados ['fim'].'</td>'; // coluna horarios
+        $informa .=  '<td> <form action="cPermissaoRecurso.php">   
+                        <input type="hidden" name="codigo_recurso" value="' .$codigo.'"> 
+                        <input type="hidden" name="codigo_acesso_ao_recurso" value="'.$dados['cod'].  '"> 
+                        <input type="submit" name="apagar" value="Apagar">
+                    </form> </td>'; // coluna de ação para apagar
+        $informa = $informa . '<tr/>';
+        
+    }
+    return $informa;
+    
+}
+
+
 
 function marcar_semana($semanas, $html){
     $semanas = explode(',', $semanas);
@@ -99,14 +129,14 @@ if(isset($_GET['salvar'])){
         
                 $msg = 'Acesso ao recurso cadastrado com sucesso.';
                 $id_msg = 'sucesso';
-                header("Location: cPermissaoRecurso.php?msg=$msg&msg_id=$id_msg&codigo_recurso=$recurso_codigo");
+                header("Location: cPermissaoRecurso.php?codigo_recurso=$recurso_codigo&msg=$msg&msg_id=$id_msg");
                 exit();
             }
             
         }
     }else{
         // todos os dados não foram preechidos
-        $msg = 'Por favor peenxa todos os dados que são exenciais para o cadastro.';
+        $msg = 'Por favor adicione todos os dados que são exenciais para o cadastro.';
     }
     if($id_msg=='erro' and strlen($semanas) !=0){
         $html = marcar_semana($semanas, $html);
@@ -120,11 +150,14 @@ if(isset($_GET['salvar'])){
     apagar_acesso_ao_recurso($chave_ac);
     $msg = 'Acesso ao recurso removido com sucesso.';
     $id_msg = 'sucesso';
+    //cPermissaoRecurso.php?codigo_recurso=2
+    header("Location: cPermissaoRecurso.php?codigo_recurso=$recurso_codigo&msg=$msg&msg_id=$id_msg");
+    exit();
 }
 
 
 
-$nome_recurso =  nome_recurso($recurso_codigo); 
+$nome_recurso =  nome_recurso($recurso_codigo);
 $tabela = Tabela_acesso_recurso_carrega($recurso_codigo);
 $opt = opition($marcar);
 
@@ -144,4 +177,3 @@ $html = str_replace('{{dataFinal}}}', $data_fim, $html);
 echo $html;
 ?>
 
-<a href=""></a>
