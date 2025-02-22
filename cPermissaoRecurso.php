@@ -1,5 +1,43 @@
 <?php 
 
+function marcar_semana($semanas, $html){
+    $semanas = explode(',', $semanas);
+   
+    for ($i=0; $i < 7; $i++) { 
+        if($semanas[$i] == 'S'){
+            
+            $html = str_replace("{{{$i}}}", "checked", $html);
+        }
+    }
+    return $html;
+    
+
+}
+function dias_da_semana()
+{
+    $semana = '';
+    $cont = 0;
+    for ($i=0; $i < 7; $i++){
+        if (isset($_GET["dia$i"]))
+        {
+            $semana = $semana.'S,';
+
+            
+        }
+        else
+        {
+            $cont +=1;
+            $semana = $semana.'N,';
+        }
+    }
+    if ($cont>=7)
+    {
+        $semana = '';
+    }
+    return $semana;
+    
+}
+
 
 include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
@@ -13,8 +51,8 @@ $html = file_get_contents('View/vPermissao.php');
 
 
 $marcar = '';
-$id_msg = 'erro';
-$msg = '';
+$id_msg = (isset($_GET['msg_id']))?$_GET['msg_id']:'erro';
+$msg = (isset($_GET['msg']))?$_GET['msg']:'';
 $hora_ini = '';
 $hora_fim = '';
 $data_ini = '';
@@ -61,12 +99,8 @@ if(isset($_GET['salvar'])){
         
                 $msg = 'Acesso ao recurso cadastrado com sucesso.';
                 $id_msg = 'sucesso';
-
-                $hora_ini = '';
-                $hora_fim = '';
-                $data_ini = '';
-                $data_fim = '';
-                $marcar = '';
+                header("Location: cPermissaoRecurso.php?msg=$msg&msg_id=$id_msg&codigo_recurso=$recurso_codigo");
+                exit();
             }
             
         }
@@ -110,3 +144,4 @@ $html = str_replace('{{dataFinal}}}', $data_fim, $html);
 echo $html;
 ?>
 
+<a href=""></a>
