@@ -8,18 +8,11 @@ function listar_funcionalidades(){
     }
     $resultado = $conexao->query("SELECT * FROM funcionalidade");
 
-    $todos_dados = [];
-
-    if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
-    }
-
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conexao->close();
 
     // Retorna o array com todos os dados
-    return $todos_dados;
+    return $resultado;
 }
 
 ?>
