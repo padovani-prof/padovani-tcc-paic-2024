@@ -4,18 +4,15 @@ function carrega_retirada_disponivel()
 {
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $cone->query("SELECT * from(
+    $resultado = $cone->query("SELECT * from(
     select codigo, nome, (
         select tipo from retirada_devolucao where recurso.codigo = codigo_recurso order by datahora desc limit 1
         ) as ultima_movimentacao from recurso) as rec
     where rec.ultima_movimentacao = 'D' or rec.ultima_movimentacao is NULL;");
-    $todos_dados = [];
-    while ($dados = $resulta->fetch_assoc())
-    {
-        
-        $todos_dados[] = $dados;
-    }
-    return $todos_dados;
+   
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+    return $resultado;
 }
 
 
@@ -47,17 +44,16 @@ function listar_usuarios(){
     $resultado = $conexao->query("SELECT codigo, nome 
     FROM usuario
     ORDER BY nome ASC;");
-    $todos_dados = [];
 
     if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
+        $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+        
+        
     }
 
     $conexao->close();
 
-    return $todos_dados;
+    return $resultado;
 }
 
 function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $dr)
@@ -77,18 +73,14 @@ function carrega_recursos_emprestados()
 {
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $cone->query("SELECT * from(
+    $resultado = $cone->query("SELECT * from(
     select codigo, nome, (
         select tipo from retirada_devolucao where recurso.codigo = codigo_recurso order by datahora desc limit 1
         ) as ultima_movimentacao from recurso) as rec
     where rec.ultima_movimentacao = 'R' ;");
-    $todos_dados = [];
-    while ($dados = $resulta->fetch_assoc())
-    {
-        
-        $todos_dados[] = $dados;
-    }
-    return $todos_dados;
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+    return $resultado;
 }
 
 
