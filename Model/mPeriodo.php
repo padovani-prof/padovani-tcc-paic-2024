@@ -22,16 +22,12 @@ function carrega_periodo()
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
 
 
-    $resulta = $cone->query('SELECT *  from periodo ');
+    $resultado = $cone->query('SELECT *  from periodo ');
 
-    $todos_dados = [];
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
 
-    while ($dados = $resulta->fetch_assoc())
-    {
-        $todos_dados[] = $dados;
-    }
-
-    return $todos_dados; 
+    return $resultado; 
     // retorna todos os dados da tabela categoria_recurso do banco em forma de lista com nome e o codigo
 
 }
