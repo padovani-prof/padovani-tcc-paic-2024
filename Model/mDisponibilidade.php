@@ -65,16 +65,12 @@ function Disponibilidade($periodo, $categorias, $recursos)
     
     
     $resultado = $cone->query($sql);
-
-	$todos_dados = [];
-
-    while ($dados = $resultado->fetch_assoc()) {
-        $todos_dados[] = $dados;
-    }
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
 
 
 
-    return $todos_dados;
+    return $resultado;
     
 
 
@@ -108,15 +104,12 @@ function adicionados($recurso, $categorias)
 
 
     $resultado = $cone->query($sql);
-    $todos_dados = [];
-
-    while ($dados = $resultado->fetch_assoc()) {
-        $todos_dados[] = $dados;
-    }
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
 
 
 
-    return $todos_dados;
+    return $resultado;
     
 }
 
