@@ -25,14 +25,9 @@ function carrega_disciplina()
     $resulta = $cone->query('SELECT *  from disciplina ');
 
     
-    $todos_dados = [];
-    while ($dados = $resulta->fetch_assoc())
-    {
-        
-        $todos_dados[] = $dados;
-    }
-
-    return $todos_dados; 
+    $resulta = $resulta->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+    return $resulta; 
     // retorna todos os dados da tabela categoria_recurso do banco em forma de lista com nome e o codigo
 
 }
