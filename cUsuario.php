@@ -1,5 +1,27 @@
 <?php
 
+function tabela_usuarios(){
+    $usuario = listar_usuarios();
+      
+    $usuarios = '';
+    foreach ($usuario as $user) {
+            $usuarios = $usuarios. '<tr>
+                <td>'.$user["nome"].'</td>
+                <td>'.$user["email"].'</td>
+                <td>
+                    <form action="cUsuario.php">   
+                        <input type="hidden" name="codigo_do_usuario" value="'. $user["codigo"] . '"> 
+                        <input class="btn btn-outline-secondary" type="submit" name="atualizar" value="Atualizar">&nbsp;
+                        <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
+                    </form> 
+                </td>
+            </tr>';
+    } 
+    
+    
+    return $usuarios;
+    }
+
 include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario', 2);
@@ -24,8 +46,8 @@ if (isset($_GET['apagar'])) {
     exit();
 }
 
-$usuarios = listar_usuarios();
-$usuarios = tabela_usuarios($usuarios);
+
+$usuarios = tabela_usuarios();
 
 $html = file_get_contents('View/vUsuario.php');
 $html = str_replace('{{msg}}', $msg, $html);
