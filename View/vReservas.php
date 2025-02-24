@@ -22,8 +22,11 @@
             <th>Datas e Horários</th>
             <th>Ações</th>
           </tr>
-        
+          <tbody>
             {{Reservas}}
+
+          </tbody>
+            
         
         </table>
       </div>
