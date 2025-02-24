@@ -7,19 +7,12 @@ function listar_funcionalidade(){
         die("Falha na conexão: " . $conexao->connect_error);
     }
     $resultado = $conexao->query("SELECT * FROM funcionalidade ORDER BY nome ASC");
-
-    $todos_dados = [];
-
-    if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
-    }
-
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conexao->close();
 
+
     // Retorna o array com todos os dados
-    return $todos_dados;
+    return $resultado;
 }
 
 function listar_perfis(){   
@@ -34,20 +27,13 @@ function listar_perfis(){
     $resultado = $conexao->query("SELECT * FROM perfil_usuario");
 
     // Inicializa um array vazio
-    $todos_dados = [];
 
-    // Popula o array com os resultados
-    if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
-    }
-
-    // Fecha a conexão
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conexao->close();
 
+
     // Retorna o array com todos os dados
-    return $todos_dados;
+    return $resultado;
 }
 
 function apagar_perfil($chave_pri) {
@@ -141,7 +127,7 @@ function mandar_dados_da_tabela($chave){
     $resulata = $resulata->fetch_assoc();
     $dados = [];
     $dados[] = $resulata;
-    $resulata = $conecxao->query("SELECT * from funcionalidade_perfil where codigo_perfil=$chave");
+    $resulata = $conecxao->query("SELECT codigo_funcionalidade from funcionalidade_perfil where codigo_perfil=$chave");
     $fucionalidades = [];
     while ($fucionalidade = $resulata->fetch_assoc()) {
         $fucionalidades[] = $fucionalidade['codigo_funcionalidade'];
