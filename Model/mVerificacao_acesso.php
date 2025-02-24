@@ -7,11 +7,10 @@ function lista_usuario_acesso($chave_usu)
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
     $sql = "SELECT f.codigo, f.sigla, f.descricao from sgrp.funcionalidade f where f.codigo in ( select fp.codigo_funcionalidade from sgrp.funcionalidade_perfil fp where fp.codigo_perfil in ( select up.codigo_perfil from sgrp.usuario_perfil up where up.codigo_usuario = $chave_usu ) );";
     $resultado = $cone->query($sql);
-    $todos_dados = [];
-    while ($dados = $resultado->fetch_assoc()) {
-        $todos_dados[] = $dados;
-    }
-    return $todos_dados;
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+
+    return $resultado;
 }
 
 
