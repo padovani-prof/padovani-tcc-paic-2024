@@ -1,20 +1,13 @@
 <?php
 include_once 'Model/mVerificacao_acesso.php';
-
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'cad_categoria_rec', 2);
-
-
-
 include_once 'Model/mCategoria.php';
-
-
 $html = file_get_contents('View/vFormularioCategoria.php');
-
 $nome = '';
 $descre = '';
-$retorno = '';
-$mensagem = '';
+$retorno = (isset($_GET['id_msg']))?$_GET['id_msg']:'';
+$mensagem = (isset($_GET['msg']))?$_GET['msg']:'';
 $Ambiente = '';
 $tipo = '';
 
@@ -52,9 +45,8 @@ if(isset($_GET["codigo"])){
             if($resposta == 0)
             {
                 // salvo com sucesso
-                $nome = '';
-                $descre = '';
-                $Ambiente = '';
+                header("Location: cFormularioCategoria.php?chave=$chave&msg=$mensagem&id_msg=$retorno");
+                exit();
     
                 
             }
@@ -64,7 +56,6 @@ if(isset($_GET["codigo"])){
 }
 
 else{
-    $html = str_replace('{{tipo}}','cadastrar',$html);
     if (isset($_GET['salvar']))
     {
         if (isset($_GET['nome']) and isset($_GET['descricao'])) 
@@ -86,15 +77,12 @@ else{
                 $nome = '';
                 $descre = '';
                 $Ambiente = '';
-    
-                
+                header("Location: cFormularioCategoria.php?msg=$mensagem&id_msg=$retorno");
+                exit(); 
             }
         }
     
     }
-   
- 
-
 }
  // subistiti coloca essas dados no html e mostra
  $html = str_replace('{{tipo_tela}}', $tipo, $html);
