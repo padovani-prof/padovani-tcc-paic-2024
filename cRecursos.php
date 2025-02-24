@@ -1,11 +1,36 @@
 <?php
 
 
+
+function  Carregar_recursos_htm(){
+    $dados = Carregar_recursos_dados();
+    $recursos = '';
+    // Substitui os recursos no template HTML
+   foreach($dados as $nome)
+    {
+        // onclick="deseja_apagar()">  chama a função de java escripit
+        $recursos .= '<tr>
+        <td>'.mb_strtoupper($nome["nome"]).'</td>
+        <td> <form action="cRecursos.php"> 
+                <input type="hidden" name="codigo_do_recurso" value="' .$nome['codigo'].'"> 
+
+                <input class="btn btn-outline-secondary" type="submit" name="altera" value="Alterar">&nbsp;
+                <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar"onclick="deseja_apagar()"> 
+            </form> 
+        </td>
+        <td> <a href="cChecklist.php?codigo=' . $nome["codigo"] . ' "> Checklist</a> </td>
+        <td> <a href="cPermissaoRecurso.php?codigo_recurso=' . $nome["codigo"] . ' ">Permissões</a> </td>
+    </tr>';
+       
+    }
+    return $recursos;
+
+}
+
+
 include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_recurso', 2);
-
-
 include_once 'Model/mRecurso.php';
 
 $id_msg = '';
@@ -24,9 +49,7 @@ if (isset($_GET['apagar']))
     header("Location: cFormularioRecurso.php?codigo=$cod_recurso");
     exit();
 }
-
-
-$recursos = Carregar_recursos();
+$recursos = Carregar_recursos_htm();
 
 
 
