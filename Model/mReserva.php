@@ -1,85 +1,59 @@
 <?php
-function listar_reserva() {
+
+function carregar_reserva(){
     include 'confg_banco.php';
-    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if($conexao->connect_error) {
-        die("Falha na conexão: " . $conexao->connect_error);
-    }
+    $sql = "SELECT 
+	reserva.codigo as 'codigo',
+	recurso.nome as 'recurso',
+	data_re.data as 'data',
+    data_re.hora_inicial as 'h_ini',
+    data_re.hora_final as 'h_fim',
+    usuario_ultilizador.nome as 'utilizador'
+from reserva 
+	INNER join data_reserva as data_re
+    on data_re.codigo_reserva = reserva.codigo
+	INNER JOIN usuario as usuario_agendador
+    on usuario_agendador.codigo=reserva.codigo_usuario_agendador
+    inner join recurso
+    on recurso.codigo= reserva.codigo_recurso
+    inner join usuario as usuario_ultilizador
+    on reserva.codigo_usuario_utilizador = usuario_ultilizador.codigo
+    ORDER by data_re.data DESC;";
 
-    $sql ="SELECT res.codigo AS codigo_reserva, rec.nome AS recurso, us.nome AS usuario
-           FROM reserva AS res
-           JOIN recurso AS rec ON rec.codigo = res.codigo_recurso
-           JOIN usuario AS us ON us.codigo = res.codigo_usuario_utilizador";
-    
-    $resultado = $conexao->query($sql);
-    $todos_dados = [];
+    $resulta = $cone->query($sql);
 
-    if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
-    }
+    $resulta = $resulta->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
 
-    $conexao->close();
-    return $todos_dados;
+    return $resulta;
+   
+
+
 }
 
-function listar_datas($codigo_reserva) {
-    include 'confg_banco.php';
-    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
-
-    if($conexao->connect_error) {
-        die("Falha na conexão: " . $conexao->connect_error);
-    }
-
-    $consulta = $conexao->prepare("SELECT * FROM data_reserva WHERE codigo_reserva = ?");
-    $consulta->bind_param('i', $codigo_reserva);
-    $consulta->execute();
-    $resultado = $consulta->get_result();
-    $todos_dados = [];
-
-    if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
-    }
-
-    $consulta->close();
-    $conexao->close();
-    return $todos_dados;
-}
 
 function carregar_recurso() {
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
     $resulta = $cone->query('SELECT * FROM recurso');
-    $todos_dados = [];
-
-    while ($dados = $resulta->fetch_assoc()) {
-        $todos_dados[] = $dados;
-    }
-
-    return $todos_dados;
+    $resulta = $resulta->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+    return $resulta;
 }
 
 function carregar_usuario() {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     $resulta = $conexao->query('SELECT * FROM usuario');
-    $todos_dados = [];
+    $resulta = $resulta->fetch_all(MYSQLI_ASSOC);
+    $conexao->close();
 
-    while ($dados = $resulta->fetch_assoc()) {
-        $todos_dados[] = $dados;
-    }
-
-    return $todos_dados;
+    return $resulta;
 }
 
 function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final, $recurso) {
-
-   
-
 
     if (empty($justificativa)) {
         return 0; // Justificativa Vazia
@@ -103,6 +77,7 @@ function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final, $rec
     
     
     if(count(Disponibilidade([$data, $hora_inicial, $hora_final], [], [$recurso]))==0){
+        // verifica se esta disponivel
         return 6;
     }
     return true;
@@ -178,3 +153,4 @@ function apagar_reserva($codigo_reserva) {
 }
 
 ?>
+
