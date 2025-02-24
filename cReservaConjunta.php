@@ -1,4 +1,62 @@
 <?php
+function verificar_reservar($dados){
+    foreach( $dados as $dado){
+        $td_dados = explode(',', $dado);
+        if (consta_reserva($td_dados[0], $td_dados[2], $td_dados[3].':00', $td_dados[4].':00')==true){
+            return true;
+
+        }
+
+
+    }
+    return false;
+
+}
+
+
+function Reserva_conjunta ($dados, $agendador, $utilizador, $justific){
+    foreach( $dados as $dado){
+        $td_dados = explode(',', $dado);
+        $id_reserva = insere_reserva($justific, $agendador, $utilizador, $td_dados[0]);
+        $certo = insere_data_reserva($td_dados[2], $td_dados[3].':00', $td_dados[4].':00', $id_reserva);
+
+    }
+}
+
+
+function tabe_html($dados)
+{
+    $ht_dados = '';
+    $id = -1;
+    for ($i=0; $i < count($dados); $i++){
+        $recurso = explode(',', $dados[$i]);
+        $id_recu = $recurso[0];
+        $data = explode('-', $recurso[2]) ;
+
+        if ($id!= $id_recu){
+            if($id != -1){
+                $ht_dados.= '</tr>';
+            }
+            $ht_dados.= '<tr> <td> '.$recurso[1].'</td> <td>';
+            $id = $id_recu;
+        }
+        else{
+            $ht_dados.='<br>';
+        }
+        $ht_dados.= $data[2].'/'.$data[1].'/'.$data[0].'<br>'.$recurso[3] . ' - '.$recurso[4];
+    }
+    return $ht_dados;
+
+}
+
+
+function dados_hidem($dados){
+    $ht_dados = '';
+    foreach($dados as $dado){
+        $ht_dados.= '<input type="hidden" name="marcas[]" value="'. $dado.'" >';
+    }
+    return $ht_dados;
+}
 
 include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
