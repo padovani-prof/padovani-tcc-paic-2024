@@ -7,17 +7,10 @@ function listar_usuarios(){
         die("Falha na conexão: " . $conexao->connect_error);
     }
     $resultado = $conexao->query("SELECT * FROM usuario");
-    $todos_dados = [];
-
-    if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
-    }
-
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conexao->close();
 
-    return $todos_dados;
+    return $resultado;
 }
 
 function listar_perfil(){
@@ -29,18 +22,10 @@ function listar_perfil(){
     }
 
     $resultado = $conexao->query("SELECT * FROM perfil_usuario ORDER BY nome ASC");
-
-    $todos_dados = [];
-
-    if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $todos_dados[] = $linha;
-        }
-    }
-
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conexao->close();
 
-    return $todos_dados;
+    return $resultado;
 
 }
 
@@ -162,12 +147,6 @@ function apagar_usuario($chave_pri) {
 
         }
         
-        
-        
-
-    
-        
-
     }
         
 }
@@ -183,25 +162,3 @@ function verificar_existencia($dado, $coluna){
 }
 
 
-function tabela_usuarios($usuario){
-      
-$usuarios = '';
-foreach ($usuario as $user) {
-    
-        $usuarios = $usuarios. '<tr>
-            <td>'.$user["nome"].'</td>
-            <td>'.$user["email"].'</td>
-            
-            <td>
-                <form action="cUsuario.php">   
-                    <input type="hidden" name="codigo_do_usuario" value="'. $user["codigo"] . '"> 
-                    <input class="btn btn-outline-secondary" type="submit" name="atualizar" value="Atualizar">&nbsp;
-                    <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
-                </form> 
-            </td>
-        </tr>';
-} 
-
-
-return $usuarios;
-}
