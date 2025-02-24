@@ -112,42 +112,6 @@ function cadastrar_recurso($nome, $des, $cCatego)
 }
 
 
-function Carregar_recursos()
-{   
-    // função que retorna uma lista com todos os dados dos recursos
-
-    // conecxao com o banco
-    include 'confg_banco.php';
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    
-    // Executar a consulta
-    $resultado = $conecxao->query("SELECT * FROM recurso");
-
-    $recursos = '';
-
-    // Substitui os recursos no template HTML
-    while ($nome = $resultado->fetch_assoc())
-    {
-        // onclick="deseja_apagar()">  chama a função de java escripit
-        $recursos .= '<tr>
-        <td>'.mb_strtoupper($nome["nome"]).'</td>
-        <td> <form action="cRecursos.php"> 
-                <input type="hidden" name="codigo_do_recurso" value="' .$nome['codigo'].'"> 
-
-                <input class="btn btn-outline-secondary" type="submit" name="altera" value="Alterar">&nbsp;
-                <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
-            </form> 
-        </td>
-        <td> <a href="cChecklist.php?codigo=' . $nome["codigo"] . ' "> Checklist</a> </td>
-        <td> <a href="cPermissaoRecurso.php?codigo_recurso=' . $nome["codigo"] . ' ">Permissões</a> </td>
-    </tr>';
-       
-    }
-    return $recursos; // retorna os dados em html
-   
-    
-    
-}
 
 
 function apagar_recurso($chave_pri)
@@ -163,7 +127,7 @@ function apagar_recurso($chave_pri)
     $resulata = $conecxao->query("SELECT * FROM retirada_devolucao where codigo_recurso=$chave_pri");
     if($resulata->num_rows >0){
         return 1; // possui retirada
-    }
+    } 
 
     $resulata = $conecxao->query("SELECT * FROM ensalamento where codigo_sala=$chave_pri");
     if($resulata->num_rows >0){
@@ -187,12 +151,6 @@ function apagar_recurso($chave_pri)
     
 
 }
-
-
-
-
-
-
 
 
 
@@ -260,12 +218,10 @@ function Existe_esse_recurso($chave){
 function Carregar_recursos_dados(){
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $conecxao->query("SELECT * from recurso");
-    $dados_recurso = [];
-    while ($recurso = $resulta->fetch_assoc()){
-        $dados_recurso[] = $recurso;
-    }
-    return $dados_recurso;
+    $resultado = $conecxao->query("SELECT * from recurso");
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $conecxao->close();
+    return $resultado;
 }
 
 
