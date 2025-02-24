@@ -1,31 +1,11 @@
 <?php
 
-function carregar_tabela_reserva(){
-
-    $daddos = carregar_reserva();
-    $tabela_html = '';
-    foreach($daddos as $dados){
-       $data_formatada = DateTime::createFromFormat('Y-m-d', $dados["data"])->format('d/m/Y');
-       $tabela_html.='<tr> <td>'.$dados['recurso'].'</td>';
-       $tabela_html.='<td>'.$dados['utilizador'].'</td>';
-       $tabela_html.='<td>'.$data_formatada.' das '.$dados['h_ini'].' ás '.$dados['h_fim'].'</td>';
-       $tabela_html.= '<td>
-            <form action="cReservas.php">
-                <input type="hidden" name="codigo_da_reserva" value="'.$dados['codigo']. '">
-                <input type="submit" name="apagar" value="Apagar">
-            </form>
-        </td> </tr>';
-       
-    }
-    
-    return $tabela_html;
-}
-
-
 
 include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_reserva', 2);
+
+
 include_once 'Model/mReserva.php';
 
 $id = 'nada';
@@ -38,7 +18,37 @@ if (isset($_GET['codigo_da_reserva'])) {
 
 }
 
-$conteudo_reservas = carregar_tabela_reserva();
+$reservas = listar_reserva();
+$conteudo_reservas = '';
+
+
+
+foreach ($reservas as $reserva) {
+    $datas_reserva = listar_datas($reserva["codigo_reserva"]); 
+
+    $datas_horarios = '';
+    foreach ($datas_reserva as $data) {
+        // Formatando a data para "DD/MM/AAAA"
+        $data_formatada = DateTime::createFromFormat('Y-m-d', $data["data"])->format('d/m/Y');
+        
+        // Montando o texto formatado
+        $datas_horarios .= $data_formatada . ' das ' . $data["hora_inicial"] . ' às ' . $data["hora_final"] . '<br>';
+    }
+
+    $conteudo_reservas .= '<tr>
+        <td>' . ($reserva["recurso"]) . '</td>
+        <td>' . ($reserva["usuario"]) . '</td>
+        <td>' . $datas_horarios . '</td>
+        <td>
+            <form action="cReservas.php" method:"get">
+            
+                <input type="hidden" name="codigo_da_reserva" value="' . $reserva["codigo_reserva"] . '">
+                <input type="submit" name="apagar" value="Apagar">
+            </form>
+        </td>
+    </tr>';
+}
+
 
 
 // Carregar o HTML do arquivo de visualização
