@@ -1,4 +1,124 @@
 <?php 
+
+function apagar_perfio_relacionado($codigo){
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    if ($conexao->connect_error) {
+        die("Falha na conexão: " . $conexao->connect_error);
+    }
+    $resultado = $conexao->query("DELETE  from usuario_perfil where codigo_usuario=$codigo;");
+    $conexao->close();
+
+}
+
+function novo_usuario_atualizado($codigo, $nome, $email, $senha_usu){
+
+    $senha_usu = hash('sha256', $senha_usu);
+
+    include 'confg_banco.php';
+
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    if ($conexao->connect_error) {
+        die("Falha na conexão: " . $conexao->connect_error);
+    }
+
+    $stmt = $conexao->prepare("UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE codigo = ?");
+
+    $stmt->bind_param("sssi", $nome, $email, $senha_usu, $codigo);
+    $resultado = $stmt->execute();
+    $stmt->close();
+    $conexao->close();
+
+    return $resultado;
+}
+
+
+function Validar_usuario_atualizado($codigo, $nome, $senha, $email){
+
+    $nome = str_replace(' ','',$nome);
+    $senha = str_replace(' ', '', $senha);
+    $email = str_replace(' ', '',$email);
+    
+    
+    if (strlen($nome) < 2 || strlen($nome) > 50) {
+        return 0; // Nome inválido
+    }
+    if (mb_strlen("$senha") > 50 || mb_strlen("$senha") < 3) {
+        return 2; // Senha inválida
+    }
+    
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    if ($conexao->connect_error) {
+        die("Falha na conexão: " . $conexao->connect_error);
+    }
+    $resultado = $conexao->query("SELECT * FROM usuario where codigo!=$codigo and nome='$nome';");
+    if($resultado->num_rows > 0){
+        return 4; // nome repetido
+    }
+    $resultado = $conexao->query("SELECT * FROM usuario where codigo!=$codigo and email='$email';");
+    if($resultado->num_rows > 0){
+        return 5; // email repetido
+    }
+    return true;
+
+}
+
+function atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados){
+    $valido = Validar_usuario_atualizado($codigo, $nome, $senha, $email);
+    if ($valido === true) {
+        novo_usuario_atualizado($codigo, $nome, $email, $senha);
+        apagar_perfio_relacionado($codigo);
+        foreach ($perfis_selecionados as $codigo_perfil) {
+            if (!insere_usuario_perfil($codigo, $codigo_perfil)) {
+                return 4; // Erro ao vincular perfil ao usuário
+            }
+        }
+        return 3; // Usuário cadastrado com sucesso
+           
+    }
+    
+    return $valido; 
+
+}
+
+
+function carregar_dados($codigo){
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    if ($conexao->connect_error) {
+        die("Falha na conexão: " . $conexao->connect_error);
+    }
+    $resultado = $conexao->query("SELECT nome, email FROM usuario where codigo=$codigo");
+    $conexao->close();
+    return $resultado->fetch_assoc();
+
+}
+
+
+function carrega_perfil_do_usuario($codigo){
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    if ($conexao->connect_error) {
+        die("Falha na conexão: " . $conexao->connect_error);
+    }
+    $resultado = $conexao->query("SELECT codigo_perfil FROM usuario_perfil where codigo_usuario=$codigo;");
+    $chaves =[];
+    while($codigo = $resultado->fetch_assoc()){
+        $chaves[] = $codigo['codigo_perfil'];
+    }
+    $conexao->close();
+
+    return $chaves;
+}
+
+
+
 function listar_usuarios(){   
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
