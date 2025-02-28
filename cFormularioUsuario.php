@@ -34,60 +34,76 @@ if(isset($_GET['codigo']) and !isset($_GET['salvar'])){
 }
 
 if (isset($_GET["salvar"])) {
+    $resposta = -1;
     $id_resposta = 'erro';
     $nome = $_GET['nome'];
     $email = $_GET['email'];
     $senha = $_GET['senha'];
     $conf_senha = $_GET['conf_senha'];
-    
     // Captura os perfis selecionados
     $perfis_selecionados = isset($_GET['perfis']) ? $_GET['perfis'] : [];
     
-
-    // Validação do cadastro
-    if (empty($nome)){
-        $mensagem = 'O nome é obrigatório';
-    } elseif (empty($email)){
-        $mensagem = 'O email é obrigatório';
-    } elseif (empty($senha)){
-        $mensagem = 'A senha é obrigatório';
-    } elseif (empty($conf_senha)){
-        $mensagem = 'Você esqueceu de confirmar sua senha';
-    } elseif ($senha !== $conf_senha) {
-        $mensagem = 'As senhas não correspondem';
-    } elseif (empty($perfis_selecionados)) {
-        $mensagem = 'Você deve selecionar pelo menos um perfil!';
-    } else {
-        //var_dump(isset($_GET['codigo']));
-        if(isset($_GET['codigo'])){
+    if(isset($_GET['codigo'])){
+        //validar atualizações
+        if (empty($nome)){
+            $mensagem = 'O nome é obrigatório';
+        } elseif (empty($email)){
+            $mensagem = 'O email é obrigatório';
+        }  elseif (!empty($conf_senha) and empty($senha)){
+            $mensagem = 'Você esqueceu de criar sua nova senha.';
+        } elseif (!empty($senha) and empty($conf_senha)){
+            $mensagem = 'Você esqueceu de confirmar sua nova senha.';
+        }
+        elseif ($senha !== $conf_senha) {
+            $mensagem = 'As senhas não correspondem';
+        }
+        elseif (empty($perfis_selecionados)) {
+            $mensagem = 'Você deve selecionar pelo menos um perfil!';
+        } else{
             $resposta =  atualizar_usuario($_GET['codigo'], $nome, $email, $senha, $perfis_selecionados);
-            
+        
             // Definindo mensagens para mostrar
-            $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário atualizado com Sucesso!','Nome já ultilizado. Por favor ensira outro nome.', 'E-mail já foi cadastrado. Por favor ensira outro E-mail.'];
+            $men = ['O nome informado é inválido. Ele deve ter no mínimo 3 caracteres e no máximo 50.', 'Senha está Vazia', 'Senha Inválida', 'Usuário atualizado com Sucesso!','Nome já ultilizado. Por favor ensira outro nome.', 'E-mail já foi cadastrado. Por favor ensira outro E-mail.'];
             $mensagem = $men[$resposta];
-            
 
+        }
+        
+        
+
+    }else{
+        // Validação do cadastro
+        if (empty($nome)){
+            $mensagem = 'O nome é obrigatório';
+        } elseif (empty($email)){
+            $mensagem = 'O email é obrigatório';
+        } elseif (empty($senha)){
+            $mensagem = 'A senha é obrigatório';
+        } elseif (empty($conf_senha)){
+            $mensagem = 'Você esqueceu de confirmar sua senha';
+        } elseif ($senha !== $conf_senha) {
+            $mensagem = 'As senhas não correspondem';
+        } elseif (empty($perfis_selecionados)) {
+            $mensagem = 'Você deve selecionar pelo menos um perfil!';
         }else{
             $resposta = cadastrar_usuario($nome, $email, $senha, $perfis_selecionados);
             // Definindo mensagens para mostrar
             $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!','Nome já ultilizado. Por favor ensira outro nome.', 'E-mail já foi cadastrado. Por favor ensira outro E-mail.'];
             $mensagem = $men[$resposta];
 
-
         }
-
-        
-        if($resposta == 3) {
-            $nome = '';
-            $email= '';
-            $senha = '';
-            $conf_senha = '';
-            $perfis_selecionados = []; // Limpa a seleção de perfis ao cadastrar com sucesso
-            $id_resposta = 'sucesso';
-        }
-
-        
     }
+
+    if($resposta == 3) {
+        $nome = '';
+        $email= '';
+        $senha = '';
+        $conf_senha = '';
+        $perfis_selecionados = []; // Limpa a seleção de perfis ao cadastrar com sucesso
+        $id_resposta = 'sucesso';
+    }
+
+        
+    
 
     // Substitui as variáveis no HTML, mesmo se houver erro
     $html = str_replace('{{campoNome}}', $nome, $html);
