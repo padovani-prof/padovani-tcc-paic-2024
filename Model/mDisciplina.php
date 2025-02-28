@@ -22,7 +22,7 @@ function carrega_disciplina()
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
 
 
-    $resulta = $cone->query('SELECT *  from disciplina ');
+    $resulta = $cone->query('SELECT *  from disciplina order by nome asc');
 
     
     $resulta = $resulta->fetch_all(MYSQLI_ASSOC);
@@ -148,26 +148,7 @@ function atualizar_disciplina($chave, $nome, $curso, $peri){
 }
 
 
-function tabela_disciplina($disciplina){
-    
-    // Substitui os recursos no template HTML
-    $disciplinas = '';
-    foreach ($disciplina as $nome)
-    {
-        $disciplinas .= '<tr>
-            <td>'. $nome["nome"].'</td>                             
-            <td> 
-                <form action="cDisciplina.php">
-                    <input type="hidden" name="codigoPrim" value="'.$nome['codigo']. '">
-                    <input type="submit" value="Alterar" name="alterar">
-                    <input type="submit" value="Apagar" name="apagar">
-                </form> 
-            </td>
-        </tr>';
 
-    }
-    return $disciplinas;
-}
 
 ?>
 
