@@ -13,20 +13,24 @@ function apagar_perfio_relacionado($codigo){
 }
 
 function novo_usuario_atualizado($codigo, $nome, $email, $senha_usu){
-
-    $senha_usu = hash('sha256', $senha_usu);
-
     include 'confg_banco.php';
-
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
+    if(empty($senha_usu)){
+        
+        $stmt = $conexao->prepare("UPDATE usuario SET nome = ?, email = ? WHERE codigo = ?");
+        $stmt->bind_param("ssi", $nome, $email, $codigo);
 
-    $stmt = $conexao->prepare("UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE codigo = ?");
+    }
+    else{
+        $senha_usu = hash('sha256', $senha_usu);
+        $stmt = $conexao->prepare("UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE codigo = ?");
+        $stmt->bind_param("sssi", $nome, $email, $senha_usu, $codigo);
 
-    $stmt->bind_param("sssi", $nome, $email, $senha_usu, $codigo);
+    }
     $resultado = $stmt->execute();
     $stmt->close();
     $conexao->close();
@@ -42,10 +46,10 @@ function Validar_usuario_atualizado($codigo, $nome, $senha, $email){
     $email = str_replace(' ', '',$email);
     
     
-    if (strlen($nome) < 2 || strlen($nome) > 50) {
+    if (strlen($nome) < 3 || strlen($nome) > 50) {
         return 0; // Nome inválido
     }
-    if (mb_strlen("$senha") > 50 || mb_strlen("$senha") < 3) {
+    if (!empty($senha) and mb_strlen("$senha") > 50 || mb_strlen("$senha") < 3) {
         return 2; // Senha inválida
     }
     
@@ -126,7 +130,7 @@ function listar_usuarios(){
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $resultado = $conexao->query("SELECT * FROM usuario");
+    $resultado = $conexao->query("SELECT * FROM usuario order by nome asc;");
     $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conexao->close();
 
@@ -157,7 +161,7 @@ function Validar_usuario($nome, $senha, $email)
     $email = str_replace(' ', '',$email);
    
 
-    if (strlen($nome) < 2 || strlen($nome) > 50) {
+    if (strlen($nome) < 3 || strlen($nome) > 50) {
         return 0; // Nome inválido
     }
 
