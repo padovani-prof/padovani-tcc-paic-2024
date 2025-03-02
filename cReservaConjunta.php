@@ -52,9 +52,9 @@ function tabe_html($dados)
 
 function dados_hidem($dados){
     $ht_dados = '';
-    foreach($dados as $dado){
-        $ht_dados.= '<input type="hidden" name="marcas[]" value="'. $dado.'" >';
-    }
+    
+    $ht_dados.= '<input type="hidden" name="marcas" value="'.  urlencode(json_encode($dados)).'" >';
+    
     return $ht_dados;
 }
 
@@ -65,7 +65,9 @@ verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 
 include 'Model/mFormulariorRetirada.php';
 include  'Model/mReservaConjunta.php';
-$dados = $_GET['marcas'];
+
+
+$dados = json_decode(urldecode($_GET['marcas'])); //transforma um array string para
 
 $marca_ult = '';
 $marca_agen = '';
@@ -73,7 +75,6 @@ $marca_agen = '';
 $justific = '';
 $msg = '';
 if(isset($_GET['reservar'])){
-    $dados = $_GET['marcas'];
     if(verificar_reservar($dados)==true){
         header('Location: cFiltroDisponibildade.php');
         exit();
@@ -102,19 +103,8 @@ if(isset($_GET['reservar'])){
     }
     
     
-}else{
-    
-    
-
-    $dados = json_decode(urldecode($dados)); //transforma um array string para
-    
-    
 }
-
-
-
-
-
+    
 $html = file_get_contents('View/vReservaConjunta.php');
 $usuarios =  listar_usuarios();
 $usuarios_agendador = mandar_options($usuarios, $marca_agen);
