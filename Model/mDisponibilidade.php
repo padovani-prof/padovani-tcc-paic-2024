@@ -2,6 +2,28 @@
 <?php 
 
 
+function carrega_categorias_recurso()
+{
+    include 'confg_banco.php';
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resulta = $cone->query('SELECT nome, codigo  from categoria_recurso');
+    $resulta = $resulta->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+    
+    return $resulta;
+    // retorna todos os dados da tabela categoria_recurso do banco em forma de lista com nome e o codigo
+
+}
+   
+function Carregar_recursos_dados(){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $resultado = $conecxao->query("SELECT nome, codigo from recurso");
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $conecxao->close();
+    return $resultado;
+}
+
 
 function Disponibilidade($periodo, $categorias, $recursos)
 {
@@ -117,60 +139,7 @@ function adicionados($recurso, $categorias)
 
 
 
-function transformar_em_lista($str)
-
-{
-    $lista  = explode(',', $str);
-    for ($i=0; $i < count($lista); $i++) { 
-        $dado =  str_replace('[','',$lista[$i]);
-        $dado =  str_replace(']','',$dado);
-        $dado = str_replace('"', '',$dado);
-
-        $lista[$i] = $dado;
-
-    }
-    return $lista;
-}
 
 
 
-function chaves($lista)
-{
-    $lista_chaves = array();
-    if(count($lista)>=3)
-    {
-        
-        for ($i=0; $i < count($lista); $i = $i + 3) 
-        { 
-            $lista_chaves[] = $lista[$i+2];
-        }
-    }
-    return $lista_chaves;
-
-}
-
-function ta_livre($codigo, $data, $h_ini, $h_fim, $disponives)
-{
-    
-    foreach($disponives as $livre)
-    {
-        if($livre['codigo_recurso']===$codigo and trim($livre["data_alvo"])=== trim($data) and trim($livre['hora_inicial_alvo'])===trim($h_ini) and trim($livre['hora_final_alvo'])===trim($h_fim))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-
-function mandar_hindem($lista, $name){
-    $inpu = ''; 
-    foreach($lista as $dado){
-        $inpu.="<input type='hidden' name='$name' value='$dado'>";
-    }
-    return $inpu;
-    
-
-}
 ?>

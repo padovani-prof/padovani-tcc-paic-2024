@@ -6,7 +6,7 @@ CREATE TABLE sgrp.usuario(
     nome varchar(100) not null,
     email varchar(100) not null,
     senha varchar(64) not null
-);
+)ENGINE = InnoDB;
 
 insert into `sgrp`.`usuario`(nome, email, senha) values('SGRP', 'sgrp@uea.edu.br', sha2('123', 256));
 insert into `sgrp`.`usuario`(nome, email, senha) values('Maria AGP', 'maria@uea.edu.br', sha2('123', 256));

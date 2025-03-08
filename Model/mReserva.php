@@ -59,7 +59,7 @@ function carregar_usuario() {
     return $resultado;
 }
 
-function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final) {
+function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final, $recurso) {
     if (empty($justificativa)) {
         return 0; // Justificativa Vazia
     }
@@ -77,6 +77,9 @@ function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final) {
     if ($hora_inicial >= $hora_final) {
         return 4; // Hora inicial não pode ser maior ou igual a hora final
     }
+    if(count( Disponibilidade([$data, $hora_inicial, $hora_final], [], [$recurso]))==0){
+        return 6; // rucurso já reservado
+    }
     return true;
 }
 
@@ -92,7 +95,7 @@ function inserir_reserva($justificativa, $recurso, $usuario_utilizador, $lista_d
     }
 
 
-    $verifica = Validar_reserva($justificativa, $lista_datas[0]['data'], $lista_datas[0]['hora_inicial'], $lista_datas[0]['hora_final']);
+    $verifica = Validar_reserva($justificativa, $lista_datas[0]['data'], $lista_datas[0]['hora_inicial'], $lista_datas[0]['hora_final'], $recurso);
     if ($verifica !== true) {
         return $verifica; 
     }
