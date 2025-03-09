@@ -1,4 +1,17 @@
 <?php
+
+function verificar_permicao_recurso($data, $h_ini, $h_fim, $recurso, $retirador, $dia_semana){
+    include 'confg_banco.php';
+    // verifica se em um recurso em um determinado periodo de reitrada ele tem permição para verirar o recurso
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+
+    $sql = "SELECT usuario.nome from usuario WHERE usuario.codigo in (SELECT usuario_perfil.codigo_usuario from  usuario_perfil WHERE usuario_perfil.codigo_perfil in(select acesso_recurso.codigo_perfil from acesso_recurso WHERE acesso_recurso.hr_inicial <= '$h_ini'  and acesso_recurso.hr_final >= '$h_fim' and acesso_recurso.dt_inicial <= '$data' and (acesso_recurso.dt_final >= '$data' OR acesso_recurso.dt_final is null) and acesso_recurso.codigo_recurso = $recurso and SUBSTRING(acesso_recurso.dias_semana, $dia_semana, 1) = 'S')) and usuario.codigo = $retirador;";
+    $resultado = $cone->query($sql);
+    return ($resultado->num_rows > 0)? true: false;
+
+}
+
+
 function listar_reserva() {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
@@ -59,7 +72,7 @@ function carregar_usuario() {
     return $resultado;
 }
 
-function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final, $recurso) {
+function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final) {
     if (empty($justificativa)) {
         return 0; // Justificativa Vazia
     }
@@ -77,28 +90,30 @@ function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final, $rec
     if ($hora_inicial >= $hora_final) {
         return 4; // Hora inicial não pode ser maior ou igual a hora final
     }
-    if(count( Disponibilidade([$data, $hora_inicial, $hora_final], [], [$recurso]))==0){
-        return 6; // rucurso já reservado
-    }
+    
     return true;
 }
 
 function inserir_reserva($justificativa, $recurso, $usuario_utilizador, $lista_datas) {
     
+    $justificativa = trim($justificativa);
+    $verifica = Validar_reserva($justificativa, $lista_datas[0]['data'], $lista_datas[0]['hora_inicial'], $lista_datas[0]['hora_final']);
+    
+    if ($verifica !== true) {
+        return $verifica; 
+    }
+    
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
-    $justificativa = trim($justificativa);
+    
 
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
 
 
-    $verifica = Validar_reserva($justificativa, $lista_datas[0]['data'], $lista_datas[0]['hora_inicial'], $lista_datas[0]['hora_final'], $recurso);
-    if ($verifica !== true) {
-        return $verifica; 
-    }
+    
 
     if (isset($_SESSION['codigo_usuario'])) {
         $usuario_agendador = $_SESSION['codigo_usuario'];
