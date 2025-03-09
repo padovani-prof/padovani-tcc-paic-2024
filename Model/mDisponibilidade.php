@@ -27,6 +27,8 @@ function Carregar_recursos_dados(){
 
 function Disponibilidade($periodo, $categorias, $recursos)
 {
+
+    
    
 	include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
