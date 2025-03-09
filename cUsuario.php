@@ -11,7 +11,7 @@ function tabela_usuarios(){
                 <td>
                     <form action="cUsuario.php">   
                         <input type="hidden" name="codigo_do_usuario" value="'. $user["codigo"] . '"> 
-                        <input class="btn btn-outline-secondary" type="submit" name="atualizar" value="Atualizar">&nbsp;
+                        <input class="btn btn-outline-secondary" type="submit" name="atualizar" value="Alterar">&nbsp;
                         <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
                     </form> 
                 </td>
