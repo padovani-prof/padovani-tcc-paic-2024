@@ -15,9 +15,16 @@ function verificar_reservar($dados){
 
 
 function Reserva_conjunta ($dados, $agendador, $utilizador, $justific){
+    
+    $recu = -1;
     foreach( $dados as $dado){
         $td_dados = explode(',', $dado);
-        $id_reserva = insere_reserva($justific, $agendador, $utilizador, $td_dados[0]);
+        if($recu != $td_dados[0])
+        {
+            $id_reserva = insere_reserva($justific, $agendador, $utilizador, $td_dados[0]);
+            $recu = $td_dados[0];
+        }
+        
         $certo = insere_data_reserva($td_dados[2], $td_dados[3].':00', $td_dados[4].':00', $id_reserva);
 
     }
