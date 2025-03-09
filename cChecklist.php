@@ -8,7 +8,7 @@ function cerrega_dados_checklist($lista, $codigo){
         $dados .='<td> <form action="cChecklist.php">   
                         <input type="hidden" name="codigo_item" value="' .$linha['codigo'].  '"> 
                         <input type="hidden" name="codigo" value="' .$codigo.  '"> 
-                        <input type="submit" name="apagar" value="Apagar"></form> 
+                        <input class="btn btn-outline-danger" type="submit" value="Apagar" name="apagar"></form> 
                 </td>';
         $dados .='</tr>';
 
