@@ -1,3 +1,4 @@
+
 <?php
 
 
@@ -31,7 +32,7 @@ elseif(isset($_GET['atualizar'])){
 $periodo = carrega_periodo();
 
 // Substitui os recursos no template HTML
-$periodos = '<tbody>';
+$periodos = '';
 foreach ($periodo as $nome)
 {
     $periodos = $periodos. '<tr>
@@ -39,15 +40,15 @@ foreach ($periodo as $nome)
         <td> 
             <form action="cPeriodo.php">   
                 <input type="hidden" name="codigo_do_periodo" value="' .$nome['codigo'].  '"> 
-                <input type="submit" name="atualizar" value="Atualizar">
-                <input type="submit" name="apagar" value="Apagar">
+                <input class="btn btn-outline-secondary" type="submit" value="Alterar" name="atualizar"> 
+                <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar">
             </form> 
         </td>
 
     </tr>';
     
 }
-$periodos = $periodos. '<tbody/>';
+
 
 $html = file_get_contents('View/vPeriodo.php');
 
