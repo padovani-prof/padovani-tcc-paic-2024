@@ -1,7 +1,5 @@
 <?php
 
-
-
 function  Carregar_recursos_htm(){
     $dados = Carregar_recursos_dados();
     $recursos = '';
@@ -10,16 +8,21 @@ function  Carregar_recursos_htm(){
     {
         // onclick="deseja_apagar()">  chama a função de java escripit
         $recursos .= '<tr>
-        <td>'.mb_strtoupper($nome["nome"]).'</td>
-        <td> <form action="cRecursos.php"> 
-                <input type="hidden" name="codigo_do_recurso" value="' .$nome['codigo'].'"> 
-
-                <input class="btn btn-outline-secondary" type="submit" name="altera" value="Alterar">&nbsp;
-                <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar"onclick="deseja_apagar()"> 
-            </form> 
-        </td>
-        <td> <a href="cChecklist.php?codigo=' . $nome["codigo"] . ' "> Checklist</a> </td>
-        <td> <a href="cPermissaoRecurso.php?codigo_recurso=' . $nome["codigo"] . ' ">Permissões</a> </td>
+        <td>'.$nome['nome'].'</td>
+        <td>
+        <div class="d-flex gap-2 align-items-center">
+        <a href="cChecklist.php?codigo='. $nome["codigo"].'" class="btn btn-outline-success">Ver Check List</a>
+        <a href="cPermissaoRecurso.php?codigo_recurso='.$nome["codigo"] .'" class="btn btn-outline-primary">Ver Permissões</a>
+        <form action="cRecursos.php" class="d-flex gap-2">
+            <input type="hidden" name="codigo_do_recurso" value="'. $nome['codigo'] .'"> 
+            <input class="btn btn-outline-secondary" name="altera" type="submit" value="Alterar">
+            <input class="btn btn-outline-danger" name="apagar" type="submit" value="Apagar" onclick="return deseja_apagar()">
+        </form>
+    </div>
+    </td> 
+        
+        
+        
     </tr>';
        
     }
