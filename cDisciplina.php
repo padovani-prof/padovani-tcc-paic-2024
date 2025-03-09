@@ -12,8 +12,8 @@ function tabela_disciplina($disciplina){
             <td> 
                 <form action="cDisciplina.php">
                     <input type="hidden" name="codigoPrim" value="'.$nome['codigo']. '">
-                    <input type="submit" value="Alterar" name="alterar">
-                    <input type="submit" value="Apagar" name="apagar">
+                    <input class="btn btn-outline-secondary" type="submit" value="Alterar" name="alterar">&nbsp;
+                    <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar">
                 </form> 
             </td>
         </tr>';
