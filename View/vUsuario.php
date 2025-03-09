@@ -4,28 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+      .azul{
+        background-color: #0059b3;
+      }
+  
+      .form-container {
+      max-width: 900px; /*  limite para telas grandes */
+      width: 100%; /* não extrapole em telas menores */
+      margin: auto; /* Vai centralizar o formulário*/
+    }
+    </style>
 </head>
-<body>
-    <h1>Usuário</h1>
-    <section>
-      <table border='1'>
-        <tr>
-          <th>Nome</th>
-          <th>E-mail:</th>
-          <th>Operações</th>
-        </tr>
-        <tbody>
-            {{usuarios}}
-        </tbody>  
-      </table>
-        <p id="{{resp}}">{{msg}}</p>
+<body class="bg-light">
+    <header class="azul text-center text-white py-4">
+      <h1>Usuário</h1>
+    </header>
+    
+    <p id="{{resp}}">{{msg}}</p>
+    <section class="container mt-4 border rounded shadow p-4 form-container">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-center align-middle">
+              <thead class="table-primary">
+                <tr>
+                  <th width="30%">Nome</th>
+                  <th width="30%">E-mail:</th>
+                  <th>Operações</th>
+                </tr>
+              </thead>  
+              <tbody>
+                <tr>
+                  {{usuarios}}
+                </tr>
+              </tbody>          
+             
+            </table>
 
-      <a href="cMenu.php"><button>Voltar</button></a>
-      
-      <div id="bt-nov-perfil">
-          <a href="cFormularioUsuario.php"><button>Novo Usuário</button></a>
-      </div>
-        
+          </div>
+          
+          <div class="d-flex justify-content-between">
+            <a href="cMenu.php" class="btn btn-secondary">Voltar</a>        
+            <a href="cFormularioUsuario.php" class="btn btn-primary">Novo Usuário</a>    
+          </div>
+         
     </section>
 </body>
 </html>
