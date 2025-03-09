@@ -49,6 +49,7 @@ if(isset($_GET['codigo']) or isset($_GET['t_codigo'])){
         $nomeP =  $_GET['txtnome'];
         $dataIn = $_GET['data_ini'];
         $dataFim = $_GET['data_fim'];
+        
 
         if (  mb_strlen($_GET['data_ini'])>=10 and mb_strlen($_GET['data_fim'])>=10  and mb_strlen($_GET['txtnome'])>=6)
         {
@@ -66,8 +67,9 @@ if(isset($_GET['codigo']) or isset($_GET['t_codigo'])){
             $mes_ini = $quebra_data_ini->format('m');
             $dia_ini = $quebra_data_ini->format('d');
             
+            $vereficar = verificar_periodo($codigo , $dataIn, $dataFim);
             $resposta = 2;
-            if ($ano_ini==$ano_atual and $mes_ini>=$mes_atual or $ano_ini>$ano_atual)
+            if ($ano_ini==$ano_atual and $mes_ini>=$mes_atual or $ano_ini>$ano_atual or $vereficar)
             {
                 // data inicial precisa ser maior que data final
                 $quebra_data_ini = new DateTime($dataFim);
@@ -75,7 +77,7 @@ if(isset($_GET['codigo']) or isset($_GET['t_codigo'])){
                 $mes_fim = $quebra_data_ini->format('m');
                 $dia_fim = $quebra_data_ini->format('d');
                 $resposta = 3;
-                if ($ano_fim==$ano_ini and $mes_fim==$mes_ini and $dataIn<$dia_fim  or $ano_fim > $ano_ini or $ano_fim==$ano_ini and $mes_fim>$mes_ini)
+                if ($ano_fim==$ano_ini and $mes_fim==$mes_ini and $dataIn<$dia_fim  or $ano_fim > $ano_ini or $ano_fim==$ano_ini and $mes_fim>$mes_ini or $vereficar)
                 {
                     $resposta = atualizar_periodo($codigo, $nomeP, $dataIn, $dataFim);
                 }
