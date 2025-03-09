@@ -115,7 +115,7 @@ if (isset($_GET["salvar"])) {
 
 // Gera os checkboxes de perfis, mantendo os selecionados
     if (is_array($perfil)) {
-        $perfis = '';
+        $perfis = '<br>';
         foreach ($perfil as $linha) {
             $checked = in_array($linha['codigo'], $perfis_selecionados) ? 'checked' : '';
             $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['codigo'] . "' $checked> " . $linha['nome'] . "<br>"; 
