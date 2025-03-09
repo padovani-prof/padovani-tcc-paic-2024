@@ -1,3 +1,5 @@
+
+
 <?php 
 
 function mandar_options_dispo($lista, $lado){
@@ -37,7 +39,7 @@ function tabela_cate_recu($lista){
        $name = str_replace(' ', '', $name);
        $recursos .= '<tr>
          <td>'.$d[1].'</td>
-         <td><input type="submit" name="'.$name.'" value="Remover"></td>
+         <td><input  class="btn btn-outline-danger" type="submit" name="'.$name.'" value="Remover"></td>
        </tr>';
       
    }
@@ -54,7 +56,7 @@ function tabela_periodo($lista){
       $name = $lista[$i].$lista[$i+1].$lista[$i+2];
        $recursos .= '<tr>
          <td>'.$lista[$i+1].' até '.$lista[$i+2].' de '.$data[2].'/'.$data[1].'/'.$data[0].'</td>
-         <td><input type="submit" name="'.$name.'" value="Remover"></td>
+         <td><input type="submit"  class="btn btn-outline-danger" name="'.$name.'" value="Remover"></td>
        </tr>';
       
    }
@@ -91,6 +93,21 @@ function remove_cate_recu($lista){
       }
    }
    return $lista;
+}
+
+
+function conflito_de_periodos_adicionados($data, $h_i, $h_f, $lista_periodos){
+   $add_periodo_ini = new DateTime("$data $h_i");
+   $add_periodo_fim = new DateTime("$data $h_f");
+   for ($i=0; $i < count($lista_periodos) ; $i+=3) { 
+      $perio_ini = new DateTime($lista_periodos[$i].' '.$lista_periodos[$i+1]);
+      $perio_fim = new DateTime($lista_periodos[$i].' '.$lista_periodos[$i+2]);
+      if($add_periodo_fim >= $perio_ini and $add_periodo_ini <= $perio_fim){
+         return true;
+      }
+      
+   }
+   return false;
 }
 
 include_once 'Model/mVerificacao_acesso.php';
@@ -149,7 +166,10 @@ if(isset($_GET['categoria']) and $_GET['categoria']!='NULL'){
          $msg = 'Periodo ínvalido. Não podemos adicionar um periodos inferio a data atual e horário.';
       }elseif ($data_inicial >= $data_fim) {
          $msg = 'Periodo ínvalido. Horario inicial ultrapassou o horário final.';
-      }else {
+      }elseif (conflito_de_periodos_adicionados($data, $hora_ini, $hora_fim, $dados_periodos)) {
+         $msg = 'Período ínvalido. Conflito com período já adicionado.';
+      }
+      else {
          $dados_periodos[] = $data;
          $dados_periodos[] = $hora_ini;
          $dados_periodos[] = $hora_fim;
@@ -177,12 +197,14 @@ if(isset($_GET['categoria']) and $_GET['categoria']!='NULL'){
       $cate = [];
       foreach($dados_recu_cate as $dados){
          $tipo = explode(',', $dados);
-         if($tipo == 'c'){
+         if($tipo[2] == 'c'){
             $cate[] = $tipo[0].','.$tipo[1];
          }else{
             $recu[] = $tipo[0].','.$tipo[1];
          }
       }
+
+      
       header("Location:  cResultadoDisponibilidade.php?".'periodos=' . urlencode(json_encode($dados_periodos)).(((count($recu)> 0)? "& recursos=" . urlencode(json_encode($recu)):'')).(((count($cate)> 0)? "& categorias=" . urlencode(json_encode($cate)):'')));
    
       exit();
