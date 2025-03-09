@@ -4,43 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recursos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+      .azul{
+        background-color: #0059b3;
+      }
+  
+      btn-custom{
+        background-color: #026cb6;
+      }
+
+      .form-container {
+      max-width: 800px; /*  limite para telas grandes */
+      width: 100%; /* não extrapole em telas menores */
+      margin: auto; /* Vai centralizar o formulário*/
+    }
+
+    </style>
 
 </head>
-<body>
-
-     <header>
+<body class="bg-light">
+     <header class="azul text-center text-white py-4">
       <h1>Recursos</h1>
      </header>
      
-     <section> <!--Inicio Section-->
+     <p id="resposta-{{repos}}">{{msg}}</p> 
+     <section class="container border rounded shadow my-4 p-4 form-container"> <!--Inicio Section-->
+          <div class="table-reponsive">
+            <table class="table table-bordered table-striped table-hover text-center align-middle">
+              <thead class="table-primary">
+                <tr>
+                  <th width="40%">Nome</th>
+                  <th>Operações</th>
+                </tr> 
+              </thead>
+              <tbody>
+                {{recursos}}
+              </tbody>
+              
+              
+          </table>
 
-     
-        <table border="1">
-            <tr>
-              <th>Nome</th>
-              <th>Operações</th>
-              <th>Checklist</th>
-              <th>Permissão</th>
-            </tr>
-            <tbody>
-              {{recursos}}
-            </tbody> 
-            
-        </table>
-       <p id="resposta-{{repos}}">{{msg}}</p> 
-
-        <div>
-          <a href="cMenu.php"><input type="button" value="Voltar"></a>
-        </div>
-        <div id="bt-nov-recurso">
-          <a href="cFormularioRecurso.php"><input type="button" value="Novo Recurso"></a>
-        </div>
+          </div>     
         
-
-                 
+          <div class="d-flex justify-content-between">
+                <a href="cMenu.php" class="btn btn-secondary">Voltar</a>             
+                <a href="cFormularioRecurso.php" class="btn btn-primary">Novo Usuário</a>
+          </div>
       </section>  
-
-    
-    <script src="script.js"></script>
 </body>
 </html>
