@@ -1,3 +1,4 @@
+
 <?php 
 function opition($perfis){
 
@@ -19,7 +20,7 @@ function Tabela_acesso_recurso_carrega($codigo){
         $informa .=  '<td> <form action="cPermissaoRecurso.php">   
                         <input type="hidden" name="codigo_recurso" value="' .$codigo.'"> 
                         <input type="hidden" name="codigo_acesso_ao_recurso" value="'.$dados['cod'].  '"> 
-                        <input type="submit" name="apagar" value="Apagar">
+                        <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar">
                     </form> </td>'; // coluna de ação para apagar
         $informa = $informa . '<tr/>';
         
