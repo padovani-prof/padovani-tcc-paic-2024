@@ -1,47 +1,84 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva Conjunta</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserva Conjunta</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <style>
+      .azul{
+        background-color: #0059b3;
+      }
+  
+    label{
+      color: #1a76d8;
+      font-weight: bolder;
+    }
+
+    .form-container {
+      max-width: 600px; /*  limite para telas grandes */
+      width: 100%; /* não extrapole em telas menores */
+      margin: auto; /* Vai centralizar o formulário*/
+    }
+    </style>
 </head>
-<body>
+<body class="bg-light">
+  <header class="azul text-center text-white py-4">
+      <h1>Reserva Conjunta</h1>
+  </header>
 
-    <h1>Reserva Conjunta</h1>
-    <form action="cReservaConjunta.php">
+  <section class="container mt-4 border rounded shadow p-4 form-container">
 
-        <div>
-            <table border="1">
+    <form action="cReservaConjunta.php">  
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover text-center align-middle">  
+          <thead class="table-primary">
             <tr>
-                <th>Reservas</th>
-                <th>Data e Horário</th>
+              <th width="50%">Reservas</th>
+              <th>Data e Horário</th>
             </tr>
-            <tbody>
-                {{reservas}}
-            </tbody>
-            
-            </table>
-            
-        </div>
+          </thead>
+          <tbody>
+    
+          </tbody>
+          
+          {{reservas}}
+        
+        </table>
+      </div>
+
+      <div>
         <label for="">Agendado por: </label>
-            <select name="agendador" id="">
-                {{agendador}}
-        </select><br>
-
-        <label for="">Justificativa: </label>
-        <input type="text" name="justfc" value="{{just}}"><br>
-
-        <label for="">Agendado para:</label>
-            <select name="utilizador" id="">
-            {{usuario}}
+        <select class="form-select" name="agendador" id="">
+          {{agendador}}
         </select>
-        <p id="erro">{{msg}}</p>
-        {{dados}}
+      </div>
+        
         <div>
-            <input type="submit" name="reservar" value="Reservar">
+          <label for="">Justificativa: </label>
+          <input class="form-control" type="text" name="justfc" id="" value="{{just}}">
         </div>
-    </form>
-    <a href="cFiltroDisponibildade.php"><input type="button" value="Voltar"></a> <!--FiltoDisnonibilidade ou vReservasd?-->
+
+        <div class="mb-3">
+          <label for="">Agendado para: </label>
+          <select class="form-select" name="utilizador" id="">
+            {{usuario}}
+          </select>
+        </div>
+        {{dados}}
+        
+        <div class="d-flex justify-content-between ">
+          <a href="cFiltroDisponibildade.php"><input class="btn btn-secondary" type="button" value="Voltar"></a> 
+
+          <input class="btn btn-primary" type="submit" value="Reservar" name="reservar">
+        </div>
+           
+    <p id="mensagem-erro">{{msg}}</p>  
+    </form> 
+
+  </section>
+
 
 </body>
 </html>
