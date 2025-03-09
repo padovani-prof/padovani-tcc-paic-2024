@@ -74,6 +74,20 @@ function mandar_dados($chave){
 
 }
 
+
+function verificar_periodo($codigo , $dataine, $data_fim){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $sql = "SELECT * from periodo where codigo=$codigo and dt_inicial = '$dataine' and dt_final= '$data_fim';";
+    
+    $resulata = $conecxao->query($sql);
+
+    
+    return $resulata->num_rows == 1;
+
+
+}
+
 function atualizar_periodo($chave, $nome, $dataIn, $dataFim){
 
     include 'confg_banco.php';
