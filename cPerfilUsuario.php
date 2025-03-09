@@ -29,25 +29,32 @@ else if(isset($_GET['atualizar'])){
 }
 
 $perfil = listar_perfis();  
-$perfis = '<tbody>';
+$perfis = '';
 foreach ($perfil as $p) {
     $perfis .= '<tr>
         <td>'.$p["nome"].'</td>
         <td>'.$p["descricao"].'</td>
-        <td>
+        
             <form action="cPerfilUsuario.php">   
                 <input type="hidden" name="codigo_do_perfil" value="'. $p["codigo"] . '"> 
-                <input type="submit" name="atualizar" value="Atualizar">
-                <input type="submit" name="apagar" value="Apagar">
+                <td>
+                    <input class="btn btn-outline-secondary" name="atualizar" type="submit" value="Alterar">&nbsp;
+                    <input class="btn btn-outline-danger" name="apagar" type="submit" value="Apagar">
+                </td> 
+
+
+
+                
             </form> 
-        </td>
+        
     </tr>';
 }
-$perfis .= '</tbody>';
+
 
 $html = file_get_contents('View/vPerfilUsuario.php');
 $html = str_replace('{{perfis}}', $perfis, $html);
 $html = str_replace('{{resp}}', $resposta, $html);
 $html = str_replace('{{msg}}', $msg, $html);
 echo $html;
+
 ?>
