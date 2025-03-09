@@ -22,10 +22,10 @@ $reservas = listar_reserva();
 $conteudo_reservas = '';
 
 
+$msg = (!isset($_GET['codigo_da_reserva']) and count($reservas)==0)?'Não há reservas no momento.':$msg;
 
 foreach ($reservas as $reserva) {
     $datas_reserva = listar_datas($reserva["codigo_reserva"]); 
-
     $datas_horarios = '';
     foreach ($datas_reserva as $data) {
         // Formatando a data para "DD/MM/AAAA"
@@ -34,7 +34,6 @@ foreach ($reservas as $reserva) {
         // Montando o texto formatado
         $datas_horarios .= $data_formatada . ' das ' . $data["hora_inicial"] . ' às ' . $data["hora_final"] . '<br>';
     }
-
     $conteudo_reservas .= '<tr>
         <td>' . ($reserva["recurso"]) . '</td>
         <td>' . ($reserva["usuario"]) . '</td>
@@ -43,7 +42,7 @@ foreach ($reservas as $reserva) {
             <form action="cReservas.php" method:"get">
             
                 <input type="hidden" name="codigo_da_reserva" value="' . $reserva["codigo_reserva"] . '">
-                <input type="submit" name="apagar" value="Apagar">
+                <input type="submit" class="btn btn-outline-danger" name="apagar" value="Apagar">
             </form>
         </td>
     </tr>';
