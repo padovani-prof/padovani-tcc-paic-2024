@@ -45,6 +45,7 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
 
         if($resp==0)
         {
+            $marcar = '';
             $peri = '';
             $nome = '';
             $curso = '';
@@ -72,6 +73,7 @@ else if(isset($_GET['salvar']))
 
     if($resp==0)
     {
+        $marcar = '';
         $peri = '';
         $nome = '';
         $curso = '';
