@@ -1,4 +1,15 @@
+
 <?php 
+function verificar_permicao_recurso($data, $h_ini, $h_fim, $recurso, $retirador, $dia_semana){
+    include 'confg_banco.php';
+    // verifica se em um recurso em um determinado periodo de reitrada ele tem permição para verirar o recurso
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $sql = "SELECT usuario.nome from usuario WHERE usuario.codigo in (SELECT usuario_perfil.codigo_usuario from  usuario_perfil WHERE usuario_perfil.codigo_perfil in(select acesso_recurso.codigo_perfil from acesso_recurso WHERE acesso_recurso.hr_inicial <= '$h_ini'  and acesso_recurso.hr_final >= '$h_fim' and acesso_recurso.dt_inicial <= '$data' and (acesso_recurso.dt_final >= '$data' OR acesso_recurso.dt_final is null) and acesso_recurso.codigo_recurso = $recurso and SUBSTRING(acesso_recurso.dias_semana, $dia_semana, 1) = 'S')) and usuario.codigo = $retirador;";
+    $resultado = $cone->query($sql);
+    return ($resultado->num_rows > 0)? true: false;
+
+}
+
 
 function carrega_retirada_disponivel()
 {
@@ -13,6 +24,15 @@ function carrega_retirada_disponivel()
     $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $cone->close();
     return $resultado;
+}
+
+
+function criar_reserva_retirada($usuario_utilizador, $recurso, $data, $hora_ini, $hora_fim){
+    $justi = 'Retirada sem reserva';
+    $usuario_agendador = 1;  // sera colocado um codigo da pessoa que fez a retirada para o usuario
+    include 'mReservaConjunta.php';
+    $id = insere_reserva($justi, $usuario_agendador, $usuario_utilizador, $recurso);
+    return insere_data_reserva($data, $hora_ini, $hora_fim, $id);
 }
 
 
@@ -58,12 +78,34 @@ function listar_usuarios(){
 
 function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $dr)
 {
+
+    
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
+    if($dr== 'D'){
+        $data = explode(' ', $data_hora);
+        date_default_timezone_set('America/Manaus');
+        $i = date('H:i:s');
+        $h_ini = $data[1];
+        $data = $data[0];
+        $sql = "SELECT reserva.codigo FROM reserva
+        INNER JOIN data_reserva
+        on data_reserva.codigo_reserva = reserva.codigo
+        WHERE reserva.codigo_recurso = $recurso and reserva.codigo_usuario_utilizador = $retirante 
+        and data_reserva.data = '$data' and  data_reserva.hora_final > '$h_ini' and data_reserva.hora_inicial < '$hora_fim';";
+        
+        $resultado = $conexao->query($sql);
+        $id = $resultado ->fetch_assoc()['codigo'];
+        
+        $sql = "UPDATE data_reserva set hora_final = '$i' where codigo_reserva = $id;";
+        $resultado = $conexao->query($sql);
+
+    }
+    
     $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final) VALUES ($retirante, $recurso,  '$data_hora', '$dr', 'S','$hora_fim')";
     $resultado = $conexao->query($sql);
     return $resultado;
@@ -85,15 +127,6 @@ function carrega_recursos_emprestados()
 
 
 
-function optios($dados){
-    $opt = '<option value="NULL">...</option>';
-    foreach($dados as $dado)
-    {
-        $opt .= '<option value="'. $dado['codigo'].'">'.mb_strtoupper($dado['nome'] ).'</option>';
-    }
-    return $opt;
-
-}
 
 
 
