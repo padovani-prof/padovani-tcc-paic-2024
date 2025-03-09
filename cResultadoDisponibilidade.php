@@ -1,3 +1,4 @@
+
 <?php 
 
 
@@ -59,6 +60,9 @@ $msg = '';
 $categorias = isset($_GET['categorias'])?json_decode(urldecode($_GET['categorias'])):[];
 $recursos = isset($_GET['recursos'])?json_decode(urldecode($_GET['recursos'])):[];
 $periodos = isset($_GET['periodos'])?json_decode(urldecode($_GET['periodos'])):[];
+
+
+
 
 
 if(isset($_GET['reserva']) and isset($_GET['marcas'])){
