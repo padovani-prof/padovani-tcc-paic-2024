@@ -18,12 +18,18 @@ $disc = '';
 $sala = '';
 $categoria = '';
 $filtra = '';
+$cod_ensalamento = '';
+
 
 if(isset($_GET['apagar']))
 {
-    $cod_ensalamento = $_GET['codigo_do_periodo'];
+    $cod_ensalamento = $_GET['codigo_ensalamento'];
+    
+    if ($cod_ensalamento != null){
+        $teste = apagar($cod_ensalamento);
+    }
 
-    $teste = apagar($cod_ensalamento);
+   
 //     if(apagar($cod_ensalamento) === true)
 //     {
 //         //ver uma mensagem para usar
@@ -31,29 +37,30 @@ if(isset($_GET['apagar']))
 //     }
 }
 
-$filtra = filtrar(null, null, null);
 
-    if (!empty($filtra)) 
-    {
-        $categoria = '<tbody>';
-        foreach ($filtra as $controle){
-            $categoria .= '<tr>
-                    <td>' . $controle['nome_recurso'] . '</td>
-                    <td>' . $controle['nome_periodo'] . '</td>
-                    <td>' . $controle['nome_disciplina'] . '</td>
-                    <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
-                    <td>' . $controle['hora_inicial'] . ' até ' .$controle['hora_final'] . '</td>
-                    <td> 
-                        <form action="cEnsalamento.php">   
-                            <input type="hidden" name="codigo_do_periodo" value="' .$controle['codigo'].  '"> 
-                            <input type="submit" name="apagar" value="Apagar">
-                        </form> 
-                    </td>
-                    
-                  </tr>';
-        }
-        $categoria .= '<tbody/>';
+$filtra = filtrar();
+
+if (!empty($filtra)) 
+{
+    $categoria = '<tbody>';
+    foreach ($filtra as $controle){
+        $categoria .= '<tr>
+                <td>' . $controle['nome_recurso'] . '</td>
+                <td>' . $controle['nome_periodo'] . '</td>
+                <td>' . $controle['nome_disciplina'] . '</td>
+                <td>' . gerarDiasDaSemana($controle['dias_semana']) . '</td>
+                <td>' . $controle['hora_inicial'] . ' até ' .$controle['hora_final'] . '</td>
+                <td> 
+                    <form action="cEnsalamento.php">   
+                        <input type="hidden" name="codigo_ensalamento" value="' .$controle['codigo'].  '"> 
+                        <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar">
+                    </form> 
+                </td>
+                
+                </tr>';
     }
+    $categoria .= '<tbody/>';
+}
 
 
 if (isset($_GET['filtrar']))
@@ -79,7 +86,7 @@ if (isset($_GET['filtrar']))
                     <td> 
                         <form action="cEnsalamento.php">   
                             <input type="hidden" name="codigo_ensalamento" value="' .$controle['codigo'].  '"> 
-                            <input type="submit" name="apagar" value="Apagar">
+                            <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar">
                         </form> 
                     </td>
                 </tr>';
@@ -89,6 +96,9 @@ if (isset($_GET['filtrar']))
 
  
 }
+
+
+
 
 $op_p = gerarOpcoes($lista_de_periodos, $peri);
 $op_d = gerarOpcoes($lista_de_disciplina, $disc);

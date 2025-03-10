@@ -24,7 +24,12 @@
          background-color: red;
         color: white;
       }
-      
+
+      .form-container {
+      max-width: 800px; /*  limite para telas grandes */
+      width: 100%; /* não extrapole em telas menores */
+      margin: auto; /* Vai centralizar o formulário*/
+    } 
     </style>
 
 </head>
@@ -32,17 +37,15 @@
   <header class="azul text-white text-center py-4">
       <h1>Dias da Semana</h1>
   </header>
-  <section>
 
-    <section class="container w-50 mt-4 border rounded shadow p-4 ">
+    <section class="container mt-4 border rounded shadow p-4 w-100 w-md-75 w-lg-50 form-container">
       <form action="cEnsalamento.php">
         
         <div class="d-flex align-itens-center mb-3">
-            <label class="form-label me-3" for="">Período: </label>
-            <select class="form-select " name="periodo"   id="txtperiodo">
-              <option value=""></option>
-            {{periodo}}
-            </select>
+          <label class="form-label me-3" for="">Período: </label>
+          <select class="form-select " name="periodo"   id="txtperiodo">
+          {{periodo}}
+          </select>
         </div>
 
         <div class="d-flex align-itens-center mb-3">
@@ -65,7 +68,7 @@
 
     </form>
 
-      <div class="table-reponsive">
+      <div class="table-responsive">
           <table class="table table-striped table-bordered table-hover text-center align-middle">
             <thead>
               <tr class="table-primary">
@@ -93,14 +96,12 @@
       </div>
       
     <div class="d-flex justify-content-between mt-4">
-      <a href="cMenu.php" class=""><input class="btn btn-secondary" type="button" value="Voltar"></a>
+      <a href="cMenu.php" class="btn btn-secondary" type="button" value="Voltar">Voltar</a>
       <a href="cFormularioEnsalamento.php"><input class="btn btn-primary" type="button" value="Novo"></a>
     </div>
     
-
   </section>
 
-    </section>
     
 
    
