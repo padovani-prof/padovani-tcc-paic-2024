@@ -44,7 +44,6 @@
         <div class="d-flex align-itens-center mb-3">
             <label class="form-label me-3" for="">Período: </label>
             <select class="form-select " name="periodo"   id="txtperiodo">
-              <option value=""></option>
             {{periodo}}
             </select>
         </div>
