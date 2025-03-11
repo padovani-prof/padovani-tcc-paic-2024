@@ -84,8 +84,8 @@
                     <ul class="list-unstyled">
                         <li><a href="cPerfilUsuario.php">Perfis de Usuários</a></li>
                         <li><a href="cUsuario.php">Usuários</a></li>
-                        <li><a href="cRecursos.php">Categoria</a></li>
-                        <li><a href="cCategoria.php">Recursos</a></li>
+                        <li><a href="cCategoria.php">Categoria</a></li>
+                        <li><a href="cRecursos.php">Recursos</a></li>
                         <li><a href="cFormularioRetirada.php">Retiradas</a></li>
                         <li><a href="cFormularioDevolucao.php">Devoluções</a></li>
                         <li><a href="cFiltroDisponibildade.php">Disponibilidades</a></li>
