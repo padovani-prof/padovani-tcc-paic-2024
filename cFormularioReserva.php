@@ -128,18 +128,18 @@ function mostra_periodos_1($lista_datas, $inf){
 
 function mostra_periodos_2($lista_datas, $inf_disp, $inf_per, $html, $verificar){
     $data_reserva = '';
-    $ht_dispo_e = '<span title="Este recurso já tem reserva para este periodo.">❌</span> ';
-    $ht_dispo_v = '<span title="Recurso disponivel ok.">✅</span> ';
+    $ht_dispo_e = '<td><span title="Este recurso já tem reserva para este periodo.">❌</span> </td>';
+    $ht_dispo_v = '<td><span title="Recurso disponivel ok.">✅</span> </td> ';
 
-    $ht_perm_e= '<span title="O usuario ultilizador não possui permição para reservar este recurso neste periodo.">❌</span> ';
-    $ht_perm_v= '<span title="Permição de recurso ok">✅</span> ';
+    $ht_perm_e= '<td><span title="O usuario ultilizador não possui permição para reservar este recurso neste periodo.">❌</span> </td>';
+    $ht_perm_v= '<td><span title="Permição de recurso ok">✅</span>  </td>';
     foreach ($lista_datas as $key => $periodo) {
         
         $data = (is_string($periodo['data']) && !empty($periodo['data'])) ? explode('-', $periodo['data']) : [];
         
         if (count($data) == 3) {
-            $data_reserva .= "<tr>
-               " .(($verificar == true)?"<td>".(($inf_disp[$key] == 's')?$ht_dispo_v:$ht_dispo_e). (($inf_per[$key] == 's')?$ht_perm_v:$ht_perm_e)."</td>":'')." <td> {$data[2]}/{$data[1]}/{$data[0]} de {$periodo['hora_inicial']} até {$periodo['hora_final']}".
+            $data_reserva .= "
+               " .(($verificar == true)?"".(($inf_disp[$key] == 's')?$ht_dispo_v:$ht_dispo_e). (($inf_per[$key] == 's')?$ht_perm_v:$ht_perm_e)."</td>":'')." <td> {$data[2]}/{$data[1]}/{$data[0]} de {$periodo['hora_inicial']} até {$periodo['hora_final']}".
                 "</td><td><input type='submit' class='btn btn-outline-danger' name='remover_{$key}' value='Remover'></td>
             </tr>";
         } else {
@@ -205,7 +205,7 @@ if (isset($_GET['btnSalvar'])) {
         }";
 
         if((mb_substr_count($inf_dispo, 'n')>0) or (mb_substr_count($inf, 'n')>0)){
-            $vere = "<th>Verificações</th>";
+            $vere = "<th>Disponivel</th><th>Permição</th>";// tabelas de verificação
             $vereficar = true;
             $mensagem = "O ultilizador não pode reserva por não ter passado em alguma das verificações.";
         }else{
