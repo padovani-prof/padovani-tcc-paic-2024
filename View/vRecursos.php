@@ -30,7 +30,7 @@
      
      <p id="resposta-{{repos}}">{{msg}}</p> 
      <section class="container border rounded shadow my-4 p-4 form-container"> <!--Inicio Section-->
-          <div class="table-reponsive">
+          <div class="table-reponsive" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-bordered table-striped table-hover text-center align-middle">
               <thead class="table-primary">
                 <tr>
