@@ -34,7 +34,7 @@
             <table class="table table-bordered table-striped table-hover text-center align-middle">
               <thead class="table-primary">
                 <tr>
-                  <th width="40%">Nome</th>
+                  <th width="30%">Nome</th>
                   <th>Operações</th>
                 </tr> 
               </thead>
