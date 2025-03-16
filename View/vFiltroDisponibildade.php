@@ -50,6 +50,7 @@
                     {{op-categoria}}
                   </select>
                 </div>
+             
                     
                 <div>
                   {{dados-catego-recu}}
@@ -67,6 +68,14 @@
                 </div>
                 
                 <input class="btn btn-primary" type="submit" value="Adicionar" name="btnRecursos">
+            </div>
+
+
+            <div class="mb-3">
+                <label for="">Agendado para: </label>
+                <select class="form-select" name="utilizador" id="">
+                  {{usuario}}
+              </select>
             </div>
             
             </div>  <!--Fim Tabela Categoria-->
