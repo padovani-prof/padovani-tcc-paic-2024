@@ -1,14 +1,6 @@
 
 <?php 
-function verificar_permicao_recurso($data, $h_ini, $h_fim, $recurso, $retirador, $dia_semana){
-    include 'confg_banco.php';
-    // verifica se em um recurso em um determinado periodo de reitrada ele tem permição para verirar o recurso
-    $cone = new mysqli($servidor, $usuario, $senha, $banco);
-    $sql = "SELECT usuario.nome from usuario WHERE usuario.codigo in (SELECT usuario_perfil.codigo_usuario from  usuario_perfil WHERE usuario_perfil.codigo_perfil in(select acesso_recurso.codigo_perfil from acesso_recurso WHERE acesso_recurso.hr_inicial <= '$h_ini'  and acesso_recurso.hr_final >= '$h_fim' and acesso_recurso.dt_inicial <= '$data' and (acesso_recurso.dt_final >= '$data' OR acesso_recurso.dt_final is null) and acesso_recurso.codigo_recurso = $recurso and SUBSTRING(acesso_recurso.dias_semana, $dia_semana, 1) = 'S')) and usuario.codigo = $retirador;";
-    $resultado = $cone->query($sql);
-    return ($resultado->num_rows > 0)? true: false;
 
-}
 
 
 function carrega_retirada_disponivel()
