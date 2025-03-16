@@ -60,12 +60,8 @@
           <input class="form-control" type="text" name="justfc" id="" value="{{just}}">
         </div>
 
-        <div class="mb-3">
-          <label for="">Agendado para: </label>
-          <select class="form-select" name="utilizador" id="">
-            {{usuario}}
-          </select>
-        </div>
+        {{usuario}}
+         
         {{dados}}
         
         <div class="d-flex justify-content-between ">
