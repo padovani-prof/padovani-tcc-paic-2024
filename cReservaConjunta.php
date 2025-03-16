@@ -78,7 +78,7 @@ $dados = json_decode(urldecode($_GET['marcas'])); //transforma um array string p
 
 $marca_ult = '';
 $marca_agen = '';
-
+$utilizador = $_GET['utilizador'];
 $justific = '';
 $msg = '';
 if(isset($_GET['reservar'])){
@@ -88,19 +88,14 @@ if(isset($_GET['reservar'])){
     }
     
     $agendador = $_GET['agendador'];
-    $utilizador = $_GET['utilizador'];
+    
     $justific = $_GET['justfc'];
-    $marca_ult = $utilizador;
     $marca_agen = $agendador;
 
 
     if($agendador == 'NULL'){
         // agendador
         $msg = 'Selecione o agendador.';
-    }else if($utilizador == 'NULL'){
-        // ultili
-        $msg = 'Selecione o ultilizador.';
-
     }else{
         Reserva_conjunta ($dados, $agendador, $utilizador, $justific);
         // se der reserva disponibilidade 
@@ -115,17 +110,17 @@ if(isset($_GET['reservar'])){
 $html = file_get_contents('View/vReservaConjunta.php');
 $usuarios =  listar_usuarios();
 $usuarios_agendador = mandar_options($usuarios, $marca_agen);
-$usuario_ultilizador = mandar_options($usuarios, $marca_ult);
 $hidem_dados = dados_hidem($dados);
 $tabe_htm = tabe_html($dados);
 $html = str_replace('{{dados}}', $hidem_dados, $html);
 $html = str_replace('{{reservas}}', $tabe_htm, $html);
 $html = str_replace('{{agendador}}', $usuarios_agendador, $html);
-$html = str_replace('{{usuario}}', $usuario_ultilizador, $html);
+$html = str_replace('{{usuario}}', '<input type="hidden" name="utilizador" value="'.$utilizador.'">', $html);
 $html = str_replace('{{just}}', $justific, $html);
 
 $html = str_replace('{{msg}}', $msg, $html);
 echo $html;
 
 ?>
+
 
