@@ -205,7 +205,7 @@ if (isset($_GET['btnSalvar'])) {
         }";
 
         if((mb_substr_count($inf_dispo, 'n')>0) or (mb_substr_count($inf, 'n')>0)){
-            $vere = "<th>Disponivel</th><th>Permição</th>";// tabelas de verificação
+            $vere = "<th>Disponivel</th><th>Permitido</th>";// tabelas de verificação
             $vereficar = true;
             $mensagem = "O ultilizador não pode reserva por não ter passado em alguma das verificações.";
         }else{
