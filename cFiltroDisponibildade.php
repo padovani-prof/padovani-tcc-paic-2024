@@ -2,7 +2,7 @@
 
 <?php 
 
-function mandar_options_dispo($lista, $lado){
+function mandar_options_dispo($lista, $lado='a'){
    $opt = '<option value="NULL">...</option>';
    foreach($lista as $dados)
       { 
@@ -115,14 +115,18 @@ Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'cad_categoria_rec', 2);
 
 
+$usua = ((isset($_GET['utilizador']) and $_GET['utilizador']!= 'NULL')? $_GET['utilizador']:'');
+
 $html = file_get_contents('View/vFiltroDisponibildade.php');
 
 $dados_recu_cate =  isset($_GET['cate_recu'])?json_decode(urldecode($_GET['cate_recu'])):[];
 $dados_periodos =  isset($_GET['periodo'])?json_decode(urldecode($_GET['periodo'])):[];
 
 include 'Model/mDisponibilidade.php';
+include_once 'Model/mUsuario.php';
 $care_recursos = Carregar_recursos_dados();
 $carre_categorias = carrega_categorias_recurso();
+$usuarios = listar_usuarios();
 
 $msg_id = 'erro';
 $msg = '';
@@ -189,7 +193,8 @@ if(isset($_GET['categoria']) and $_GET['categoria']!='NULL'){
       
    }elseif (count($dados_periodos)== 0) {
       $msg = 'Adicione algum periodo.';
-      
+   }elseif ($_GET['utilizador']== 'NULL') {
+      $msg = 'Selecione o ultilizador para consultar.';
    }
    else {
       // separa os dados e mada pra resulatdo disponibilidade;
@@ -204,8 +209,7 @@ if(isset($_GET['categoria']) and $_GET['categoria']!='NULL'){
          }
       }
 
-      
-      header("Location:  cResultadoDisponibilidade.php?".'periodos=' . urlencode(json_encode($dados_periodos)).(((count($recu)> 0)? "& recursos=" . urlencode(json_encode($recu)):'')).(((count($cate)> 0)? "& categorias=" . urlencode(json_encode($cate)):'')));
+      header("Location:  cResultadoDisponibilidade.php?utilizador=".$_GET['utilizador'].'& periodos=' . urlencode(json_encode($dados_periodos)).(((count($recu)> 0)? "& recursos=" . urlencode(json_encode($recu)):'')).(((count($cate)> 0)? "& categorias=" . urlencode(json_encode($cate)):'')));
    
       exit();
    }
@@ -232,7 +236,11 @@ $dados_periodos = '<input type="hidden" name="periodo" value=" '.urlencode(json_
 $opt_recurso = mandar_options_dispo($care_recursos, 'r');
 $opt_categoria = mandar_options_dispo($carre_categorias, 'c');
 
+$usuarios = mandar_options($usuarios, $usua);
 
+
+
+$html = str_replace('{{usuario}}', $usuarios, $html);
 $html = str_replace('{{data}}', $data, $html);
 $html = str_replace('{{hora_ini}}', $hora_ini, $html);
 $html = str_replace('{{hora_fim}}', $hora_fim, $html);
