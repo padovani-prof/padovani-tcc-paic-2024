@@ -32,7 +32,7 @@
      <section class="container mt-4 border rounded shadow p-4 form-container"> <!--Inicio Section-->
      
           <form action="cPermissaoRecurso.php">
-                <input type="hidden" name="codigorecurso" value="{{codigorecurso}}">
+                <input type="hidden" name="codigo_recurso" value="{{codigorecurso}}">
                 <p>Recurso: {{nomerecurso}}</p>
 
                 <div>
