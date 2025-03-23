@@ -131,7 +131,7 @@ function mostra_periodos_2($lista_datas, $inf_disp, $inf_per, $html, $verificar)
     $ht_dispo_e = '<td><span title="Este recurso já tem reserva para este periodo.">❌</span> </td>';
     $ht_dispo_v = '<td><span title="Recurso disponivel ok.">✅</span> </td> ';
 
-    $ht_perm_e= '<td><span title="O usuario ultilizador não possui permição para reservar este recurso neste periodo.">❌</span> </td>';
+    $ht_perm_e= '<td><span title="O usuario ultilizador não possui permissão para reservar este recurso neste periodo.">❌</span> </td>';
     $ht_perm_v= '<td><span title="Permição de recurso ok">✅</span>  </td>';
     foreach ($lista_datas as $key => $periodo) {
         
