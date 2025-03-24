@@ -104,19 +104,22 @@ $disponives = Disponibilidade($periodos, $chaves_cate, $chaves_recursos);
 $recurso_catego = adicionados($chaves_recursos, $chaves_cate);
 
 $coluna = '';
+$k = 0;
 for($i = 0; $i < count($periodos); $i += 3)
 {
     // 01/10/2024 das 12:00:00 às 15:00:00
     $data = explode('-', $periodos[$i]);
-
     $coluna = $coluna.'<th>'.$data[2].'/'.$data[1].'/'.$data[0].' das '. $periodos[$i + 1] . ' ás ' . $periodos[$i+2].'</th>';
+    $k ++;
 }
 
 
 
 $recurs_dados = '';
-$qdt = count($recurso_catego);
+$qdt = count($recurso_catego) ;
+$K =  $qdt * $k;
 $qdt_ind = 0;
+
 for ($i=0; $i < $qdt; $i++) 
 { 
     $recurs_dados .= ' <tr> <td>'. $recurso_catego[$i]['nome_recurso'].'</td>';
@@ -136,14 +139,15 @@ for ($i=0; $i < $qdt; $i++)
         else{
             $recurs_dados .='<span title="'.(($livre and !$permitido)?'O ultilizador não possui permição do recurso para esse periodo.':'Recurso já reservado.').'">X</span>';
             $qdt_ind ++;
-            if($qdt == $qdt_ind){
-                $msg = (($qdt > 1)?'Todos os recursos estão indisponives para '.((count($periodos)>3)?'esses períodos.':'esse período.'):'O recurso está indisponivel para  '.((count($periodos)>3)?'esses períodos.':'esse período.')).' Por favor, volte e selecione outros períodos ou recursos.';
-            }
+            
         }
 
         
     }
     $recurs_dados .= '</tr>';
+}
+if($K == $qdt_ind){
+    $msg = (($qdt > 1)?'Todos os recursos estão indisponives para '.((count($periodos)>3)?'esses períodos.':'esse período.'):'O recurso está indisponivel para  '.((count($periodos)>3)?'esses períodos.':'esse período.')).' Por favor, volte e selecione outros períodos ou recursos.';
 }
 $html = str_replace('{{msg}}',$msg, $html);
 $html = str_replace('{{cate}}',$hid_cate, $html);
