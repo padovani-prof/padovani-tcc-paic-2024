@@ -34,7 +34,7 @@
     <section class="container border rounded shadow mt-4 p-4 form-container">
         <p class="text-center fw-bolder" id="mensagem-{{retorno}}" >{{mensagem}}</p>
 
-        <form action="cFormularioUsuario.php">
+        <form action="cFormularioUsuario.php" method="post">
             {{tipo}}
             <div class="row mb-2"> <!--Inicio nome e email-->
                 <div class="form-group col-md-6 mb-3">
