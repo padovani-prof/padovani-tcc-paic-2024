@@ -2,14 +2,13 @@
 
 function tabela_usuarios(){
     $usuario = listar_usuarios();
-      
     $usuarios = '';
     foreach ($usuario as $user) {
             $usuarios = $usuarios. '<tr>
                 <td>'.$user["nome"].'</td>
                 <td>'.$user["email"].'</td>
                 <td>
-                    <form action="cUsuario.php">   
+                    <form action="cUsuario.php" method="post">   
                         <input type="hidden" name="codigo_do_usuario" value="'. $user["codigo"] . '"> 
                         <input class="btn btn-outline-secondary" type="submit" name="atualizar" value="Alterar">&nbsp;
                         <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
@@ -29,19 +28,19 @@ verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario', 2);
 $msg = '';
 $id_msg = 'nada';
 include_once 'Model/mUsuario.php';
-if (isset($_GET['apagar'])) {
+if (isset($_POST['apagar'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario', 2); // apagar_usu
     
     $l_msg = ['O usuário foi removido com sucesso.','O usuário não pode ser excluído, pois possui retiradas vinculadas a ele.','O usuário não pode ser removido, pois há reservas associadas a ele.'];
-    $cod_usuario = $_GET['codigo_do_usuario'];
+    $cod_usuario = $_POST['codigo_do_usuario'];
     $msg = apagar_usuario($cod_usuario);
     
     $id_msg = ($msg==0)?'sucesso':'erro';
     $msg = $l_msg[$msg];
 
 
-}elseif(isset($_GET["atualizar"])){
-    $cod_usuario = $_GET['codigo_do_usuario'];
+}elseif(isset($_POST["atualizar"])){
+    $cod_usuario = $_POST['codigo_do_usuario'];
     header("Location: cFormularioUsuario.php?codigo=$cod_usuario");
     exit();
 }
