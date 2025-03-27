@@ -10,7 +10,7 @@ if (isset($_GET['desconectar']) or isset($_GET['msg'])){
     $msm = str_replace('{{resp}}', 'sair', $msm);
     echo $msm;
 }
-else if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
+else if (isset($_POST['txtemail']) and isset($_POST['txtsenha']))
 
 {
     
@@ -19,8 +19,8 @@ else if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
 
     // Verifica se os dados foram enviados via 
 
-    $email_usu = $_GET['txtemail'];
-    $senha_usu = $_GET['txtsenha'];
+    $email_usu = $_POST['txtemail'];
+    $senha_usu = $_POST['txtsenha'];
 
     // Chama o método de login e recebe o nome do usuário caso autenticado, ou NULL caso contrário
     $usuario = logar($email_usu, $senha_usu);
@@ -33,14 +33,13 @@ else if (isset($_GET['txtemail']) and isset($_GET['txtsenha']))
         $html = str_replace('{{mensagem}}', 'Falha de autenticação!', $html);
         echo $html;
     } else {
-        // Login bem-sucedido, carrega o vMenu.php e insere a saudação
+        //Login bem-sucedido, carrega o vMenu.php e insere a saudação
         session_start();
         $_SESSION['codigo_usuario'] = $usuario[0];
         header("Location: cMenu.php?usuario=$usuario[1]");
         exit();
        
     }
-
 }
 else
 {
