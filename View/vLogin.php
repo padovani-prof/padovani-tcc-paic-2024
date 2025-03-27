@@ -33,7 +33,7 @@
             </div>
             <p id='{{resp}}'>{{mensagem}}</p> 
 
-            <form class="d-flex flex-column" action="cLogin.php">
+            <form class="d-flex flex-column" action="cLogin.php" method="post">
 
                 <div class="mb-3 w-100">
                     <label class=" form-label fw-bold text-primary " for="">E-mail:</label>
