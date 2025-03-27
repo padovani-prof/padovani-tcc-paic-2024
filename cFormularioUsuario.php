@@ -23,7 +23,7 @@ $tela = isset($_GET['codigo'])?'<input type="hidden" name="codigo" value="'.$_GE
 
 
 $html = file_get_contents('View/vFormularioUsuario.php');
-if(isset($_GET['codigo']) and !isset($_GET['salvar'])){
+if(isset($_GET['codigo']) and !isset($_POST['salvar'])){
     // carregra dados
     
     $codigo = $_GET['codigo'];
@@ -33,18 +33,19 @@ if(isset($_GET['codigo']) and !isset($_GET['salvar'])){
     $perfis_selecionados = carrega_perfil_do_usuario($codigo);
 }
 
-if (isset($_GET["salvar"])) {
+if (isset($_POST["salvar"])) {
     $resposta = -1;
     $id_resposta = 'erro';
-    $nome = $_GET['nome'];
-    $email = $_GET['email'];
-    $senha = $_GET['senha'];
-    $conf_senha = $_GET['conf_senha'];
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+    $conf_senha = $_POST['conf_senha'];
     // Captura os perfis selecionados
-    $perfis_selecionados = isset($_GET['perfis']) ? $_GET['perfis'] : [];
+    $perfis_selecionados = isset($_POST['perfis']) ? $_POST['perfis'] : [];
     
-    if(isset($_GET['codigo'])){
+    if(isset($_POST['codigo'])){
         //validar atualizações
+        $codigo = $_POST['codigo'];
         if (empty($nome)){
             $mensagem = 'O nome é obrigatório';
         } elseif (empty($email)){
@@ -60,7 +61,7 @@ if (isset($_GET["salvar"])) {
         elseif (empty($perfis_selecionados)) {
             $mensagem = 'Você deve selecionar pelo menos um perfil!';
         } else{
-            $resposta =  atualizar_usuario($_GET['codigo'], $nome, $email, $senha, $perfis_selecionados);
+            $resposta =  atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados);
         
             // Definindo mensagens para mostrar
             $men = ['O nome informado é inválido. Ele deve ter no mínimo 3 caracteres e no máximo 50.', 'Senha está Vazia', 'Senha Inválida', 'Usuário atualizado com Sucesso!','Nome já ultilizado. Por favor ensira outro nome.', 'E-mail já foi cadastrado. Por favor ensira outro E-mail.'];
