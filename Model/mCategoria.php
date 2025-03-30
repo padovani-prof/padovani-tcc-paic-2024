@@ -38,25 +38,30 @@ function insere_categoria_recurso($nome, $descre, $ambF)
         }
         include 'confg_banco.php';
         $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-        if (!$conecxao->connect_error) 
-        {
-            
-            
-            $resulta = $conecxao->query ("SELECT * FROM categoria_recurso WHERE nome='$nome'");
-            if ($resulta->num_rows == 0)
-            {
+        
+        if (!$conecxao->connect_error) {
 
-                $resulta = $conecxao->query("INSERT INTO categoria_recurso (nome, descricao, ambiente_fisico) values ('$nome', '$descre', '$ambF')");
+            // Usando prepared statement para evitar SQL Injection
+            $stmt = $conecxao->prepare("SELECT * FROM categoria_recurso WHERE nome = ?");
+            $stmt->bind_param("s", $nome);  // "s" para string
+            $stmt->execute();
+            $resulta = $stmt->get_result();
+
+            if ($resulta->num_rows == 0) {
+                // Inserindo com prepared statement
+                $stmt = $conecxao->prepare("INSERT INTO categoria_recurso (nome, descricao, ambiente_fisico) VALUES (?, ?, ?)");
+                $stmt->bind_param("sss", $nome, $descre, $ambF);  // "sss" para três strings
+                $stmt->execute();
 
                 // Adicionou no banco
                 $valido = 0;
-            
-            }
-            else
-            {
+            } else {
                 $valido = 3; // nome repetido
             }
+
+            $stmt->close();
         }
+
 
     }
     return $valido;
@@ -68,12 +73,19 @@ function insere_categoria_recurso($nome, $descre, $ambF)
 function pegar_dados($chave){
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $conecxao->query ("SELECT * FROM categoria_recurso WHERE codigo=$chave");
-    return $resulta->fetch_assoc();
+    $stmt = $conecxao->prepare("SELECT * FROM categoria_recurso WHERE codigo = ?");
+    $stmt->bind_param("i", $chave);  // "i" para inteiro
+    $stmt->execute();
+    $resulta = $stmt->get_result();
+
+    $return = $resulta->fetch_assoc();
+    $stmt->close();
+
+    return $return;
+
     
 
 }
-
 
 function atualizar_dados($chave, $nome, $descre, $ambF){
     $nome = trim(mb_strtoupper($nome));
@@ -81,43 +93,42 @@ function atualizar_dados($chave, $nome, $descre, $ambF){
 
     $valido = Validar_categoria($nome, $descre);
 
-    if($valido===true)
-    {
-        if($ambF=== 'on')
-        {
+    if($valido === true) {
+        if($ambF === 'on') {
             $ambF = 'S';
-        }
-        else
-        {
+        } else {
             $ambF = 'N';
         }
+
         include 'confg_banco.php';
         $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-        if (!$conecxao->connect_error) 
-        {
-            $resulta = $conecxao->query ("SELECT codigo FROM categoria_recurso WHERE nome='$nome'");
-            if ($resulta->num_rows == 0 or $resulta->num_rows == 1 and $resulta->fetch_assoc()['codigo']==$chave)
-            {
 
-                $resulta = $conecxao->query("UPDATE categoria_recurso set nome = '$nome', descricao='$descre', ambiente_fisico='$ambF' WHERE codigo=$chave");
+        if (!$conecxao->connect_error) {
+            // Usando prepared statement para evitar SQL Injection
+            $stmt = $conecxao->prepare("SELECT codigo FROM categoria_recurso WHERE nome = ?");
+            $stmt->bind_param("s", $nome);  // "s" para string
+            $stmt->execute();
+            $resulta = $stmt->get_result();
 
-                // Adicionou no banco
+            if ($resulta->num_rows == 0 || ($resulta->num_rows == 1 && $resulta->fetch_assoc()['codigo'] == $chave)) {
+                // Usando prepared statement para o UPDATE
+                $stmt = $conecxao->prepare("UPDATE categoria_recurso SET nome = ?, descricao = ?, ambiente_fisico = ? WHERE codigo = ?");
+                $stmt->bind_param("sssi", $nome, $descre, $ambF, $chave);  // "sss" para strings, "i" para inteiro
+                $stmt->execute();
+
+                // Atualização bem-sucedida
                 $valido = 0;
-            
-            }
-            else
-            {
+            } else {
                 $valido = 3; // nome repetido
             }
+
+            $stmt->close();
         }
-
     }
+    
     return $valido;
-   
-    
-    
-
 }
+
 
 
 
