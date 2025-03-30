@@ -7,9 +7,25 @@ function verificar_permicao_recurso($data, $h_ini, $h_fim, $recurso, $retirador,
     // verifica se em um recurso em um determinado periodo de reitrada ele tem permição para verirar o recurso
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
 
-    $sql = "SELECT usuario.nome from usuario WHERE usuario.codigo in (SELECT usuario_perfil.codigo_usuario from  usuario_perfil WHERE usuario_perfil.codigo_perfil in(select acesso_recurso.codigo_perfil from acesso_recurso WHERE acesso_recurso.hr_inicial <= '$h_ini'  and acesso_recurso.hr_final >= '$h_fim' and acesso_recurso.dt_inicial <= '$data' and (acesso_recurso.dt_final >= '$data' OR acesso_recurso.dt_final is null) and acesso_recurso.codigo_recurso = $recurso and SUBSTRING(acesso_recurso.dias_semana, $dia_semana, 1) = 'S')) and usuario.codigo = $retirador;";
-    $resultado = $cone->query($sql);
-    return ($resultado->num_rows > 0)? true: false;
+    $sql = "SELECT usuario.nome FROM usuario WHERE usuario.codigo IN (
+        SELECT usuario_perfil.codigo_usuario FROM usuario_perfil 
+        WHERE usuario_perfil.codigo_perfil IN (
+            SELECT acesso_recurso.codigo_perfil FROM acesso_recurso 
+            WHERE acesso_recurso.hr_inicial <= ?
+            AND acesso_recurso.hr_final >= ?
+            AND acesso_recurso.dt_inicial <= ?
+            AND (acesso_recurso.dt_final >= ? OR acesso_recurso.dt_final IS NULL)
+            AND acesso_recurso.codigo_recurso = ?
+            AND SUBSTRING(acesso_recurso.dias_semana, ?, 1) = 'S'
+        )
+    ) AND usuario.codigo = ?";
+
+    $stmt = $cone->prepare($sql);
+    $stmt->bind_param("ssssiii", $h_ini, $h_fim, $data, $data, $recurso, $dia_semana, $retirador);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    return ($resultado->num_rows > 0) ? true : false;
 
 }
 
