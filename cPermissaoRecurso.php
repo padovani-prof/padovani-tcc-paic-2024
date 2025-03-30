@@ -15,7 +15,7 @@ function Tabela_acesso_recurso_carrega($codigo){
     $informa = '';
     foreach($lista as $dados){
         $informa .= '<tr>';
-        $informa .= '<td> '. $dados ["perfio"].'</td>'; // coluna nome
+        $informa .= '<td> '. $dados ["perfil"].'</td>'; // coluna nome
         $informa .= '<td> '.$dados ['ini'] . ' - '.$dados ['fim'].'</td>'; // coluna horarios
         $informa .=  '<td> <form action="cPermissaoRecurso.php">   
                         <input type="hidden" name="codigo_recurso" value="' .$codigo.'"> 
