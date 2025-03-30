@@ -39,37 +39,65 @@ function novo_usuario_atualizado($codigo, $nome, $email, $senha_usu){
 }
 
 
-function Validar_usuario_atualizado($codigo, $nome, $senha, $email){
 
-    $nome = str_replace(' ','',$nome);
+function Validar_usuario_atualizado($codigo, $nome, $senha, $email) {
+    
+    // Remover espaços
+    $nome = str_replace(' ', '', $nome);
     $senha = str_replace(' ', '', $senha);
-    $email = str_replace(' ', '',$email);
+    $email = str_replace(' ', '', $email);
     
-    
+    // Validar nome
     if (strlen($nome) < 3 || strlen($nome) > 50) {
         return 0; // Nome inválido
     }
-    if (!empty($senha) and mb_strlen("$senha") > 50 || mb_strlen("$senha") < 3) {
+
+    // Validar senha
+    if (!empty($senha) && (mb_strlen($senha) < 3 || mb_strlen($senha) > 50)) {
         return 2; // Senha inválida
     }
     
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
-    
+
+    // Verificar conexão
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $resultado = $conexao->query("SELECT * FROM usuario where codigo!=$codigo and nome='$nome';");
-    if($resultado->num_rows > 0){
-        return 4; // nome repetido
-    }
-    $resultado = $conexao->query("SELECT * FROM usuario where codigo!=$codigo and email='$email';");
-    if($resultado->num_rows > 0){
-        return 5; // email repetido
-    }
-    return true;
 
+    // Verificar se o nome já existe, excluindo o usuário atual
+    $stmt = $conexao->prepare("SELECT * FROM usuario WHERE codigo != ? AND nome = ?");
+    $stmt->bind_param("is", $codigo, $nome);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($resultado->num_rows > 0) {
+        $stmt->close();
+        $conexao->close();
+        return 4; // Nome repetido
+    }
+
+    // Verificar se o email já existe, excluindo o usuário atual
+    $stmt = $conexao->prepare("SELECT * FROM usuario WHERE codigo != ? AND email = ?");
+    $stmt->bind_param("is", $codigo, $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    if ($resultado->num_rows > 0) {
+        $stmt->close();
+        $conexao->close();
+        return 5; // Email repetido
+    }
+
+    // Fechar conexões
+    $stmt->close();
+    $conexao->close();
+
+    return true; // Validação bem-sucedida
 }
+
+
+
+
+
 
 function atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados){
     $valido = Validar_usuario_atualizado($codigo, $nome, $senha, $email);
@@ -88,8 +116,6 @@ function atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados)
     return $valido; 
 
 }
-
-
 function carregar_dados($codigo){
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
@@ -97,12 +123,19 @@ function carregar_dados($codigo){
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $resultado = $conexao->query("SELECT nome, email FROM usuario where codigo=$codigo");
+    
+    $sql = "SELECT nome, email FROM usuario WHERE codigo = ?";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
+    
+    $stmt->close();
     $conexao->close();
-    return $resultado->fetch_assoc();
-
+    
+    return $dados;
 }
-
 
 function carrega_perfil_do_usuario($codigo){
     include 'confg_banco.php';
@@ -111,15 +144,24 @@ function carrega_perfil_do_usuario($codigo){
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $resultado = $conexao->query("SELECT codigo_perfil FROM usuario_perfil where codigo_usuario=$codigo;");
-    $chaves =[];
-    while($codigo = $resultado->fetch_assoc()){
-        $chaves[] = $codigo['codigo_perfil'];
+    
+    $sql = "SELECT codigo_perfil FROM usuario_perfil WHERE codigo_usuario = ?";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    
+    $chaves = [];
+    while ($row = $resultado->fetch_assoc()) {
+        $chaves[] = $row['codigo_perfil'];
     }
+    
+    $stmt->close();
     $conexao->close();
-
+    
     return $chaves;
 }
+
 
 
 
@@ -253,36 +295,72 @@ function apagar_usuario($chave_pri) {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if (!$conexao->connect_error) {
-
-        $qdt_ultilizada = $conexao->query("SELECT *  from retirada_devolucao WHERE retirada_devolucao.codigo_usuario=$chave_pri;"); 
-    
-        if($qdt_ultilizada->num_rows > 0){
-            return 1;
-            
-        }
-        $qdt_ultilizada = $conexao->query("SELECT * from reserva WHERE reserva.codigo_usuario_utilizador=$chave_pri or reserva.codigo_usuario_agendador=$chave_pri;");
-        if($qdt_ultilizada->num_rows>0){
-            return 2;
-        }else{
-            $conexao->query("DELETE FROM usuario_perfil WHERE codigo_usuario = $chave_pri");
-            $conexao->query("DELETE FROM usuario WHERE codigo = $chave_pri");
-            return 0;
-
-        }
-        
+    // Verificar conexão
+    if ($conexao->connect_error) {
+        return false; // Se a conexão falhar, retorna false
     }
-        
+
+    // Verificar se o usuário tem retiradas ou devoluções
+    $stmt = $conexao->prepare("SELECT * FROM retirada_devolucao WHERE codigo_usuario = ?");
+    $stmt->bind_param("i", $chave_pri);
+    $stmt->execute();
+    $qdt_ultilizada = $stmt->get_result();
+
+    if ($qdt_ultilizada->num_rows > 0) {
+        $stmt->close();
+        $conexao->close();
+        return 1; // O usuário tem retiradas/devoluções
+    }
+
+    // Verificar se o usuário tem reservas
+    $stmt = $conexao->prepare("SELECT * FROM reserva WHERE codigo_usuario_utilizador = ? OR codigo_usuario_agendador = ?");
+    $stmt->bind_param("ii", $chave_pri, $chave_pri);
+    $stmt->execute();
+    $qdt_ultilizada = $stmt->get_result();
+
+    if ($qdt_ultilizada->num_rows > 0) {
+        $stmt->close();
+        $conexao->close();
+        return 2; // O usuário tem reservas
+    }
+
+    // Apagar o usuário
+    $stmt = $conexao->prepare("DELETE FROM usuario_perfil WHERE codigo_usuario = ?");
+    $stmt->bind_param("i", $chave_pri);
+    $stmt->execute();
+
+    $stmt = $conexao->prepare("DELETE FROM usuario WHERE codigo = ?");
+    $stmt->bind_param("i", $chave_pri);
+    $stmt->execute();
+
+    // Fechar conexões
+    $stmt->close();
+    $conexao->close();
+
+    return 0; // Usuário apagado com sucesso
 }
 
-function verificar_existencia($dado, $coluna){
+function verificar_existencia($dado, $coluna) {
     include 'confg_banco.php';
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $conecxao->query("SELECT * from usuario where $coluna='$dado'");
-    if($resulta->num_rows > 0){
-        return true;
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    // Verificar conexão
+    if ($conexao->connect_error) {
+        return false; // Se a conexão falhar, retorna false
     }
-    return false;
+
+    // Preparar e executar a consulta
+    $stmt = $conexao->prepare("SELECT * FROM usuario WHERE $coluna = ?");
+    $stmt->bind_param("s", $dado); // Usando "s" para dado do tipo string
+    $stmt->execute();
+    $resulta = $stmt->get_result();
+
+    // Fechar conexões
+    $stmt->close();
+    $conexao->close();
+
+    // Verificar se o dado existe
+    return $resulta->num_rows > 0;
 }
 
 
