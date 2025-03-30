@@ -1,21 +1,20 @@
-
 <?php 
-
 
 function carrega_recurso($codigo)
 {
-    
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    $resultado = $conecxao->query("SELECT nome from recurso where codigo=$codigo");
+    // Usando prepared statement para evitar SQL Injection
+    $stmt = $conecxao->prepare("SELECT nome FROM recurso WHERE codigo = ?");
+    $stmt->bind_param("i", $codigo);  // "i" para inteiro
+    $stmt->execute();
+    $resultado = $stmt->get_result();
     $conecxao->close();
 
+    // Retorna o nome do recurso
     return $resultado->fetch_assoc()['nome'];
-    // vai retorna uma lista com o nome do recurso
-
 }
-
 
 function carrega_dados($codigo) {
     // Incluir a configuração do banco de dados
@@ -57,43 +56,45 @@ function carrega_dados($codigo) {
     return $dados;
 }
 
-
-
 function salva_no_banco($item, $codigo)
 {
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $conecxao->prepare("INSERT INTO checklist (item, codigo_recurso
-    ) values(?, ?)");
-    $resulta->bind_param("si", $item, $codigo);
-    $resulta->execute();
+    
+    // Usando prepared statement para evitar SQL Injection
+    $stmt = $conecxao->prepare("INSERT INTO checklist (item, codigo_recurso) VALUES (?, ?)");
+    $stmt->bind_param("si", $item, $codigo);  // "s" para string, "i" para inteiro
+    $stmt->execute();
     $conecxao->close();
-
-
 }
-
 
 function apagar_acesso_ao_recurso($chave_pri)
 {
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    $conecxao->query("DELETE from checklist where codigo=$chave_pri");
+    // Usando prepared statement para evitar SQL Injection
+    $stmt = $conecxao->prepare("DELETE FROM checklist WHERE codigo = ?");
+    $stmt->bind_param("i", $chave_pri);  // "i" para inteiro
+    $stmt->execute();
     $conecxao->close();
-
 }
-
 
 function Existe_essa_chave_na_tabela($chave, $tabela, $jogar_pra_onde){
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulata = $conecxao->query("SELECT * from $tabela where codigo=$chave");
+    
+    // Usando prepared statement para evitar SQL Injection
+    $stmt = $conecxao->prepare("SELECT * FROM $tabela WHERE codigo = ?");
+    $stmt->bind_param("i", $chave);  // "i" para inteiro
+    $stmt->execute();
+    $resulata = $stmt->get_result();
     $conecxao->close();
+
     if($resulata->num_rows == 0){
         header("Location: $jogar_pra_onde");
         exit();
     }
-
 }
 
 ?>
