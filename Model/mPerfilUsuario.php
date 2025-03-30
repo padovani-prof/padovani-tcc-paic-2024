@@ -36,25 +36,67 @@ function listar_perfis(){
     return $resultado;
 }
 
+
+
+
 function apagar_perfil($chave_pri) {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if (!$conexao->connect_error) {
-
-        $qdt_lk_fucicionalidades =  $conexao->query("SELECT COUNT(*) as 'qdt_fucionalidades_linkadas' from usuario_perfil WHERE codigo_perfil=$chave_pri;")->fetch_assoc()['qdt_fucionalidades_linkadas'] + $conexao->query("SELECT COUNT(*) as 'qdt_fucionalidades_linkadas' from  acesso_recurso WHERE codigo_perfil=$chave_pri;")->fetch_assoc()['qdt_fucionalidades_linkadas']; //quantidades de dados que estão lincados com essa chave primario
-        if($qdt_lk_fucicionalidades==0){
-            $conexao->query("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = $chave_pri");
-        
-            $conexao->query("DELETE FROM usuario_perfil WHERE codigo_perfil = $chave_pri");
-            $conexao->query("DELETE FROM perfil_usuario WHERE codigo = $chave_pri");
-            return true;
-        }
+    // Verifica se a conexão foi bem-sucedida
+    if ($conexao->connect_error) {
         return false;
-
     }
-        
+
+    // Contar as funcionalidades vinculadas
+    $stmt = $conexao->prepare(
+        "SELECT COUNT(*) as 'qdt_fucionalidades_linkadas' 
+         FROM usuario_perfil WHERE codigo_perfil = ? 
+         UNION ALL
+         SELECT COUNT(*) 
+         FROM acesso_recurso WHERE codigo_perfil = ?"
+    );
+    $stmt->bind_param("ii", $chave_pri, $chave_pri);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $contagem = $resultado->fetch_all(MYSQLI_ASSOC);
+
+    // Verifica se existem dados vinculados ao perfil
+    $qdt_lk_fucicionalidades = $contagem[0]['qdt_fucionalidades_linkadas'] + $contagem[1]['qdt_fucionalidades_linkadas'];
+
+    if ($qdt_lk_fucicionalidades == 0) {
+        // Apagar as funcionalidades vinculadas ao perfil
+        $stmt = $conexao->prepare("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = ?");
+        $stmt->bind_param("i", $chave_pri);
+        $stmt->execute();
+
+        // Apagar os links de usuário/perfil
+        $stmt = $conexao->prepare("DELETE FROM usuario_perfil WHERE codigo_perfil = ?");
+        $stmt->bind_param("i", $chave_pri);
+        $stmt->execute();
+
+        // Apagar o perfil de usuário
+        $stmt = $conexao->prepare("DELETE FROM perfil_usuario WHERE codigo = ?");
+        $stmt->bind_param("i", $chave_pri);
+        $stmt->execute();
+
+        // Fechar o statement e a conexão
+        $stmt->close();
+        $conexao->close();
+
+        return true;
+    }
+
+    // Fechar a conexão
+    $stmt->close();
+    $conexao->close();
+    return false;
 }
+
+
+
+
+
 
 function Validar_perfil($nome, $descricao){
     if (strlen($nome) < 3 or strlen($nome) > 50) 
@@ -120,63 +162,114 @@ function insere_funcionalidade_perfil($codigo_funcionalidade, $codigo_perfil) {
     return false; 
 }
 
-function mandar_dados_da_tabela($chave){
+
+
+
+
+
+
+
+function mandar_dados_da_tabela($chave)
+{
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulata = $conecxao->query("SELECT * from perfil_usuario where codigo=$chave");
-    $resulata = $resulata->fetch_assoc();
+
+    // Preparar e executar a consulta para buscar dados do perfil
+    $stmt = $conecxao->prepare("SELECT * FROM perfil_usuario WHERE codigo = ?");
+    $stmt->bind_param("i", $chave);
+    $stmt->execute();
+    $resulata = $stmt->get_result()->fetch_assoc();
     $dados = [];
     $dados[] = $resulata;
-    $resulata = $conecxao->query("SELECT codigo_funcionalidade from funcionalidade_perfil where codigo_perfil=$chave");
+
+    // Preparar e executar a consulta para buscar as funcionalidades
+    $stmt = $conecxao->prepare("SELECT codigo_funcionalidade FROM funcionalidade_perfil WHERE codigo_perfil = ?");
+    $stmt->bind_param("i", $chave);
+    $stmt->execute();
+    $resulata = $stmt->get_result();
+    
     $fucionalidades = [];
     while ($fucionalidade = $resulata->fetch_assoc()) {
         $fucionalidades[] = $fucionalidade['codigo_funcionalidade'];
     }
-    $dados[] = $fucionalidades;
-    return $dados;
 
+    $dados[] = $fucionalidades;
+
+    // Fechar o statement e a conexão
+    $stmt->close();
+    $conecxao->close();
+
+    return $dados;
 }
 
-
-function atualizar_fucionalidade($codigo, $nome, $descricao, $lista_funcionalidades){
+function atualizar_fucionalidade($codigo, $nome, $descricao, $lista_funcionalidades)
+{
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    if(!verificar_existencia_nome_perfio_para_atualizar($nome, $codigo)){
-        $resulta = $conecxao->query("UPDATE perfil_usuario set nome='$nome', descricao='$descricao' where codigo=$codigo");
-        $resulta = $conecxao->query("DELETE from funcionalidade_perfil where codigo_perfil=$codigo");
-        foreach($lista_funcionalidades as $fucionalidade){
+
+    // Verificar se o nome do perfil já existe antes de atualizar
+    if (!verificar_existencia_nome_perfio_para_atualizar($nome, $codigo)) {
+        // Preparar a consulta de atualização do perfil
+        $stmt = $conecxao->prepare("UPDATE perfil_usuario SET nome = ?, descricao = ? WHERE codigo = ?");
+        $stmt->bind_param("ssi", $nome, $descricao, $codigo);
+        $stmt->execute();
+
+        // Preparar a consulta para excluir as funcionalidades anteriores
+        $stmt = $conecxao->prepare("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = ?");
+        $stmt->bind_param("i", $codigo);
+        $stmt->execute();
+
+        // Inserir as novas funcionalidades
+        foreach ($lista_funcionalidades as $fucionalidade) {
             insere_funcionalidade_perfil($fucionalidade, $codigo);
         }
-        return 2;
 
+        // Fechar o statement e a conexão
+        $stmt->close();
+        $conecxao->close();
+
+        return 2; // Atualizado com sucesso
     }
-    return 3;
+
+    return 3; // Nome já existe
+}
+
+function verificar_existencia_nome_perfio_para_atualizar($nome, $codigo)
+{
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    // Preparar a consulta para verificar se o nome do perfil já existe
+    $stmt = $conecxao->prepare("SELECT * FROM perfil_usuario WHERE nome = ? AND codigo != ?");
+    $stmt->bind_param("si", $nome, $codigo);
+    $stmt->execute();
+    $resulta = $stmt->get_result();
     
+    // Fechar o statement e a conexão
+    $stmt->close();
+    $conecxao->close();
 
-
-
+    return $resulta->num_rows > 0;
 }
 
-
-function verificar_existencia_nome_perfio_para_atualizar($nome, $codigo){
+function verificar_existencia_nome_perfio($nome)
+{
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $conecxao->query("SELECT * from perfil_usuario where nome='$nome' and codigo!=$codigo");
-    if($resulta->num_rows > 0){
-        return true;
-    }
-    return false;
 
+    // Preparar a consulta para verificar se o nome do perfil já existe
+    $stmt = $conecxao->prepare("SELECT * FROM perfil_usuario WHERE nome = ?");
+    $stmt->bind_param("s", $nome);
+    $stmt->execute();
+    $resulta = $stmt->get_result();
+    
+    // Fechar o statement e a conexão
+    $stmt->close();
+    $conecxao->close();
+
+    return $resulta->num_rows > 0;
 }
 
-function verificar_existencia_nome_perfio($nome){
-    include 'confg_banco.php';
-    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $conecxao->query("SELECT * from perfil_usuario where nome='$nome'");
-    if($resulta->num_rows > 0){
-        return true;
-    }
-    return false;
-}
+
 
 ?>
