@@ -2,7 +2,6 @@
 <?php 
 
 
-
 function carrega_retirada_disponivel()
 {
     include 'confg_banco.php';
@@ -86,21 +85,28 @@ function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $
         $data = $data[0];
         $sql = "SELECT reserva.codigo FROM reserva
         INNER JOIN data_reserva
-        on data_reserva.codigo_reserva = reserva.codigo
-        WHERE reserva.codigo_recurso = $recurso and reserva.codigo_usuario_utilizador = $retirante 
-        and data_reserva.data = '$data' and  data_reserva.hora_final > '$h_ini' and data_reserva.hora_inicial < '$hora_fim';";
+        ON data_reserva.codigo_reserva = reserva.codigo
+        WHERE reserva.codigo_recurso = ? AND reserva.codigo_usuario_utilizador = ?
+        AND data_reserva.data = ? AND data_reserva.hora_final > ? AND data_reserva.hora_inicial < ?";
         
-        $resultado = $conexao->query($sql);
-        $id = $resultado ->fetch_assoc()['codigo'];
-        
-        $sql = "UPDATE data_reserva set hora_final = '$i' where codigo_reserva = $id;";
-        $resultado = $conexao->query($sql);
+        $stmt = $conexao->prepare($sql);
+        $stmt->bind_param("iisss", $recurso, $retirante, $data, $h_ini, $hora_fim);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $id = $resultado->fetch_assoc()['codigo'];
+
+        $sql = "UPDATE data_reserva SET hora_final = ? WHERE codigo_reserva = ?";
+        $stmt = $conexao->prepare($sql);
+        $stmt->bind_param("si", $i, $id);
+        $stmt->execute();
 
     }
     
-    $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final) VALUES ($retirante, $recurso,  '$data_hora', '$dr', 'S','$hora_fim')";
-    $resultado = $conexao->query($sql);
-    return $resultado;
+    $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final) VALUES (?, ?, ?, ?, 'S', ?)";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param("iisss", $retirante, $recurso, $data_hora, $dr, $hora_fim);
+    $stmt->execute();
+    return $stmt->affected_rows > 0;
 }
 
 function carrega_recursos_emprestados()
@@ -122,25 +128,59 @@ function carrega_recursos_emprestados()
 
 
 
-
-function verificar_reserva_do_retirante($periodo, $retirante, $recurso){
-
-    $data = str_replace('/','-', $periodo[0]);
+function verificar_reserva_do_retirante($periodo, $retirante, $recurso)
+{
+    $data = str_replace('/', '-', $periodo[0]);
     $h_ini = $periodo[1];
     $h_fim = $periodo[2];
-    $sql = "SELECT * from reserva WHERE codigo_recurso=$recurso and codigo_usuario_utilizador = $retirante and codigo in (SELECT data_reserva.codigo_reserva from data_reserva where data_reserva.data = '$data' and hora_inicial <='$h_fim' and hora_final >= '$h_ini');";
+
+    // Conectar ao banco de dados
     include 'confg_banco.php';
-    //echo $sql;
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $cone->query($sql);
 
-    if ($resulta->num_rows == 1){
-        return true;
+    // Preparar a consulta usando prepared statements
+    $sql = "
+        SELECT * 
+        FROM reserva 
+        WHERE codigo_recurso = ? 
+        AND codigo_usuario_utilizador = ? 
+        AND codigo IN (
+            SELECT data_reserva.codigo_reserva 
+            FROM data_reserva 
+            WHERE data_reserva.data = ? 
+            AND hora_inicial <= ? 
+            AND hora_final >= ?
+        )
+    ";
 
-    }
-    return false;
+    $stmt = $cone->prepare($sql);
     
+    // Verificar se a preparação da consulta foi bem-sucedida
+    if ($stmt === false) {
+        die('Erro na preparação da consulta: ' . $cone->error);
+    }
+
+    // Vincular os parâmetros ao prepared statement
+    $stmt->bind_param("iisss", $recurso, $retirante, $data, $h_fim, $h_ini);
+
+    // Executar a consulta
+    $stmt->execute();
+
+    // Obter o resultado da consulta
+    $resulta = $stmt->get_result();
+
+    // Verificar se foi encontrado algum registro
+    if ($resulta->num_rows == 1) {
+        $stmt->close();
+        $cone->close();
+        return true;
+    }
+
+    $stmt->close();
+    $cone->close();
+    return false;
 }
+
 
 
 ?>
