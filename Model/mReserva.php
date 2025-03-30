@@ -144,17 +144,45 @@ function inserir_reserva($justificativa, $recurso, $usuario_utilizador, $lista_d
     return 5; 
 }
 
+
+
+
 function apagar_reserva($codigo_reserva) {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    $resposta = $conexao->query("SELECT * FROM reserva_ensalamento WHERE codigo_reserva = $codigo_reserva");
-    if ($resposta->num_rows == 0) {
-        $conexao->query("DELETE FROM data_reserva WHERE codigo_reserva =  $codigo_reserva");
-        $conexao->query("DELETE FROM reserva WHERE codigo = $codigo_reserva");
-        return true;
+    // Verifica se houve erro de conexão
+    if ($conexao->connect_error) {
+        return false; // Retorna falso se a conexão falhar
     }
-    return false;
+
+    // Preparar consulta para verificar se a reserva tem ensalamento associado
+    $stmt = $conexao->prepare("SELECT * FROM reserva_ensalamento WHERE codigo_reserva = ?");
+    $stmt->bind_param('i', $codigo_reserva);
+    $stmt->execute();
+    $resposta = $stmt->get_result();
+
+    // Se não houver ensalamento, prossegue com a exclusão
+    if ($resposta->num_rows == 0) {
+        // Deleta as entradas relacionadas à reserva
+        $stmt = $conexao->prepare("DELETE FROM data_reserva WHERE codigo_reserva = ?");
+        $stmt->bind_param('i', $codigo_reserva);
+        $stmt->execute();
+
+        $stmt = $conexao->prepare("DELETE FROM reserva WHERE codigo = ?");
+        $stmt->bind_param('i', $codigo_reserva);
+        $stmt->execute();
+
+        $stmt->close();
+        $conexao->close();
+        return true; // Reserva apagada com sucesso
+    }
+
+    // Fecha os recursos
+    $stmt->close();
+    $conexao->close();
+    return false; // Não pode apagar devido a ensalamento
 }
+
 
 ?>
