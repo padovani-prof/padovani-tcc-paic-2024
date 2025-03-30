@@ -1,230 +1,251 @@
 <?php 
 
-
-
 function tem_banco($categoria)
 {
-
-    # não consegui integra com o config_banco.php
     include 'confg_banco.php';
-     
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if(!$conecxao->connect_error) {
-        $consulta = $conecxao->prepare("SELECT * FROM `categoria_recurso` WHERE `codigo` = ?");
-        $consulta->bind_param('i', $categoria);
-        $consulta->execute();
-        $resultado = $consulta->get_result();
-        
-        if ($resultado->num_rows > 0)
-        {
-            return true;
-        } 
-        else 
-        {
-            return false;
-        }
+    if ($conecxao->connect_error) {
+        return false;
+    }
+
+    $consulta = $conecxao->prepare("SELECT * FROM categoria_recurso WHERE codigo = ?");
+    $consulta->bind_param('i', $categoria);
+    $consulta->execute();
+    $resultado = $consulta->get_result();
+
+    $consulta->close();
+    $conecxao->close();
+
+    return $resultado->num_rows > 0;
 }
-    
-}
-
-
-
 
 function Validar_recurso($nome, $desc, $cCatego)
 {
-    
-    // retorna se o dado é valido
-
-   if ( mb_strlen($nome) < 3 or mb_strlen($nome) > 50) 
-   {
-        return 3 ; // numero de caracter do nome invalido
-   }
+    if (mb_strlen($nome) < 3 || mb_strlen($nome) > 50) {
+        return 3; // número de caracteres do nome inválido
+    }
    
-   if (mb_strlen($desc) > 100 )
-   {
-        return 1; // passou do numero maximo de caracter da descrição
-   }
+    if (mb_strlen($desc) > 100) {
+        return 1; // passou do número máximo de caracteres da descrição
+    }
    
-
-   if (tem_banco($cCatego) === false)
-   {
+    if (tem_banco($cCatego) === false) {
         return 2; // categoria não consta no banco
-   }
-   
-   
-   
-   return true; // recurso valido
-   
+    }
+
+    return true; // recurso válido
 }
-
-
-
 
 function insere_no_banco($nome, $descre, $cCatego)
 {
-    // insere no banco
     include 'confg_banco.php';
-    
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    if(!$conecxao->connect_error)
-    {
-
-        $resultado = $conecxao->query("SELECT * FROM recurso where nome= '$nome'");
-        if ($resultado->num_rows == 0 )
-        
-        {
-            $resulta = $conecxao->query ("INSERT INTO recurso (nome, descricao, codigo_categoria) values ('$nome', '$descre', $cCatego)");
-            // Adicionou no banco
-            return 0;
-        }
-       else
-       {
-            return 4;
-       }
-   
+    if ($conecxao->connect_error) {
+        return false;
     }
-    
+
+    $stmt = $conecxao->prepare("SELECT * FROM recurso WHERE nome = ?");
+    $stmt->bind_param('s', $nome);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado->num_rows == 0) {
+        $stmt = $conecxao->prepare("INSERT INTO recurso (nome, descricao, codigo_categoria) VALUES (?, ?, ?)");
+        $stmt->bind_param('ssi', $nome, $descre, $cCatego);
+
+        if ($stmt->execute()) {
+            $stmt->close();
+            $conecxao->close();
+            return 0; // Adicionado com sucesso
+        } else {
+            $stmt->close();
+            $conecxao->close();
+            return 5; // Erro ao inserir
+        }
+    } else {
+        $stmt->close();
+        $conecxao->close();
+        return 4; // Nome repetido
+    }
 }
-
-
 
 function cadastrar_recurso($nome, $des, $cCatego)
 {
-    
     $nome = trim(mb_strtoupper($nome));
     $descre = trim($des);
 
-    
-    // ver se os dados estão condisentes retornando true ou false
     $valido = Validar_recurso($nome, $descre, $cCatego);
     
-    if ($valido === true )
- 
-    {
+    if ($valido === true) {
         return insere_no_banco($nome, $descre, $cCatego);
-        // retorna o dado 0 que foi adicionado com sucesso
-        // retona 3 nome repetido
-        
     }
+    
     return $valido;
 }
 
-
-
-
 function apagar_recurso($chave_pri)
 {
-   
-
-
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-
-
-    $resulata = $conecxao->query("SELECT * FROM retirada_devolucao where codigo_recurso=$chave_pri");
-    if($resulata->num_rows >0){
-        return 1; // possui retirada
-    } 
-
-    $resulata = $conecxao->query("SELECT * FROM ensalamento where codigo_sala=$chave_pri");
-    if($resulata->num_rows >0){
-        return 2; // possui ensalamento
+    if ($conecxao->connect_error) {
+        return 6; // Erro na conexão
     }
 
-    $resulata = $conecxao->query("SELECT * FROM reserva where codigo_recurso=$chave_pri");
-    if($resulata->num_rows > 0){
-        return 3;// possui reserva
-    }
-    
-    
-    $conecxao->query("DELETE from checklist where codigo_recurso=$chave_pri");
-    $conecxao->query("DELETE from acesso_recurso where codigo_recurso=$chave_pri");
-    $resulata = $conecxao->query("DELETE from recurso where codigo=$chave_pri");
-    if($resulata == true){
-        return 0; // recurso apagado
+    $stmt = $conecxao->prepare("SELECT * FROM retirada_devolucao WHERE codigo_recurso = ?");
+    $stmt->bind_param('i', $chave_pri);
+    $stmt->execute();
+    $resulata = $stmt->get_result();
 
+    if ($resulata->num_rows > 0) {
+        $stmt->close();
+        $conecxao->close();
+        return 1; // Possui retirada
     }
-    
-    
 
+    $stmt = $conecxao->prepare("SELECT * FROM ensalamento WHERE codigo_sala = ?");
+    $stmt->bind_param('i', $chave_pri);
+    $stmt->execute();
+    $resulata = $stmt->get_result();
+
+    if ($resulata->num_rows > 0) {
+        $stmt->close();
+        $conecxao->close();
+        return 2; // Possui ensalamento
+    }
+
+    $stmt = $conecxao->prepare("SELECT * FROM reserva WHERE codigo_recurso = ?");
+    $stmt->bind_param('i', $chave_pri);
+    $stmt->execute();
+    $resulata = $stmt->get_result();
+
+    if ($resulata->num_rows > 0) {
+        $stmt->close();
+        $conecxao->close();
+        return 3; // Possui reserva
+    }
+
+    $stmt = $conecxao->prepare("DELETE FROM checklist WHERE codigo_recurso = ?");
+    $stmt->bind_param('i', $chave_pri);
+    $stmt->execute();
+
+    $stmt = $conecxao->prepare("DELETE FROM acesso_recurso WHERE codigo_recurso = ?");
+    $stmt->bind_param('i', $chave_pri);
+    $stmt->execute();
+
+    $stmt = $conecxao->prepare("DELETE FROM recurso WHERE codigo = ?");
+    $stmt->bind_param('i', $chave_pri);
+
+    if ($stmt->execute()) {
+        $stmt->close();
+        $conecxao->close();
+        return 0; // Recurso apagado
+    }
+
+    $stmt->close();
+    $conecxao->close();
+    return 7; // Erro ao apagar
 }
 
-
-
-function mandar_dados($chave){
+function mandar_dados($chave)
+{
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulata = $conecxao->query("SELECT * from recurso where codigo=$chave");
-    $resulata = $resulata->fetch_assoc();
-    return $resulata;
+    
+    if ($conecxao->connect_error) {
+        return null;
+    }
 
+    $stmt = $conecxao->prepare("SELECT * FROM recurso WHERE codigo = ?");
+    $stmt->bind_param('i', $chave);
+    $stmt->execute();
+    $resulata = $stmt->get_result();
+
+    $stmt->close();
+    $conecxao->close();
+
+    return $resulata->fetch_assoc();
 }
 
-function atualizar_dados($chave, $nome, $descre, $cCatego){
+function atualizar_dados($chave, $nome, $descre, $cCatego)
+{
     include 'confg_banco.php';
-    
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
-    $resulta = $conecxao->query ("SELECT codigo FROM recurso  WHERE nome='$nome'");
-    if ($resulta->num_rows == 0 or $resulta->num_rows == 1 and $resulta->fetch_assoc()['codigo']==$chave){
-        $resulta = $conecxao->query("UPDATE recurso set nome='$nome', descricao='$descre', codigo_categoria=$cCatego where codigo=$chave");
-        return 0;
-    }else{
-        return 4;
+    $stmt = $conecxao->prepare("SELECT codigo FROM recurso WHERE nome = ?");
+    $stmt->bind_param('s', $nome);
+    $stmt->execute();
+    $resulata = $stmt->get_result();
 
+    if ($resulata->num_rows == 0 || ($resulata->num_rows == 1 && $resulata->fetch_assoc()['codigo'] == $chave)) {
+        $stmt = $conecxao->prepare("UPDATE recurso SET nome = ?, descricao = ?, codigo_categoria = ? WHERE codigo = ?");
+        $stmt->bind_param('ssii', $nome, $descre, $cCatego, $chave);
+
+        if ($stmt->execute()) {
+            $stmt->close();
+            $conecxao->close();
+            return 0; // Atualizado com sucesso
+        } else {
+            $stmt->close();
+            $conecxao->close();
+            return 5; // Erro ao atualizar
+        }
     }
-    
 
+    $stmt->close();
+    $conecxao->close();
+    return 4; // Nome repetido
 }
 
-
-
-function verificar_atualizar($chave, $nome, $des, $cCatego){
-   
+function verificar_atualizar($chave, $nome, $des, $cCatego)
+{
     $nome = trim(mb_strtoupper($nome));
     $descre = trim($des);
 
-    
-    // ver se os dados estão condisentes retornando true ou false
     $valido = Validar_recurso($nome, $descre, $cCatego);
     
-    if ($valido === true )
- 
-    {
+    if ($valido === true) {
         return atualizar_dados($chave, $nome, $descre, $cCatego);
     }
     return $valido;
 }
 
-
-
-   
-function Existe_esse_recurso($chave){
+function Existe_esse_recurso($chave)
+{
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulata = $conecxao->query("SELECT * from recurso where codigo=$chave");
-    if($resulata->num_rows == 0){
+    
+    if ($conecxao->connect_error) {
         return false;
     }
-    return true;
 
+    $stmt = $conecxao->prepare("SELECT * FROM recurso WHERE codigo = ?");
+    $stmt->bind_param('i', $chave);
+    $stmt->execute();
+    $resulata = $stmt->get_result();
+
+    $stmt->close();
+    $conecxao->close();
+
+    return $resulata->num_rows > 0;
 }
 
-
-   
-function Carregar_recursos_dados(){
+function Carregar_recursos_dados()
+{
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resultado = $conecxao->query("SELECT * from recurso");
-    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    
+    if ($conecxao->connect_error) {
+        return [];
+    }
+
+    $resultado = $conecxao->query("SELECT * FROM recurso");
+
     $conecxao->close();
-    return $resultado;
+
+    return $resultado->fetch_all(MYSQLI_ASSOC);
 }
-
-
-
 
 ?>
