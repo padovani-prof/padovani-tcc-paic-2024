@@ -112,7 +112,7 @@ function conflito_de_periodos_adicionados($data, $h_i, $h_f, $lista_periodos){
 
 include_once 'Model/mVerificacao_acesso.php';
 Esta_logado();
-verificação_acesso($_SESSION['codigo_usuario'], 'cad_categoria_rec', 2);
+verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 
 
 $usua = ((isset($_GET['utilizador']) and $_GET['utilizador']!= 'NULL')? $_GET['utilizador']:'');
