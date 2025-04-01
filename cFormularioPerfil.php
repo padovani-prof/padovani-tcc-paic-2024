@@ -115,13 +115,14 @@ if (isset($_GET["salvar"])) {
 }
 
 if (is_array($funcionalidades)) {
-    $aux = "<br>"; 
+    $aux = "<tr>"; 
     $cont = 1;
     foreach ($funcionalidades as $linha) {
         $checked = in_array($linha['codigo'], $funcionalidades_selecionadas) ? "checked" : "";
-        $aux .= "<input type='checkbox' name='funcionalidades[]' value='" . $linha['codigo'] . "' $checked> " .'<span title="'.$linha['descricao'] .'"> '.$linha['nome'] .'</span> '. (($cont%3==0)?"<br>":"");
+        $aux .= "<td><input type='checkbox' name='funcionalidades[]' value='" . $linha['codigo'] . "' $checked> " .'<span title="'.$linha['descricao'] .'"> '.$linha['nome'] .'</span> </td>'.($cont%2==0?'</tr><tr>':'');
         $cont ++;
     }
+    
 } else {
     $aux .= "<input type='checkbox' name='funcionalidades'> Não há nenhuma funcionalidade cadastrada <br>";
 }
@@ -137,5 +138,8 @@ $html = str_replace('{{retorno}}', $id_resposta, $html);
 echo $html;
 ?>
 
+
+        
+    
 
 
