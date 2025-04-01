@@ -46,7 +46,20 @@
             
 
             <label for="">Funcionalidades: </label>
-            {{funcionalidades}}
+
+            <table>
+                <th>
+                    1
+                </th>
+                <th>
+                    2
+                </th>
+                <tbody>
+                    {{funcionalidades}}
+                </tbody>
+            
+            </table>
+            
 
             <div class="d-flex justify-content-between mt-4">
                 
