@@ -38,15 +38,17 @@ if (isset($_GET["salvar"])) {
     
     $nome = $_GET['nome'];
     $descricao = $_GET['descricao'];
+    $descricao = trim($descricao);
 
     if (isset($_GET['funcionalidades']) && is_array($_GET['funcionalidades'])) {
         $funcionalidades_selecionadas = $_GET['funcionalidades'];
     }
     if (empty($nome)) {
         $mensagem = "O nome é obrigatório!";
-    } elseif (empty($descricao)) {
-        $mensagem = "A descrição é obrigatória!";
-    } elseif (empty($funcionalidades_selecionadas)) {
+    } elseif ((mb_strlen($descricao) > 100  or (mb_strlen($descricao) < 5 ))) {
+        $mensagem = "Adicione uma descrição com no mínimo 5 e no máximo 100 caracteres.";
+    }
+     elseif (empty($funcionalidades_selecionadas)) {
         $mensagem = "Você deve selecionar pelo menos uma funcionalidade!";
 
     } else {
@@ -86,7 +88,7 @@ if (isset($_GET["salvar"])) {
                 $mensagem = "Perfil cadastrado com sucesso!";
                 $id_resposta = 'sucesso';
             }
-            else if($resposta ==0){
+            else if($resposta==0){
                 $mensagem = "Numero de caracteres de nome perfio invalido. Ensira pelomenos 3 caracteres.";
 
             }
@@ -119,7 +121,8 @@ if (is_array($funcionalidades)) {
     $cont = 1;
     foreach ($funcionalidades as $linha) {
         $checked = in_array($linha['codigo'], $funcionalidades_selecionadas) ? "checked" : "";
-        $aux .= "<td><input type='checkbox' name='funcionalidades[]' value='" . $linha['codigo'] . "' $checked> " .'<span title="'.$linha['descricao'] .'"> '.$linha['nome'] .'</span> </td>'.($cont%2==0?'</tr><tr>':'');
+        $aux .= '
+        <td title="'.$linha['descricao'] .'" alt="'.$linha['descricao'] .'"><input type="checkbox" name="funcionalidades[]"'.$checked.' value="'. $linha['codigo'] .'"/>'.$linha['nome'].($cont%3==0?'<br>&nbsp;</td></tr>':'<br>&nbsp;</td>');
         $cont ++;
     }
     
@@ -137,6 +140,7 @@ $html = str_replace('{{tipo_tela}}', $tipo_tela, $html);
 $html = str_replace('{{retorno}}', $id_resposta, $html);
 echo $html;
 ?>
+
 
 
         
