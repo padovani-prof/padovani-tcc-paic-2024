@@ -46,14 +46,15 @@
             
 
             <label for="">Funcionalidades: </label>
-
             <table>
-                <th>
-                    1
-                </th>
-                <th>
-                    2
-                </th>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
                 <tbody>
                     {{funcionalidades}}
                 </tbody>
