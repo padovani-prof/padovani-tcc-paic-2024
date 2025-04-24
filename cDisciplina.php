@@ -23,6 +23,7 @@ function tabela_disciplina($disciplina){
 }
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_disciplina', 2);
 
@@ -34,6 +35,7 @@ $msg = '';
 $id_msg = 'nada';
 if (isset($_GET['apagar']))
 {
+    verificação_acesso($_SESSION['codigo_usuario'], 'apag_disciplina', 2);
     
     $msg = apagar_diciplina($_GET['codigoPrim']);
     $id_msg = ($msg)?'sucesso':'erro';
@@ -41,6 +43,7 @@ if (isset($_GET['apagar']))
 
     // apagar ta ok
 }else if(isset($_GET['alterar'])){
+    verificação_acesso($_SESSION['codigo_usuario'], 'alt_disciplina', 2);
     $codigo = $_GET['codigoPrim'];
     header("Location: cFormularioDisciplina.php?codigo=$codigo");
     exit();
@@ -49,10 +52,6 @@ if (isset($_GET['apagar']))
 
 $disciplinas = carrega_disciplina();
 $disciplinas = tabela_disciplina($disciplinas);
-
-
-
-
 
 $html = str_replace('{{resp}}', $id_msg, $html);
 $html = str_replace('{{msg}}', $msg, $html);

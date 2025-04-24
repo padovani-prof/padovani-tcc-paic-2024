@@ -1,9 +1,13 @@
 <?php
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
-verificação_acesso($_SESSION['codigo_usuario'], 'cad_categoria_rec', 2);
 include_once 'Model/mCategoria.php';
 $html = file_get_contents('View/vFormularioCategoria.php');
+
+
+
+
 $nome = '';
 $descre = '';
 $retorno = (isset($_GET['id_msg']))?$_GET['id_msg']:'';
@@ -56,6 +60,7 @@ if(isset($_GET["codigo"])){
 }
 
 else{
+    verificação_acesso($_SESSION['codigo_usuario'], 'cad_categoria_rec', 2);
     if (isset($_GET['salvar']))
     {
         if (isset($_GET['nome']) and isset($_GET['descricao'])) 

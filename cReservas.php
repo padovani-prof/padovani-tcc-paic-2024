@@ -2,6 +2,7 @@
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_reserva', 2);
 
@@ -11,6 +12,8 @@ include_once 'Model/mReserva.php';
 $id = 'nada';
 $msg = '';
 if (isset($_GET['codigo_da_reserva'])) {
+    verificação_acesso($_SESSION['codigo_usuario'], 'apag_reserva', 2);
+
     $cod_reserva = $_GET['codigo_da_reserva']; 
     $msg = apagar_reserva($cod_reserva);
     $id = ($msg)?'sucesso':'erro';

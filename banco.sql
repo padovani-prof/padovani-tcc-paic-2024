@@ -1,6 +1,5 @@
 drop schema if exists sgrp;
 
-
 create schema sgrp;
 CREATE TABLE sgrp.usuario(
     codigo int not null auto_increment primary key,
@@ -171,63 +170,57 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade` (
   PRIMARY KEY (`codigo`))
 ENGINE = InnoDB;
 
+INSERT INTO `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa)
+VALUES
 
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_recurso', 'Cadastrar recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('alt_recurso', 'Alterar recurso', 'O usuário pode alterar as informções do recusros no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('apag_recurso', 'Apagar recurso', 'O usuário pode apagar recusros no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('adm_perm_recurso', 'Administrar permissão de recurso', 'O usuário pode administrar permissão dos recusros no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_categoria_rec', 'Cadastrar categoria de recurso', 'O usuário pode cadastra a categoria de cada recusros no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('alt_categoria_rec', 'Alterar categoria de recurso', 'O usuário pode alterar as informações da categoria de cada recusros do sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('apag_categoria_rec', 'Apagar categoria de recurso', 'O usuário pode cadastrar recusros no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('alt_perfil', 'Alterar Perfil de usuário', 'O usuário pode alterar as informações do perifl no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('apag_perfil', 'Apagar perfil de usuário', 'O usuário pode apagar o perifl do sistema', 'S');
-    
+  ('alt_perfil','Perfil de usuário: alterar','O usuário pode alterar as informações do perifl do sistema','S'),
+  ('apag_perfil','Perfil de usuário: apagar','O usuário pode apagar perfis de usuários do sistema','S'),
+  ('list_perfil','Perfil de usuário: listar','O usuário ver a listagem de perfis de usuários do sistema','S'),
+  ('cad_perfil','Perfil de usuário: cadastrar','O usuário pode cadastrar novos perfis de usuário no sistema','S'),
 
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_perfil', 'Listar Perfiis de Usuário', 'O usuário ver a listagem de perfis', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_perfil', 'Cadastrar Perfil de usuário', 'O usuário pode cadastrar os perfis do usuário no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_usuario', 'Listar Usuários', 'O usuário ver a listagem de usuarios', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_usuario', 'Cadastrar usuário', 'O usuário pode cadastrar um novo usuário no sistema', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_categoria_rec', 'Listar Categorias do Recurso', 'O usuário ver a listagem de categorias', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('adm_checklist_rec', 'Administrar Checklist da cada recurso', 'O usuário pode administrar as checklista de cada recurso', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cons_disponibilidade', 'Consultar A Disponibilidade', 'O usuário consulta as disponibiliadades', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_retir_devoluc', 'Cadastrar Retirada e Devolução', 'O usuário pode cadastrar uma nova retirada e devolução', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_reserva', 'Listar Reservas', 'O usuário ver a listagem de reserva', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_reserva', 'Cadastrar reserva', 'O usuário pode cadastrar uma nova reserva', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_ensalamento', 'Listar Ensalamentos', 'O usuário ver a listagem de ensalamentos', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_ensalamento', 'Cadastrar Ensalamento', 'O usuário pode cadastrar novo ensalamento', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_periodo', 'Listar Períodos', 'O usuário ver a listagem de periodos', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_periodo', 'Cadastrar Período', 'O usuário pode cadastrar novo período', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_disciplina', 'Listar Disciplinas', 'O usuário ver a listagem de disciplinas', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('cad_disciplina', 'Cadastrar Disciplina', 'O usuário pode cadastrar nova disciplina', 'S');
-insert into `sgrp`.`funcionalidade` (sigla, nome, descricao, ativa) 
-	values ('list_recurso', 'Listar Recursos', 'O usuário ver a listagem de recursos', 'S');
+  ('list_usuario','Usuário: listar','O usuário ver a listagem de usuários do sistema','S'),
+  ('cad_usuario','Usuário: cadastrar','O usuário pode cadastrar um novo usuário no sistema','S'),
+  ('alt_usuario','Usuário: alterar','O usuário pode alterar usuários do sistema','S'),
+  ('apag_usuario','Usuário: apagar','O usuário pode apagar usuários do sistema','S'),
+
+  ('cad_categoria_rec','Categoria de recurso: cadastrar','O usuário pode cadastrar a categoria de cada recursos no sistema','S'),
+  ('alt_categoria_rec','Categoria de recurso: alterar','O usuário pode alterar as informações da categoria de cada recusros do sistema','S'),
+  ('apag_categoria_rec','Categoria de recurso: apagar','O usuário pode apagar categorias de recursos do sistema','S'),
+  ('list_categoria_rec','Categoria de recurso: listar','O usuário ver a listagem de categorias do sistema','S'),
+
+  ('list_recurso','Recurso: listar','O usuário ver a listagem de recursos do sistema','S'),
+  ('cad_recurso','Recurso: cadastrar','O usuário pode cadastrar novos recusros no sistema','S'),
+  ('alt_recurso','Recurso: alterar','O usuário pode alterar as informções do recursos do sistema','S'),
+  ('apag_recurso','Recurso: apagar','O usuário pode apagar recursos do sistema','S'),
+  ('adm_perm_recurso','Recurso: administrar permissão','O usuário pode administrar permissão dos recursos do sistema','S'),
+  ('adm_checklist_rec','Recurso: administrar checklist','O usuário pode administrar as checklista de cada recurso do sistema','S'),
+
+  ('cad_retir_devoluc','Retirada e devolução: cadastrar','O usuário pode cadastrar novas retiradas e devoluções no sistema','S'),
+
+  ('cons_disponibilidade','Disponibilidade: consultar','O usuário consulta as disponibiliadades e faser reservas conjuntas no sistema','S'),
 
 
+  ('list_reserva','Reserva: listar','O usuário ver a listagem de reserva do sistema','S'),
+  ('cad_reserva','Reserva: cadastrar','O usuário pode cadastrar novas reservas no sistema','S'),
+  ('apag_reserva','Reserva: apagar','O usuário pode apagar reservas do sistema','S'),
+
+  ('list_ensalamento','Ensalamento: listar','O usuário ver a listagem de ensalamentos do sistema','S'),
+  ('cad_ensalamento','Ensalamento: cadastrar','O usuário pode cadastrar novos ensalamentos no sistema','S'),
+  ('apag_ensalamento','Ensalamento: apagar','O usuário pode apagar os ensalamentos do sistema','S'),
+
+  ('list_periodo','Período: listar','O usuário ver a listagem de periodos do sistema','S'),
+  ('cad_periodo','Período: cadastrar','O usuário pode cadastrar novos períodos no sistema','S'),
+  ('alt_periodo','Período: alterar','O usuário pode alterar periodos dentro do sistema','S'),
+  ('apag_periodo','Período: apagar','O usuário pode apagar períodos dentro do sistema','S'),
+
+  ('list_disciplina','Disciplina: listar','O usuário ver a listagem de disciplinas do sistema','S'),
+  ('cad_disciplina','Disciplina: cadastrar','O usuário pode cadastrar novas disciplinas no sistema','S'),
+  ('alt_disciplina','Disciplina: alterar','O usuário alterar as disciplinas do sistema','S'),
+  ('apag_disciplina','Disciplina: apagar','O usuário pode apagar as disciplinas do sistema','S');
+
+
+
+  
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
   `codigo_funcionalidade` INT NOT NULL,
@@ -372,34 +365,20 @@ insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahor
 	values(4, 6, '2024-11-30 18:00:00', 'D', 'N', '22:00');
 
 
-/*
-SELECT 
-	rec.codigo AS codigo_recurso, 
-	rec.nome AS nome_recurso, 
-	dts.data AS data_alvo, 
-	dts.hora_inicial AS hora_inicial_alvo, 
-	dts.hora_final AS hora_final_alvo
-FROM sgrp.recurso rec
-LEFT JOIN sgrp.categoria_recurso cat 
-	ON rec.codigo_categoria = cat.codigo
-CROSS JOIN (
-    SELECT CAST('2024-10-01' AS date) AS data, CAST('08:00' AS TIME) AS hora_inicial, CAST('12:00' AS TIME) AS hora_final
-    UNION ALL
-    SELECT CAST('2024-10-01' AS date), CAST('13:00' AS time), CAST('17:00' AS time)
-    UNION ALL
-    SELECT CAST('2024-10-02' AS date), CAST('09:00' AS time), CAST('11:00' AS time)
-) AS dts
-LEFT JOIN sgrp.reserva res
-	ON res.codigo_recurso = rec.codigo
-LEFT JOIN sgrp.data_reserva dtr
-	ON res.codigo = dtr.codigo_reserva AND
-	dtr.data = dts.data AND
-	(
-		(dts.hora_inicial >= dtr.hora_inicial AND dts.hora_inicial < dtr.hora_final) OR
-		(dts.hora_final > dtr.hora_inicial AND dts.hora_final <= dtr.hora_final) OR
-		(dts.hora_inicial <= dtr.hora_inicial AND dts.hora_final >= dtr.hora_final)
-	)
-WHERE rec.codigo IN (2, 3) OR rec.codigo_categoria IN (2)
-GROUP BY 1, 2, 3, 4, 5
-HAVING COUNT(dtr.data) = 0
-*/
+
+
+CREATE TABLE devolucao_checklist (
+
+    codigo int PRIMARY KEY AUTO_INCREMENT not null,
+    codigo_checklist int not null,
+    codigo_devolucao int not null,
+    devolvido char(1) not null,
+    
+    FOREIGN KEY (codigo_checklist)
+    REFERENCES checklist(codigo),
+    
+    FOREIGN KEY (codigo_devolucao)
+    REFERENCES retirada_devolucao(codigo)
+    
+);
+

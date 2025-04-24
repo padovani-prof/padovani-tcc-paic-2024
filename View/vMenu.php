@@ -60,13 +60,8 @@
 </head>
 
 <body class="bg-light">
-
-    <!-- Cabeçalho -->
-    <header class="d-flex justify-content-between align-items-center py-3 mb-lg-2">
-        <img src="View/imagens/uea_logo1.png" alt="Logo UEA" class="img-fluid px-4" style="max-height: 80px;">
-        <h2 class="m-0">SGRP</h2>
-        <img src="View/imagens/uea_logo.png" class="px-4" style="max-height: 80px;" alt="">
-    </header>
+    
+    {{cabecario}}
 
     <!-- Layout com Grid -->
     <div class="container-fluid">

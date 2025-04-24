@@ -2,6 +2,7 @@
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_perfil', 2);
 
@@ -12,7 +13,6 @@ include_once 'Model/mPerfilUsuario.php';
 $resposta = 'nada'; 
 $msg = '';
 if (isset($_GET['apagar'])) {
-    
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_perfil', 2);
 
     $cod_perfil = $_GET['codigo_do_perfil'];
@@ -22,6 +22,7 @@ if (isset($_GET['apagar'])) {
 
 }
 else if(isset($_GET['atualizar'])){
+    verificação_acesso($_SESSION['codigo_usuario'], 'alt_perfil', 2);
     $codigo = $_GET['codigo_do_perfil'];
     header("Location: cFormularioPerfil.php?codigo=$codigo");
     exit();

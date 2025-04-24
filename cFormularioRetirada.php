@@ -5,7 +5,7 @@ function optios($dados){
     $opt = '<option value="NULL">...</option>';
     foreach($dados as $dado)
     {
-        $opt .= '<option value="'. $dado['codigo'].'">'.mb_strtoupper($dado['nome'] ).'</option>';
+        $opt .= '<option title="'.'" value="'. $dado['codigo'].'">'.mb_strtoupper($dado['nome'] ).'</option>';
     }
     return $opt;
 
@@ -31,6 +31,7 @@ function data_em_dia_semana($data){
 }
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'cad_retir_devoluc', 2);
 

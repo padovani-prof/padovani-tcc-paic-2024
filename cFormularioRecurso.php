@@ -5,15 +5,8 @@
 # verificação de acesso da fucionalidade
 # vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_recurso');
-if ($verificar== false and !isset($_GET['codigo']) and !isset($_GET['cod']))
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
-
-
 include_once 'Model/mCategoriaRecurso.php';
 include_once 'Model/mRecurso.php';
 $Lcategorias = carrega_categorias_recurso();
@@ -117,6 +110,7 @@ elseif (isset($_GET['salvar']))
 }
 else
 {
+    $verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_recurso', 2);
     // subistiti coloca essas dados no html e mostra
     $html = str_replace('{{campoNome}}','',$html);
     $html = str_replace('{{campoDescricao}}','', $html);

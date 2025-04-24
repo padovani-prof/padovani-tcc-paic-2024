@@ -116,7 +116,7 @@ function carrega_opition()
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
     // Preparando a consulta SQL
-    $sql = "SELECT codigo, nome FROM perfil_usuario";
+    $sql = "SELECT * FROM perfil_usuario";
 
     // Executando a consulta
     $resultado = $conecxao->query($sql);

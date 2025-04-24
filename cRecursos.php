@@ -32,6 +32,7 @@ function  Carregar_recursos_htm(){
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_recurso', 2);
 include_once 'Model/mRecurso.php';

@@ -19,6 +19,7 @@ function cerrega_dados_checklist($lista, $codigo){
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'adm_checklist_rec', 2);
 include_once 'Model/mChecklist.php';

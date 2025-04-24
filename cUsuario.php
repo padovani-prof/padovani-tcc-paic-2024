@@ -22,6 +22,7 @@ function tabela_usuarios(){
     }
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario', 2);
 
@@ -29,7 +30,7 @@ $msg = '';
 $id_msg = 'nada';
 include_once 'Model/mUsuario.php';
 if (isset($_POST['apagar'])) {
-    verificação_acesso($_SESSION['codigo_usuario'], 'list_usuario', 2); // apagar_usu
+    verificação_acesso($_SESSION['codigo_usuario'], 'apag_usuario', 2); // apagar_usu
     
     $l_msg = ['O usuário foi removido com sucesso.','O usuário não pode ser excluído, pois possui retiradas vinculadas a ele.','O usuário não pode ser removido, pois há reservas associadas a ele.'];
     $cod_usuario = $_POST['codigo_do_usuario'];
@@ -40,6 +41,7 @@ if (isset($_POST['apagar'])) {
 
 
 }elseif(isset($_POST["atualizar"])){
+    verificação_acesso($_SESSION['codigo_usuario'], 'alt_usuario', 2);
     $cod_usuario = $_POST['codigo_do_usuario'];
     header("Location: cFormularioUsuario.php?codigo=$cod_usuario");
     exit();

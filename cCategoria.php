@@ -4,6 +4,7 @@
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_categoria_rec', 2);
@@ -25,6 +26,7 @@ if (isset($_GET['apagar']))
     
 }
 if(isset($_GET['alterar'])){
+    verificação_acesso($_SESSION['codigo_usuario'], 'alt_categoria_rec', 2);
     $codi = $_GET['codigo_da_categoria'];
     header("Location: cFormularioCategoria.php?codigo=$codi");
     exit();

@@ -2,6 +2,7 @@
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'cad_ensalamento', 2);
 
@@ -85,7 +86,7 @@ if (isset($_GET['salvar'])){
 
 }
 
-$op_d = mandar_options($lista_de_disciplina, $disc);
+$op_d = gerarOpcoesDisciplina($lista_de_disciplina, $disc);
 $op_s = mandar_options($lista_de_salas, $sala);
 
 

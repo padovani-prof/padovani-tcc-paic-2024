@@ -1,6 +1,7 @@
 <?php
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_ensalamento', 2);
 
@@ -13,6 +14,8 @@ $lista_de_periodos = carrega_periodo();
 $lista_de_disciplina = carrega_disciplina();
 $lista_de_salas = carregar_salas();
 
+
+
 $peri = '';
 $disc = '';
 $sala = '';
@@ -23,6 +26,7 @@ $cod_ensalamento = '';
 
 if(isset($_GET['apagar']))
 {
+    verificação_acesso($_SESSION['codigo_usuario'], 'apag_ensalamento', 2);
     $cod_ensalamento = $_GET['codigo_ensalamento'];
     
     if ($cod_ensalamento != null){
@@ -100,8 +104,8 @@ if (isset($_GET['filtrar']))
 
 
 
-$op_p = mandar_options($lista_de_periodos, $peri);
-$op_d = mandar_options($lista_de_disciplina, $disc);
+$op_p = gerarOpcoes($lista_de_periodos, $peri);
+$op_d = gerarOpcoesDisciplina($lista_de_disciplina, $disc);
 $op_s = mandar_options($lista_de_salas, $sala);
 
 $html = file_get_contents('View/vEnsalamento.php');

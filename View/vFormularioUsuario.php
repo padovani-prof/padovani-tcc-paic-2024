@@ -61,7 +61,25 @@
             </div> <!--Fim nome e email-->
                       
             <label class="mb-3" for="">Perfis: </label>
-            {{perfis}}
+
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;"></th>
+                            <th style="width: 45%;"></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{perfis}}
+                          
+                    </tbody>
+
+                </table>
+                
+            
+
+            
 
             <div class="d-flex justify-content-between w-100">
                 <div class="text-start">

@@ -5,7 +5,7 @@ function opition($perfis){
     $lista =  carrega_opition();
     $usua = '<option value="NULL">...</option>';
     foreach($lista as $dados){
-        $usua .='<option value="' .$dados ['codigo'].'"' . ($dados ['codigo'] ==  $perfis? ' selected' : '') . '> '.$dados ['nome'].'</option>';
+        $usua .='<option title="'.$dados['descricao'].'" value="' .$dados ['codigo'].'"' . ($dados ['codigo'] ==  $perfis? ' selected' : '') . '> '.$dados ['nome'].'</option>';
     }
     return $usua;
 }
@@ -71,6 +71,8 @@ function dias_da_semana()
 
 
 include_once 'Model/mVerificacao_acesso.php';
+
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'adm_perm_recurso', 2);
 # vai mandar o codi usuario e o codigo que aquela fucionalidade pertence

@@ -6,7 +6,7 @@ function mandar_options_dispo($lista, $lado='a'){
    $opt = '<option value="NULL">...</option>';
    foreach($lista as $dados)
       { 
-         $opt .= '<option value="'. $dados['codigo'].','.mb_strtoupper($dados['nome']).','.$lado.'">'.mb_strtoupper($dados['nome'] ) .'</option>';    
+         $opt .= '<option title="'.$dados['descricao'].'" value="'. $dados['codigo'].','.mb_strtoupper($dados['nome']).','.$lado.'">'.mb_strtoupper($dados['nome'] ) .'</option>';    
       }
    return $opt;
 }
@@ -111,6 +111,7 @@ function conflito_de_periodos_adicionados($data, $h_i, $h_f, $lista_periodos){
 }
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 
@@ -133,13 +134,13 @@ $msg = '';
 $data = '';
 $hora_ini = '';
 $hora_fim = '';
-if(isset($_GET['categoria']) and $_GET['categoria']!='NULL'){
+if(isset($_GET['btnCategoria']) and $_GET['categoria']!='NULL'){
    $cate = $_GET['categoria'];
    $dados_recu_cate[] = $cate;
    $msg = 'Nova categoria adicionada com Sucesso.';
    $msg_id = 'sucesso';
 
-}elseif(isset($_GET['recurso']) and $_GET['recurso']!='NULL'){
+}elseif(isset($_GET['btnRecursos']) and $_GET['recurso']!='NULL'){
    $recu =  $_GET['recurso'];
    $dados_recu_cate[] = $recu;
    $msg = 'Novo recurso adicionado com Sucesso.';

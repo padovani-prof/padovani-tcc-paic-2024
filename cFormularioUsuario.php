@@ -2,8 +2,9 @@
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
-verificação_acesso($_SESSION['codigo_usuario'], 'cad_usuario', 2);
+
 
 
 
@@ -25,12 +26,15 @@ $tela = isset($_GET['codigo'])?'<input type="hidden" name="codigo" value="'.$_GE
 $html = file_get_contents('View/vFormularioUsuario.php');
 if(isset($_GET['codigo']) and !isset($_POST['salvar'])){
     // carregra dados
-    
+    verificação_acesso($_SESSION['codigo_usuario'], 'alt_usuario', 2);
     $codigo = $_GET['codigo'];
     $dados = carregar_dados($codigo);
     $nome = $dados['nome'];
     $email = $dados['email'];
     $perfis_selecionados = carrega_perfil_do_usuario($codigo);
+}else if(!isset($_GET['codigo']) and !isset($_POST['salvar'])){
+    verificação_acesso($_SESSION['codigo_usuario'], 'cad_usuario', 2);
+
 }
 
 if (isset($_POST["salvar"])) {
@@ -114,16 +118,21 @@ if (isset($_POST["salvar"])) {
     $html = str_replace('{{mensagem}}', $mensagem, $html);
 } 
 
+
 // Gera os checkboxes de perfis, mantendo os selecionados
-    if (is_array($perfil)) {
-        $perfis = '<br>';
-        foreach ($perfil as $linha) {
-            $checked = in_array($linha['codigo'], $perfis_selecionados) ? 'checked' : '';
-            $perfis .= "<input type='checkbox' name='perfis[]' value='" . $linha['codigo'] . "' $checked> " . $linha['nome'] . "<br>"; 
-        }
-    } else {
-        $perfis = "<input type='checkbox' name='perfis'> Não há nenhum perfil cadastrado <br>";
+if (is_array($perfil)) {
+    $perfis = "<tr>"; 
+    $cont = 1;
+    foreach ($perfil as $linha) {
+        $checked = in_array($linha['codigo'], $perfis_selecionados) ? "checked" : "";
+        $perfis .= '
+        <td title="'.$linha['descricao'] .'" alt="'.$linha['descricao'] .'"><input type="checkbox" name="funcionalidades[]"'.$checked.' value="'. $linha['codigo'] .'"/>'.$linha['nome'].($cont%3==0?'<br>&nbsp;</td></tr>':'<br>&nbsp;</td>');
+        $cont ++;
     }
+    
+} else { 
+    $perfis = "<input type='checkbox' name='perfis'> Não há nenhum perfil cadastrado <br>";
+}
 
 $html = str_replace('{{tipo}}', $tela, $html);
 $html = str_replace('{{campoNome}}', $nome, $html);
@@ -135,4 +144,3 @@ $html = str_replace('{{perfis}}', $perfis, $html);
 $html = str_replace('{{retorno}}', $id_resposta, $html);
 echo $html;
 ?>
-

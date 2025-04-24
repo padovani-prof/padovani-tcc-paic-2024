@@ -5,13 +5,10 @@
 # verificação de acesso da fucionalidade
 # vai mandar o codi usuario e o codigo que aquela fucionalidade pertence
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
-$verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_perfil');
-if ($verificar == false and !isset($_GET['codigo']))
-{
-    header('Location: cMenu.php?msg=Acesso negado!');
-    exit();
-}
+
+
 
 include_once 'Model/mPerfilUsuario.php';  
 $funcionalidades = listar_funcionalidade();
@@ -114,6 +111,14 @@ if (isset($_GET["salvar"])) {
     $descricao = $dados[0]['descricao'];
     $funcionalidades_selecionadas = $dados[1];
     $tipo_tela = '<input type="hidden" name="codigo" value="'.$codigo.'">';
+}else{
+    $verificar = verificação_acesso($_SESSION['codigo_usuario'], 'cad_perfil');
+    if ($verificar == false and !isset($_GET['codigo']))
+    {
+        header('Location: cMenu.php?msg=Acesso negado!');
+        exit();
+    }
+
 }
 
 if (is_array($funcionalidades)) {
@@ -130,8 +135,8 @@ if (is_array($funcionalidades)) {
     $aux .= "<input type='checkbox' name='funcionalidades'> Não há nenhuma funcionalidade cadastrada <br>";
 }
 
-
 $html = file_get_contents('View/vFormularioPerfil.php');
+$html = cabecalho($html);
 $html = str_replace('{{campoNome}}', $nome, $html);
 $html = str_replace('{{campoDescricao}}', $descricao, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);  

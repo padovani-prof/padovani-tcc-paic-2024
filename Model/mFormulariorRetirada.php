@@ -7,7 +7,7 @@ function carrega_retirada_disponivel()
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
     $resultado = $cone->query("SELECT * from(
-    select codigo, nome, (
+    select codigo, nome,  recurso.descricao, (
         select tipo from retirada_devolucao where recurso.codigo = codigo_recurso order by datahora desc limit 1
         ) as ultima_movimentacao from recurso) as rec
     where rec.ultima_movimentacao = 'D' or rec.ultima_movimentacao is NULL;");
@@ -114,7 +114,7 @@ function carrega_recursos_emprestados()
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
     $resultado = $cone->query("SELECT * from(
-    select codigo, nome, (
+    select codigo, nome, recurso.descricao , (
         select tipo from retirada_devolucao where recurso.codigo = codigo_recurso order by datahora desc limit 1
         ) as ultima_movimentacao from recurso) as rec
     where rec.ultima_movimentacao = 'R' ;");

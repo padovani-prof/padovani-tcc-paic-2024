@@ -4,26 +4,30 @@
 
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_periodo', 2);
 
 
 include_once 'Model/mPeriodo.php';
 
+
 $men = '';
 $idmen = 'nada';
 
 if(isset($_GET['apagar']))
 {
+    verificação_acesso($_SESSION['codigo_usuario'], 'apag_periodo', 2);
     $chave = $_GET['codigo_do_periodo'];
     Existe_essa_chave_na_tabela($chave, "periodo", "cPeriodo.php");
     $men = apagar_periodo($chave);
     $idmen = ($men)?'sucesso':'erro';
-    $men = ($men)?'Perido apagado com Sucesso!!':'Esse periodo não pode ser apagado pois está sendo referenciado na Disciplina.';
+    $men = ($men)?'Periodo apagado com Sucesso!!':'Esse período não pode ser apagado pois está sendo referenciado na Disciplina.';
 
 
 }
 elseif(isset($_GET['atualizar'])){
+    verificação_acesso($_SESSION['codigo_usuario'], 'alt_periodo', 2);
     $codigo = $_GET['codigo_do_periodo'];
     header("Location: cFormularioPeriodo.php?codigo=$codigo");
     exit();

@@ -34,7 +34,7 @@ function carrega_categorias_recurso()
 {
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $cone->query('SELECT nome, codigo  from categoria_recurso');
+    $resulta = $cone->query('SELECT *  from categoria_recurso');
     $resulta = $resulta->fetch_all(MYSQLI_ASSOC);
     $cone->close();
     
@@ -46,7 +46,7 @@ function carrega_categorias_recurso()
 function Carregar_recursos_dados(){
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $resultado = $conecxao->query("SELECT nome, codigo from recurso");
+    $resultado = $conecxao->query("SELECT * from recurso");
     $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conecxao->close();
     return $resultado;

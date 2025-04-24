@@ -1,8 +1,9 @@
 <?php
 
 include_once 'Model/mVerificacao_acesso.php';
+include 'cGeral.php';
 Esta_logado();
-verificação_acesso($_SESSION['codigo_usuario'], 'cad_disciplina', 2);
+
 
 
 
@@ -20,6 +21,9 @@ $marcar = '';
 
 include 'Model/mDisciplina.php';
 if(isset($_GET['codigo']) or isset($_GET['cod'])){
+
+    // atualizar
+    verificação_acesso($_SESSION['codigo_usuario'], 'alt_disciplina', 2);
     $id_resp = 'erro';
     $tela = 'Atualizar';
     if(isset($_GET['codigo'])){
@@ -85,6 +89,10 @@ else if(isset($_GET['salvar']))
 
 
     $mens = $lMensa[$resp];
+}else{
+    // cadastrar
+    verificação_acesso($_SESSION['codigo_usuario'], 'cad_disciplina', 2);
+
 }
 
 

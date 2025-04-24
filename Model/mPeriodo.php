@@ -9,16 +9,15 @@ function apagar_periodo($chave_pri)
     if ($conexao->connect_error) {
         return false;
     }
-
     $stmt = $conexao->prepare("DELETE FROM periodo WHERE codigo = ?");
     $stmt->bind_param("i", $chave_pri);
-    $stmt->execute();
+    $resposta = $stmt->execute();
 
     // Fechar o statement e a conexão
     $stmt->close();
     $conexao->close();
 
-    return true;
+    return $resposta;
 }
 
 function carrega_periodo()
