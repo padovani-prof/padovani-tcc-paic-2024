@@ -100,9 +100,9 @@ if (isset($_GET['filtrar']))
 
 
 
-$op_p = gerarOpcoes($lista_de_periodos, $peri);
-$op_d = gerarOpcoes($lista_de_disciplina, $disc);
-$op_s = gerarOpcoes($lista_de_salas, $sala);
+$op_p = mandar_options($lista_de_periodos, $peri);
+$op_d = mandar_options($lista_de_disciplina, $disc);
+$op_s = mandar_options($lista_de_salas, $sala);
 
 $html = file_get_contents('View/vEnsalamento.php');
 $html = str_replace('{{periodo}}', $op_p, $html);

@@ -85,8 +85,8 @@ if (isset($_GET['salvar'])){
 
 }
 
-$op_d = gerarOpcoes($lista_de_disciplina, $disc);
-$op_s = gerarOpcoes($lista_de_salas, $sala);
+$op_d = mandar_options($lista_de_disciplina, $disc);
+$op_s = mandar_options($lista_de_salas, $sala);
 
 
 $html = str_replace('{{Disciplina}}', $op_d, $html);
