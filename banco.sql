@@ -380,5 +380,5 @@ CREATE TABLE devolucao_checklist (
     FOREIGN KEY (codigo_devolucao)
     REFERENCES retirada_devolucao(codigo)
     
-);
+)ENGINE = InnoDB;
 
