@@ -1,5 +1,6 @@
 drop schema if exists sgrp;
 
+
 create schema sgrp;
 CREATE TABLE sgrp.usuario(
     codigo int not null auto_increment primary key,
