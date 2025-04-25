@@ -367,7 +367,7 @@ insert into `sgrp`.`retirada_devolucao` (codigo_usuario, codigo_recurso, datahor
 
 
 
-CREATE TABLE devolucao_checklist (
+ CREATE TABLE IF NOT EXISTS `sgrp`.`devolucao_checklist` (
 
     codigo int PRIMARY KEY AUTO_INCREMENT not null,
     codigo_checklist int not null,
@@ -381,4 +381,5 @@ CREATE TABLE devolucao_checklist (
     REFERENCES retirada_devolucao(codigo)
     
 )ENGINE = InnoDB;
+
 
