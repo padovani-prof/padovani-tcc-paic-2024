@@ -56,4 +56,7 @@ $html = str_replace('{{resp}}', $id_msg, $html);
 
 $html = str_replace('{{usuarios}}', $usuarios, $html);
 echo $html;
+
+
+// fim
 ?>

@@ -51,7 +51,7 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
         $categoria = $_GET['categoria'];
         $resposta = verificar_atualizar($chave, $nome, $descre, $categoria);
 
-        $mensagens = ['Recurso atualizado com Sucesso!!' , 'Numero maximo de caracter na descrição é 100', 'Selecione uma opção de Categoria',  'Nome do recurso ínvalido', 'Nome do recurso já cadastrado'];
+        $mensagens = ['Recurso atualizado com Sucesso!!' , 'Numero maximo de caracter na descrição é 100', 'Selecione uma opção de Categoria',  'Nome do recurso ínvalido', 'Nome existente. Insira um novo.'];
         $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
         $retorno =  ($resposta>0)?'erro':'sucesso';
         $html = str_replace('{{retorno}}', $retorno, $html);
@@ -81,13 +81,13 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
 elseif (isset($_GET['salvar'])) 
 {
     // cadastrar recurso
-    $nome = $_GET['nome'];
-    $descre = $_GET['descricao'];
+    $nome = trim($_GET['nome']);
+    $descre = trim($_GET['descricao']);
     $categoria = $_GET['categoria'];
 
     $resposta = cadastrar_recurso($nome, $descre, $categoria);
 
-    $mensagens = ['Recurso cadastrado com Sucesso!!' , 'Numero maximo de caracter na descrição é 100', 'Selecione uma opção de Categoria',  'Nome do recurso ínvalido', 'Nome do recurso já cadastrado'];
+    $mensagens = ['Recurso cadastrado com Sucesso!!' , 'A descrição deve conter entre 5 e 100 caracteres.', 'Selecione uma opção de Categoria.',  'Nome do recurso ínvalido', 'Nome existente. Insira um novo.'];
     
 
     $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);

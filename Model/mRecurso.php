@@ -26,7 +26,7 @@ function Validar_recurso($nome, $desc, $cCatego)
         return 3; // número de caracteres do nome inválido
     }
    
-    if (mb_strlen($desc) > 100) {
+    if (mb_strlen($desc) < 5 or mb_strlen($desc) > 100) {
         return 1; // passou do número máximo de caracteres da descrição
     }
    

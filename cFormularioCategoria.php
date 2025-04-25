@@ -40,7 +40,7 @@ if(isset($_GET["codigo"])){
             $descre = $_GET['descricao'];
             $Ambiente = (isset($_GET['ambiente_fisico']))?$_GET['ambiente_fisico']:null;
             $resposta = atualizar_dados($chave, $nome, $descre, $Ambiente);
-            $mensagem = ['Categoria atualizada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da categoria ínvalido', 'Categoria de recurso já ultilizado' ];
+            $mensagem = ['Categoria atualizada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da categoria ínvalido', 'Nome existente. Insira um novo.' ];
     
             // respostas
             $mensagem = $mensagem[$resposta];
@@ -70,7 +70,7 @@ else{
             $descre = $_GET['descricao'];
             $Ambiente = (isset($_GET['ambiente_fisico']))?$_GET['ambiente_fisico']:null;
             $resposta = insere_categoria_recurso($nome, $descre, $Ambiente);
-            $mensagem = ['Categoria cadastrada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da categoria ínvalido', 'Categoria de recurso já cadastrado' ];
+            $mensagem = ['Categoria cadastrada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da categoria ínvalido', 'Nome existente. Insira um novo.' ];
     
             // respostas
             $mensagem = $mensagem[$resposta];

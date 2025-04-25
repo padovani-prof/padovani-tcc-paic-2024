@@ -229,7 +229,7 @@ function gerarOpcoesDisciplina($lista, $selecionado) {
     $opcoes = '<option value="">...</option>'; 
     foreach ($lista as $item) {
         $opcoes .= sprintf(
-            '<option title="'.$item['curso'].'" value="%s"%s>%s</option>',
+            '<option title=" Curso: '.$item['curso'].'" value="%s"%s>%s</option>',
             htmlspecialchars($item['codigo'], ENT_QUOTES, 'UTF-8'),
             $item['codigo'] == $selecionado ? ' selected' : '',
             htmlspecialchars($item['nome'], ENT_QUOTES, 'UTF-8')

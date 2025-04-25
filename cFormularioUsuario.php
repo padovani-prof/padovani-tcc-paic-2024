@@ -55,9 +55,9 @@ if (isset($_POST["salvar"])) {
         } elseif (empty($email)){
             $mensagem = 'O email é obrigatório';
         }  elseif (!empty($conf_senha) and empty($senha)){
-            $mensagem = 'Você esqueceu de criar sua nova senha.';
-        } elseif (!empty($senha) and empty($conf_senha)){
-            $mensagem = 'Você esqueceu de confirmar sua nova senha.';
+            $mensagem = 'Crie uma nova senha.';
+        }elseif (!empty($senha) and empty($conf_senha)){
+            $mensagem = 'Confirme sua nova senha.';
         }
         elseif ($senha !== $conf_senha) {
             $mensagem = 'As senhas não correspondem';
@@ -68,7 +68,7 @@ if (isset($_POST["salvar"])) {
             $resposta =  atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados);
         
             // Definindo mensagens para mostrar
-            $men = ['O nome informado é inválido. Ele deve ter no mínimo 3 caracteres e no máximo 50.', 'Senha está Vazia', 'Senha Inválida', 'Usuário atualizado com Sucesso!','Nome já ultilizado. Por favor ensira outro nome.', 'E-mail já foi cadastrado. Por favor ensira outro E-mail.'];
+            $men = ['O nome informado é inválido. Ele deve ter no mínimo 3 caracteres e no máximo 50.', 'Senha está Vazia.', 'Senha Inválida.', 'Usuário atualizado com Sucesso!','Nome existente. Insira um novo.', 'E-mail existente. Insira um novo endereço.'];
             $mensagem = $men[$resposta];
 
         }
@@ -82,17 +82,19 @@ if (isset($_POST["salvar"])) {
         } elseif (empty($email)){
             $mensagem = 'O email é obrigatório';
         } elseif (empty($senha)){
-            $mensagem = 'A senha é obrigatório';
-        } elseif (empty($conf_senha)){
-            $mensagem = 'Você esqueceu de confirmar sua senha';
-        } elseif ($senha !== $conf_senha) {
+            $mensagem = 'Crie uma senha';
+        }elseif ((mb_strlen($senha) < 3 || mb_strlen($senha) > 50)) {
+            $mensagem = 'A senha precisa ter no mínimo 4 e no máximo 50 caracteres';
+        }elseif (empty($conf_senha)){
+            $mensagem = 'Confirme a senha';
+        }elseif ($senha !== $conf_senha) {
             $mensagem = 'As senhas não correspondem';
         } elseif (empty($perfis_selecionados)) {
             $mensagem = 'Você deve selecionar pelo menos um perfil!';
         }else{
             $resposta = cadastrar_usuario($nome, $email, $senha, $perfis_selecionados);
             // Definindo mensagens para mostrar
-            $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!','Nome já ultilizado. Por favor ensira outro nome.', 'E-mail já foi cadastrado. Por favor ensira outro E-mail.'];
+            $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!','Nome existente. Insira um novo.', 'E-mail existente. Insira um novo endereço.'];
             $mensagem = $men[$resposta];
 
         }
@@ -126,7 +128,7 @@ if (is_array($perfil)) {
     foreach ($perfil as $linha) {
         $checked = in_array($linha['codigo'], $perfis_selecionados) ? "checked" : "";
         $perfis .= '
-        <td title="'.$linha['descricao'] .'" alt="'.$linha['descricao'] .'"><input type="checkbox" name="funcionalidades[]"'.$checked.' value="'. $linha['codigo'] .'"/>'.$linha['nome'].($cont%3==0?'<br>&nbsp;</td></tr>':'<br>&nbsp;</td>');
+        <td title="'.$linha['descricao'] .'" alt="'.$linha['descricao'] .'"><input type="checkbox" name="perfis[]"'.$checked.' value="'. $linha['codigo'] .'"/>'.$linha['nome'].($cont%3==0?'<br>&nbsp;</td></tr>':'<br>&nbsp;</td>');
         $cont ++;
     }
     

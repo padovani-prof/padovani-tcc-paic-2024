@@ -33,16 +33,19 @@ if (isset($_GET["salvar"])) {
         $tipo_tela = '<input type="hidden" name="codigo" value="'.$codigo.'">';
     }
     
-    $nome = $_GET['nome'];
-    $descricao = $_GET['descricao'];
-    $descricao = trim($descricao);
+    $nome = trim($_GET['nome']);
+    $descricao = trim($_GET['descricao']);
 
     if (isset($_GET['funcionalidades']) && is_array($_GET['funcionalidades'])) {
         $funcionalidades_selecionadas = $_GET['funcionalidades'];
     }
     if (empty($nome)) {
         $mensagem = "O nome é obrigatório!";
-    } elseif ((mb_strlen($descricao) > 100  or (mb_strlen($descricao) < 5 ))) {
+    }elseif (mb_strlen($nome)< 3 or mb_strlen($nome)> 30 ) {
+        $mensagem = 'O nome informado é inválido. Ele deve ter no mínimo 3 caracteres e no máximo 30.';
+        
+    } 
+    elseif ((mb_strlen($descricao) > 100  or (mb_strlen($descricao) < 5 ))) {
         $mensagem = "Adicione uma descrição com no mínimo 5 e no máximo 100 caracteres.";
     }
      elseif (empty($funcionalidades_selecionadas)) {
@@ -53,18 +56,18 @@ if (isset($_GET["salvar"])) {
             // atualizar dados
             $resposta = atualizar_fucionalidade($codigo, $nome, $descricao, $funcionalidades_selecionadas);
             if ($resposta==3){
-                $mensagem = "Esse nome de perfil já está sendo ultilizado. Por favor dê outro nome.";
+                $mensagem = "Nome existente. Insira um novo.";
 
             }
             else if ($resposta == 2) {
                 $nome = '';
                 $descricao = '';
                 $funcionalidades_selecionadas = []; 
-                $mensagem = "Perfil atualizado com sucesso!";
+                $mensagem = "Perfil atualizado com Sucesso!";
                 $id_resposta = 'sucesso';
             }
             else if($resposta ==0){
-                $mensagem = "Numero de caracteres de nome perfio invalido. Ensira pelomenos 3 caracteres.";
+                $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres.";
 
             }
             else {
@@ -73,20 +76,21 @@ if (isset($_GET["salvar"])) {
 
 
         }else{
+            // cadastrar perfil
             $resposta = insere_perfil($nome, $descricao, $funcionalidades_selecionadas);
             if ($resposta==3){
-                $mensagem = "Esse nome de perfil já está sendo ultilizado. Por favor dê outro nome.";
+                $mensagem = "Nome existente. Insira um novo.";
 
             }
             else if ($resposta == 2) {
                 $nome = '';
                 $descricao = '';
                 $funcionalidades_selecionadas = []; 
-                $mensagem = "Perfil cadastrado com sucesso!";
+                $mensagem = "Perfil cadastrado com Sucesso!";
                 $id_resposta = 'sucesso';
             }
             else if($resposta==0){
-                $mensagem = "Numero de caracteres de nome perfio invalido. Ensira pelomenos 3 caracteres.";
+                $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres.";
 
             }
              else {
