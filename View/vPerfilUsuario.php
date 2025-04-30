@@ -25,8 +25,10 @@
     <h1>Perfil de Usuário</h1>
   </header>
     
-  <p id="{{resp}}">{{msg}}</p>
+
+  
     <section class="container mt-4 border rounded shadow p-4 form-container">
+    <p class="text-center fw-bold text-{{resp}}">{{msg}}</p> 
 
         <div class="table-reponsive">
             <table class="table table-bordered table-striped table-hover text-center align-middle">

@@ -11,7 +11,7 @@ $html = file_get_contents('View/vFormularioDevolucao.php');
 $recursos = carrega_recursos_emprestados();
 
 $msg = (isset($_GET['msg']))?$_GET['msg']:((count($recursos)==0)?'Nomento não temos nem um recurso emprestado.':'');
-$msg_resp = (isset($_GET['msg']))?'sucesso':'erro';
+$msg_resp = (isset($_GET['msg']))?'success':'danger';
 
 $recurso = '';
 $devolvente = '';

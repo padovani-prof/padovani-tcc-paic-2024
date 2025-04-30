@@ -83,6 +83,7 @@ $marca_agen = '';
 $utilizador = $_GET['utilizador'];
 $justific = '';
 $msg = '';
+$id_msg = 'danger';
 if(isset($_GET['reservar'])){
     if(verificar_reservar($dados)==true){
         header('Location: cFiltroDisponibildade.php');
@@ -119,6 +120,8 @@ $html = str_replace('{{reservas}}', $tabe_htm, $html);
 $html = str_replace('{{agendador}}', $usuarios_agendador, $html);
 $html = str_replace('{{usuario}}', '<input type="hidden" name="utilizador" value="'.$utilizador.'">', $html);
 $html = str_replace('{{just}}', $justific, $html);
+
+$html = str_replace('{{retorno}}', $id_msg, $html);
 
 $html = str_replace('{{msg}}', $msg, $html);
 echo $html;

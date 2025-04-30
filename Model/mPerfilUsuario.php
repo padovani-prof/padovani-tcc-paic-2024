@@ -24,7 +24,7 @@ function listar_perfis(){
     }
 
     // Executa a consulta
-    $resultado = $conexao->query("SELECT * FROM perfil_usuario order by nome");
+    $resultado = $conexao->query("SELECT * FROM perfil_usuario where codigo!=1 order by nome");
 
     // Inicializa um array vazio
 

@@ -84,7 +84,7 @@ $html = file_get_contents('View/vPermissao.php');
 
 
 $marcar = '';
-$id_msg = (isset($_GET['msg_id']))?$_GET['msg_id']:'erro';
+$id_msg = (isset($_GET['msg_id']))?$_GET['msg_id']:'danger';
 $msg = (isset($_GET['msg']))?$_GET['msg']:'';
 $hora_ini = '';
 $hora_fim = '';
@@ -130,8 +130,8 @@ if(isset($_GET['salvar'])){
             }else{
                 cadastra_acesso_recurso($recurso_codigo, $marcar, $hora_ini, $hora_fim, $semanas, $data_ini, $data_fim);
         
-                $msg = 'Acesso ao recurso cadastrado com sucesso.';
-                $id_msg = 'sucesso';
+                $msg = 'Acesso ao Recurso Cadastrado com Sucesso.';
+                $id_msg = 'success';
                 header("Location: cPermissaoRecurso.php?codigo_recurso=$recurso_codigo&msg=$msg&msg_id=$id_msg");
                 exit();
             }
@@ -139,9 +139,9 @@ if(isset($_GET['salvar'])){
         }
     }else{
         // todos os dados não foram preechidos
-        $msg = 'Por favor adicione todos os dados que são exenciais para o cadastro.';
+        $msg = 'Por favor adicione todos os dados que são exenciais para o Cadastro.';
     }
-    if($id_msg=='erro' and strlen($semanas) !=0){
+    if($id_msg=='danger' and strlen($semanas) !=0){
         $html = marcar_semana($semanas, $html);
         // se foi marcado a semana
         
@@ -151,8 +151,8 @@ if(isset($_GET['salvar'])){
     verificação_acesso($_SESSION['codigo_usuario'], 'adm_perm_recurso', 2);
     $chave_ac = $_GET['codigo_acesso_ao_recurso'];
     apagar_acesso_ao_recurso($chave_ac);
-    $msg = 'Acesso ao recurso removido com sucesso.';
-    $id_msg = 'sucesso';
+    $msg = 'Acesso ao Recurso Removido com Sucesso.';
+    $id_msg = 'success';
     //cPermissaoRecurso.php?codigo_recurso=2
     header("Location: cPermissaoRecurso.php?codigo_recurso=$recurso_codigo&msg=$msg&msg_id=$id_msg");
     exit();

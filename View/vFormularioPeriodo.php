@@ -31,7 +31,7 @@
   </header>
 
   <section class="container mt-4 border rounded shadow p-4 form-container">
-    <p class="text-center fw-bolder" id="{{msg}}">{{mensagem}}</p>
+  <p class="text-center fw-bold text-{{msg}}" >{{mensagem}}</p>
       <form action="cFormularioPeriodo.php" >
         {{tipo_tela}}
           <label for="">Nome: </label>

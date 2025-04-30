@@ -27,9 +27,10 @@
      <header class="azul text-center text-white py-4">
       <h1>Recursos</h1>
      </header>
+
      
-     <p id="resposta-{{repos}}">{{msg}}</p> 
      <section class="container border rounded shadow my-4 p-4 form-container"> <!--Inicio Section-->
+     <p class="text-center fw-bold text-{{repos}}">{{msg}}</p> 
           <div class="table-reponsive" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-bordered table-striped table-hover text-center align-middle">
               <thead class="table-primary">
@@ -49,7 +50,7 @@
         
           <div class="d-flex justify-content-between">
                 <a href="cMenu.php" class="btn btn-secondary">Voltar</a>             
-                <a href="cFormularioRecurso.php" class="btn btn-primary">Novo Usuário</a>
+                <a href="cFormularioRecurso.php" class="btn btn-primary">Novo Recurso</a>
           </div>
       </section>  
 </body>

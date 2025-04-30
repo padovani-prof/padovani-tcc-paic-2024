@@ -32,11 +32,11 @@ include_once 'Model/mUsuario.php';
 if (isset($_POST['apagar'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_usuario', 2); // apagar_usu
     
-    $l_msg = ['O usuário foi removido com sucesso.','O usuário não pode ser excluído, pois possui retiradas vinculadas a ele.','O usuário não pode ser removido, pois há reservas associadas a ele.'];
+    $l_msg = ['O usuário foi removido com Sucesso.','O usuário não pode ser excluído, pois possui retiradas vinculadas a ele.','O usuário não pode ser removido, pois há reservas associadas a ele.'];
     $cod_usuario = $_POST['codigo_do_usuario'];
     $msg = apagar_usuario($cod_usuario);
     
-    $id_msg = ($msg==0)?'sucesso':'erro';
+    $id_msg = ($msg==0)?'success':'danger';
     $msg = $l_msg[$msg];
 
 
@@ -58,5 +58,5 @@ $html = str_replace('{{usuarios}}', $usuarios, $html);
 echo $html;
 
 
-// fim
+// msg estilizadas ok
 ?>

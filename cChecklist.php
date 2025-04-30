@@ -29,7 +29,7 @@ include_once 'Model/mChecklist.php';
 
 $item = '';
 $msg = (isset($_GET['msg']))?$_GET['msg']: '';
-$id_msg = (isset($_GET['msgId']))?$_GET['msgId']:'erro';
+$id_msg = (isset($_GET['msgId']))?$_GET['msgId']:'danger';
 $codigo = $_GET ['codigo'];
 Existe_essa_chave_na_tabela($codigo, 'recurso', "cRecursos.php");
 
@@ -39,7 +39,7 @@ if (isset($_GET['apagar']))
     $chave_pri = $_GET['codigo_item'];
     apagar_acesso_ao_recurso($chave_pri);
     $msg = 'Item removido do recurso com Sucesso.';
-    $id_msg = 'sucesso';
+    $id_msg = 'success';
     header("Location: cChecklist.php?msg=$msg&codigo=$codigo&msgId=$id_msg");
     exit();
 
@@ -50,13 +50,13 @@ else if(isset($_GET['adicionar'])){
     if(strlen($_GET['txtitem'])>=3){
         //adiciona no banco
         salva_no_banco($item, $codigo);
-        $msg = 'Novo item adicionado ao recurso com Sucesso.';
-        $id_msg = 'sucesso';
+        $msg = 'Novo item Adicionado ao Recurso com Sucesso.';
+        $id_msg = 'success';
         header("Location: cChecklist.php?msg=$msg&codigo=$codigo&msgId=$id_msg");
         exit();
     }else{
         // erro
-        $msg = 'O nome do item precisa ter no minimo 3 caracter.';
+        $msg = 'O nome do Item precisa ter no minimo 3 caracter.';
         
     }
     

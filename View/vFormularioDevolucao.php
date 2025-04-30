@@ -33,7 +33,7 @@
 
   <section class="container mt-4 border rounded shadow p-4 mb-5 form-container">
 
-    <p class="text-center fw-bolder" id="mensagem-{{retorno}}">{{mensagem}}</p>  
+    <p class="text-center fw-bold text-{{retorno}}">{{mensagem}}</p>  
         <form action="cFormularioDevolucao.php">  
             <div class="mb-3">
               <label for="">Recursos Retirado: </label>

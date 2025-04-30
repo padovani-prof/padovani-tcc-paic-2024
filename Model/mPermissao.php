@@ -8,7 +8,8 @@ function cadastra_acesso_recurso($cod_re, $codigo_per, $h_ini, $h_fim, $lis_sema
     if(!$conecxao->connect_error)
     {
         $lis_sema = str_replace(',', '', $lis_sema);
-        $a = (strlen($data_fim) == 10 ? "$data_fim" : "null");
+        
+        $a = (strlen($data_fim) == 10 ? "$data_fim" : null);
         $s = (strlen($data_fim) == 10 ? 's' : 'i');
         $sql = "INSERT INTO acesso_recurso (codigo_recurso, codigo_perfil, hr_inicial, hr_final, dias_semana, dt_inicial, dt_final) values (?, ?, ?, ?, ?, ?, ?)";
         

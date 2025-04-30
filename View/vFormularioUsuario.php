@@ -32,7 +32,7 @@
         <h1>Usuário</h1>
     </header>
     <section class="container border rounded shadow mt-4 p-4 form-container">
-        <p class="text-center fw-bolder" id="mensagem-{{retorno}}" >{{mensagem}}</p>
+        <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
 
         <form action="cFormularioUsuario.php" method="post">
             {{tipo}}

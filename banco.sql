@@ -237,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`funcionalidade_perfil` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
+/*
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (1,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (2,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (3,1);
@@ -264,6 +264,9 @@ insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (24,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (25,1);
 insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil) values (26,1);
+
+*/
+insert into `sgrp`.`funcionalidade_perfil` (codigo_funcionalidade, codigo_perfil)SELECT codigo, 1 from `sgrp`.`funcionalidade`;
 
 
 create table `sgrp`.`reserva`(

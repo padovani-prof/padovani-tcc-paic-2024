@@ -29,6 +29,7 @@
   </header>
 
   <section class="container mt-4 border rounded shadow p-4 form-container">
+  <p class="text-center fw-bold text-{{retorno}}" >{{msg}}</p>
 
     <form action="cReservaConjunta.php">  
       <div class="table-responsive">
@@ -70,7 +71,7 @@
           <input class="btn btn-primary" type="submit" value="Reservar" name="reservar">
         </div>
            
-    <p id="mensagem-erro">{{msg}}</p>  
+  
     </form> 
 
   </section>

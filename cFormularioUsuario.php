@@ -18,7 +18,7 @@ $senha = '';
 $conf_senha = '';
 $perfis_selecionados = [];
 $mensagem = '';
-$id_resposta = 'nada';
+$id_resposta = 'danger';
 
 $tela = isset($_GET['codigo'])?'<input type="hidden" name="codigo" value="'.$_GET['codigo'].'">':'';
 
@@ -28,6 +28,7 @@ if(isset($_GET['codigo']) and !isset($_POST['salvar'])){
     // carregra dados
     verificação_acesso($_SESSION['codigo_usuario'], 'alt_usuario', 2);
     $codigo = $_GET['codigo'];
+    Verificar_codigo('usuario', $codigo);
     $dados = carregar_dados($codigo);
     $nome = $dados['nome'];
     $email = $dados['email'];
@@ -39,7 +40,7 @@ if(isset($_GET['codigo']) and !isset($_POST['salvar'])){
 
 if (isset($_POST["salvar"])) {
     $resposta = -1;
-    $id_resposta = 'erro';
+    
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $senha = $_POST['senha'];
@@ -90,7 +91,7 @@ if (isset($_POST["salvar"])) {
         }elseif ($senha !== $conf_senha) {
             $mensagem = 'As senhas não correspondem';
         } elseif (empty($perfis_selecionados)) {
-            $mensagem = 'Você deve selecionar pelo menos um perfil!';
+            $mensagem = 'Você deve selecionar pelo menos um Perfil';
         }else{
             $resposta = cadastrar_usuario($nome, $email, $senha, $perfis_selecionados);
             // Definindo mensagens para mostrar
@@ -106,7 +107,7 @@ if (isset($_POST["salvar"])) {
         $senha = '';
         $conf_senha = '';
         $perfis_selecionados = []; // Limpa a seleção de perfis ao cadastrar com sucesso
-        $id_resposta = 'sucesso';
+        $id_resposta = 'success';
     }
 
         

@@ -46,7 +46,7 @@ if(isset($_GET['codigo']) or isset($_GET['t_codigo'])){
 
         }
         $tela = '<input type="hidden" name="t_codigo" value="' .$codigo.'">';
-        $respo = 'erro';
+        $respo = 'danger';
         $nomeP =  $_GET['txtnome'];
         $dataIn = $_GET['data_ini'];
         $dataFim = $_GET['data_fim'];
@@ -90,7 +90,7 @@ if(isset($_GET['codigo']) or isset($_GET['t_codigo'])){
             
             if($resposta==0)
             {
-                $respo = 'sucessso';
+                $respo = 'success';
                 $nomeP = '';
                 $dataIn = '';
                 $dataFim = '';
@@ -113,7 +113,7 @@ if(isset($_GET['codigo']) or isset($_GET['t_codigo'])){
 }
 else if(isset($_GET['salvar']))
 {
-    $respo = 'erro';
+    $respo = 'danger';
     $nomeP =  $_GET['txtnome'];
     $dataIn = $_GET['data_ini'];
     $dataFim = $_GET['data_fim'];
@@ -158,7 +158,7 @@ else if(isset($_GET['salvar']))
         
         if($resposta==0)
         {
-            $respo = 'sucessso';
+            $respo = 'success';
             $nomeP = '';
             $dataIn = '';
             $dataFim = '';

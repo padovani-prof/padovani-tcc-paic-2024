@@ -22,6 +22,8 @@
       <h1>Disponibilidade</h1>
   </header>
 
+  <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
+
   <section class="container w-75 p-4 border">
     <form action="cFiltroDisponibildade.php">
 
@@ -112,8 +114,10 @@
   </div>
 
       {{peridos-salvos}}
+
+      
  
-    <p id="mensagem-{{retorno}}">{{mensagem}}</p>
+    
     
     <div class="d-flex justify-content-between">
       <a href="cMenu.php" class="btn btn-secondary" type="button" value="Voltar">Voltar</a>

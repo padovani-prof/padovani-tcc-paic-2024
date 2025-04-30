@@ -20,6 +20,7 @@ if(isset($_GET["codigo"])){
     // preechendo dados
     verificação_acesso($_SESSION['codigo_usuario'], 'alt_categoria_rec', 2);
     $chave = $_GET["codigo"];
+    Verificar_codigo('categoria_recurso', $chave);
     $dados = pegar_dados($chave);
     $nome = $dados['nome'];
     $descre = $dados['descricao'];
@@ -40,11 +41,11 @@ if(isset($_GET["codigo"])){
             $descre = $_GET['descricao'];
             $Ambiente = (isset($_GET['ambiente_fisico']))?$_GET['ambiente_fisico']:null;
             $resposta = atualizar_dados($chave, $nome, $descre, $Ambiente);
-            $mensagem = ['Categoria atualizada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da categoria ínvalido', 'Nome existente. Insira um novo.' ];
+            $mensagem = ['Categoria Atualizada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da Categoria ínvalido', 'Nome existente. Insira um novo.' ];
     
             // respostas
             $mensagem = $mensagem[$resposta];
-            $retorno =  ($resposta>0)?'erro':'sucesso';
+            $retorno =  ($resposta>0)?'danger':'success';
     
             if($resposta == 0)
             {
@@ -70,11 +71,11 @@ else{
             $descre = $_GET['descricao'];
             $Ambiente = (isset($_GET['ambiente_fisico']))?$_GET['ambiente_fisico']:null;
             $resposta = insere_categoria_recurso($nome, $descre, $Ambiente);
-            $mensagem = ['Categoria cadastrada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da categoria ínvalido', 'Nome existente. Insira um novo.' ];
+            $mensagem = ['Categoria Cadastrada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da Categoria ínvalido', 'Nome existente. Insira um novo.' ];
     
             // respostas
             $mensagem = $mensagem[$resposta];
-            $retorno =  ($resposta>0)?'erro':'sucesso';
+            $retorno =  ($resposta>0)?'danger':'success';
     
             if($resposta == 0)
             {

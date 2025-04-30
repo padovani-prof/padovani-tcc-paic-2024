@@ -12,7 +12,7 @@ Esta_logado();
 
 include_once 'Model/mPerfilUsuario.php';  
 $funcionalidades = listar_funcionalidade();
-$id_resposta = 'nada';
+$id_resposta = 'danger';
 $tipo_tela = '';
 $nome = '';
 $descricao = '';
@@ -21,7 +21,7 @@ $funcionalidades_selecionadas = [];
 
 // Verifica se o formulário foi enviado e captura as informações
 if (isset($_GET["salvar"])) {
-    $id_resposta = 'erro';
+    
     if(isset($_GET['codigo'])){
         $verificar = verificação_acesso($_SESSION['codigo_usuario'], 'alt_perfil');
         if($verificar==false){
@@ -30,6 +30,7 @@ if (isset($_GET["salvar"])) {
 
         }
         $codigo = $_GET['codigo'];
+        
         $tipo_tela = '<input type="hidden" name="codigo" value="'.$codigo.'">';
     }
     
@@ -64,7 +65,7 @@ if (isset($_GET["salvar"])) {
                 $descricao = '';
                 $funcionalidades_selecionadas = []; 
                 $mensagem = "Perfil atualizado com Sucesso!";
-                $id_resposta = 'sucesso';
+                $id_resposta = 'success';
             }
             else if($resposta ==0){
                 $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres.";
@@ -87,7 +88,7 @@ if (isset($_GET["salvar"])) {
                 $descricao = '';
                 $funcionalidades_selecionadas = []; 
                 $mensagem = "Perfil cadastrado com Sucesso!";
-                $id_resposta = 'sucesso';
+                $id_resposta = 'success';
             }
             else if($resposta==0){
                 $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres.";
@@ -110,6 +111,7 @@ if (isset($_GET["salvar"])) {
 
     }
     $codigo = $_GET['codigo'];
+    Verificar_codigo('perfil_usuario', $codigo);
     $dados =  mandar_dados_da_tabela($codigo);
     $nome = $dados[0]['nome'];
     $descricao = $dados[0]['descricao'];

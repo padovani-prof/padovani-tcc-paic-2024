@@ -1,5 +1,4 @@
 <?php 
-
 function lista_usuario_acesso($chave_usu) {
     include 'confg_banco.php';
     
@@ -43,6 +42,30 @@ function lista_usuario_acesso($chave_usu) {
     $cone->close();
 
     return $resultado;
+}
+
+
+
+
+function Existe_esse_dado_para_atualizar($tabela, $codigo){
+    include 'confg_banco.php';
+
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+
+    if($cone->connect_error){
+        die("Falha na conexão: " . $cone->connect_error);
+    }
+    $sql = "SELECT * FROM $tabela WHERE codigo=?";
+    $consulta = $cone->prepare($sql);
+    $consulta->bind_param('i',$codigo);
+    $consulta->execute();
+    $dados = $consulta->get_result();
+    $dados = $dados->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+    $consulta->close();
+    return $dados;
+
+
 }
 
 

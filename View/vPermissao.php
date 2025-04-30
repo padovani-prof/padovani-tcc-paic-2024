@@ -28,8 +28,10 @@
     <h1>Permissão de Recurso</h1>
   </header>
 
-  <p id="{{rep}}">{{mensagemAnomalia}}</p> <!-- errro ou sucesso-->
+     
+
      <section class="container mt-4 border rounded shadow p-4 form-container"> <!--Inicio Section-->
+     <p class="text-center fw-bold text-{{rep}}">{{mensagemAnomalia}}</p> 
      
           <form action="cPermissaoRecurso.php">
                 <input type="hidden" name="codigo_recurso" value="{{codigorecurso}}">

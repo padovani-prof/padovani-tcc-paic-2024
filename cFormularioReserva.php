@@ -27,7 +27,7 @@ $usuario_agendador='';
 $vereficar = false;
 $vere = '';
 
-$id_retorno = 'erro';
+$id_retorno = 'danger';
 $lista_datas = isset($_GET['lista_datas']) ? json_decode(urldecode($_GET['lista_datas']), true) : [];
 
 
@@ -228,7 +228,7 @@ if (isset($_GET['btnSalvar'])) {
             $mensagem = $mensagens[$resultado];
             
             if ($resultado == 5) {
-                $id_retorno = 'sucesso';
+                $id_retorno = 'success';
                 $justificativa = '';
                 $recurso = '';
                 $usuario_utilizador = '';

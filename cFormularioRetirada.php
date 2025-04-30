@@ -1,4 +1,8 @@
+
+
 <?php 
+
+
 
 
 function optios($dados){
@@ -41,7 +45,7 @@ $html = file_get_contents('View/vFormulariorRetirada.php');
 
 
 $msg = '';
-$id_msg = 'erro'; 
+$id_msg = 'danger'; 
 $marca_recu = '';
 $marca_reti = '';
 $mar_hora = '';
@@ -83,7 +87,7 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
                 if($tudo_certo==true)
                 {
                     $msg = 'Recurso retirado com Sucesso!';
-                    $id_msg = 'sucesso'; 
+                    $id_msg = 'success'; 
                     $marca_recu = '';
                     $marca_reti = '';
                     $mar_hora = '';
@@ -95,7 +99,7 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
             }
 
         }else{
-            $msg = 'Voçê não possui permição para retirar esse recurso.';
+            $msg = 'O Retirante não possui permição para retirar esse recurso.';
         }
 
         
@@ -117,7 +121,7 @@ $opicoes_retirantes = mandar_options($retirantes, $marca_reti);
 $html = str_replace('{{retirante}}', $opicoes_retirantes, $html);
 $html = str_replace('{{recursos}}',$opicoes_recurso , $html);
 $html = str_replace('{{mensagem}}',$msg, $html);
-
+$html = str_replace('{{retorno}}', $id_msg, $html);
 $html = str_replace('{{hora_fim}}',$mar_hora, $html);
 
 

@@ -34,7 +34,10 @@
     </header>
     
     <section class="container mt-4 form-container">
-        <p class="text-center fw-bold " id="mensagem-{{retorno}}">{{mensagem}}</p>
+
+        <p class="text-center fw-bold text-{{retorno}}">{{mensagem}}</p> 
+
+
         <form class="border shadow rounded p-4" action="cFormularioPerfil.php">
             {{tipo_tela}}
             <div class="mb-3">

@@ -53,7 +53,7 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
 
         $mensagens = ['Recurso atualizado com Sucesso!!' , 'Numero maximo de caracter na descrição é 100', 'Selecione uma opção de Categoria',  'Nome do recurso ínvalido', 'Nome existente. Insira um novo.'];
         $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
-        $retorno =  ($resposta>0)?'erro':'sucesso';
+        $retorno =  ($resposta>0)?'danger':'success';
         $html = str_replace('{{retorno}}', $retorno, $html);
         
         if($resposta>0)
@@ -91,7 +91,7 @@ elseif (isset($_GET['salvar']))
     
 
     $html = str_replace('{{mensagem}}', $mensagens[$resposta], $html);
-    $retorno =  ($resposta>0)?'erro':'sucesso';
+    $retorno =  ($resposta>0)?'danger':'success';
     $html = str_replace('{{retorno}}', $retorno, $html);
     
     if($resposta>0)

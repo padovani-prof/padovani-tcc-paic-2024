@@ -75,6 +75,7 @@ $html = file_get_contents('View/vResultadoDisponibilidade.php');
 
 
 $msg = '';
+$id_msg = 'danger';
 
 
 $ultilizador = $_GET['utilizador'];
@@ -156,6 +157,8 @@ $html = str_replace('{{cate}}',$hid_cate, $html);
 $html = str_replace('{{recu}}', $hid_recu, $html);
 $html = str_replace('{{periodo}}',$hid_peri, $html);
 $html = str_replace('{{Colunas}}',$coluna,$html);
+
+$html = str_replace('{{retorno}}', $id_msg, $html);
 $html = str_replace('{{Disponibilidades}}', $recurs_dados, $html);
 echo $html;
 

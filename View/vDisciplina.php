@@ -24,7 +24,7 @@
   </header>
 
     <section class="container mt-4 w-50 border rounded shadow p-4">
-      <p class="text-center fw-bolder" id="{{resp}}">{{msg}}</p>
+      <p class="text-center fw-bold text-{{resp}}">{{msg}}</p> 
 
           <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover text-center align-middle">

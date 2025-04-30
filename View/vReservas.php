@@ -23,8 +23,7 @@
 
   <section class="container mt-4 border rounded shadow p-4 col-12 col-sm-10 col-md-8 col-lg-6">
 
-    <p class="text-center fw-bolder"  id="mensagem-{{retorno}}">{{mensagem}}</p>  
-    
+  <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>    
     <form action="cReservas.php">  
       <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover text-center align-middle"> 

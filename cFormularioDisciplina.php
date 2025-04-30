@@ -24,7 +24,7 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
 
     // atualizar
     verificação_acesso($_SESSION['codigo_usuario'], 'alt_disciplina', 2);
-    $id_resp = 'erro';
+    $id_resp = 'danger';
     $tela = 'Atualizar';
     if(isset($_GET['codigo'])){
 
@@ -53,11 +53,11 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
             $peri = '';
             $nome = '';
             $curso = '';
-            $id_resp = 'sucesso';
+            $id_resp = 'success';
         }
     
 
-        $lMensa = ['Disciplina atualizada com Sucesso!!', 'Nome do curso inválido','Nome da diciplina inválido', 'Nome da diciplina já está cadastrada.', 'Adicione um périodo.'];
+        $lMensa = ['Disciplina Atualizada com Sucesso!!', 'Nome do curso inválido','Nome da diciplina inválido', 'Nome da diciplina já está cadastrada.', 'Adicione um périodo.'];
 
 
         $mens = $lMensa[$resp];
@@ -68,7 +68,7 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
 
 else if(isset($_GET['salvar']))
 {
-    $id_resp = 'erro';
+    $id_resp = 'danger';
     $nome = $_GET['nome'];
     $curso = $_GET['curso'];
     $peri = $_GET['periodo'];
@@ -81,11 +81,11 @@ else if(isset($_GET['salvar']))
         $peri = '';
         $nome = '';
         $curso = '';
-        $id_resp = 'sucesso';
+        $id_resp = 'success';
     }
  
 
-    $lMensa = ['Disciplina cadastrada com Sucesso!!', 'Nome do curso inválido','Nome inválido', 'Diciplina já cadastrada','Adicione um périodo.'];
+    $lMensa = ['Disciplina Cadastrada com Sucesso!!', 'Nome do curso inválido','Nome inválido', 'Diciplina Existente','Adicione um périodo.'];
 
 
     $mens = $lMensa[$resp];

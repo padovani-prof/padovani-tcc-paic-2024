@@ -20,12 +20,15 @@ function verificar_permicao_recurso($data, $h_ini, $h_fim, $recurso, $retirador,
         )
     ) AND usuario.codigo = ?";
 
+
+
+
     $stmt = $cone->prepare($sql);
     $stmt->bind_param("ssssiii", $h_ini, $h_fim, $data, $data, $recurso, $dia_semana, $retirador);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
-    return ($resultado->num_rows > 0) ? true : false;
+    return ($resultado->num_rows > 0);
 
 }
 

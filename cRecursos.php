@@ -45,8 +45,8 @@ if (isset($_GET['apagar']))
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_recurso', 2);
     $cod_recurso = $_GET['codigo_do_recurso'];
     $msg = apagar_recurso($cod_recurso);
-    $id_msg = ($msg==0)?'sucesso':'erro';
-    $lista_msg = ['Recurso apagado com Sucesso.', 'Esse recurso não pode ser apagado, pois possui Retirada.','Esse recurso não pode ser apagado, pois possui Ensalamento.','Esse recurso não pode ser apagado, pois possui Reserva.'];
+    $id_msg = ($msg==0)?'success':'danger';
+    $lista_msg = ['Recurso Apagado com Sucesso.', 'Esse recurso não pode ser apagado, pois possui Retirada.','Esse Recurso não pode ser Apagado, pois possui Ensalamento.','Esse Recurso não pode ser Apagado, pois possui Reserva.'];
     $msg = $lista_msg[$msg];
 }elseif(isset($_GET['altera'])){
     $cod_recurso = $_GET['codigo_do_recurso'];

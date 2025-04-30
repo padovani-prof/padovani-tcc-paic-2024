@@ -26,9 +26,8 @@
   <header class="azul text-center text-white py-4">
       <h1>Nova Reserva</h1>
   </header>
-  <p id="mensagem-{{retorno}}">{{mensagem}}</p>  
-
   <section class="container mt-4 border rounded shadow p-4 form-container" >
+  <p class="text-center fw-bold text-{{retorno}}">{{mensagem}}</p> 
     
     <form action="cFormularioReserva.php"> 
       <div>

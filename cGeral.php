@@ -82,8 +82,19 @@ function Esta_logado($mandar='cLogin.php' , $msg='Usuario desconectado!'){
         
     }
 
+function Verificar_codigo($tabela, $codigo){
+    $dados = Existe_esse_dado_para_atualizar($tabela, $codigo);
+    if (count($dados)==0) {
+        header('Location: cMenu.php');
+        exit();
+    }
 
+
+}
 
 
 
 ?>
+
+
+

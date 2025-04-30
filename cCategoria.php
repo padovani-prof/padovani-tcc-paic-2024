@@ -21,8 +21,8 @@ if (isset($_GET['apagar']))
     $resposta = apagar_categoria($codi);
 
     // $retorno =  ($resposta>0)?'erro':'sucesso';
-    $id_resposta = ($resposta)?'sucesso':'erro';
-    $resposta = ($resposta)?'A categoria foi removida com sucesso.':'Esta categoria não pode ser apagada, pois está vinculada a recursos.';
+    $id_resposta = ($resposta)?'success':'danger';
+    $resposta = ($resposta)?'A Categoria foi removida com Sucesso.':'Esta Categoria não pode ser Apagada, pois está vinculada a Recursos.';
     
 }
 if(isset($_GET['alterar'])){

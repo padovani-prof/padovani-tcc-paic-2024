@@ -129,7 +129,7 @@ $care_recursos = Carregar_recursos_dados();
 $carre_categorias = carrega_categorias_recurso();
 $usuarios = listar_usuarios();
 
-$msg_id = 'erro';
+$msg_id = 'danger';
 $msg = '';
 $data = '';
 $hora_ini = '';
@@ -138,13 +138,13 @@ if(isset($_GET['btnCategoria']) and $_GET['categoria']!='NULL'){
    $cate = $_GET['categoria'];
    $dados_recu_cate[] = $cate;
    $msg = 'Nova categoria adicionada com Sucesso.';
-   $msg_id = 'sucesso';
+   $msg_id = 'success';
 
 }elseif(isset($_GET['btnRecursos']) and $_GET['recurso']!='NULL'){
    $recu =  $_GET['recurso'];
    $dados_recu_cate[] = $recu;
    $msg = 'Novo recurso adicionado com Sucesso.';
-   $msg_id = 'sucesso';
+   $msg_id = 'success';
    
 }elseif(isset($_GET['btnPeriodos'])){
    // verficar periodo 
@@ -179,7 +179,7 @@ if(isset($_GET['btnCategoria']) and $_GET['categoria']!='NULL'){
          $dados_periodos[] = $hora_ini;
          $dados_periodos[] = $hora_fim;
 
-         $msg_id = 'sucesso';
+         $msg_id = 'success';
          $msg = 'Periodo adicionado com Sucesso';
          $data = '';
          $hora_ini = '';
@@ -222,7 +222,7 @@ if(isset($_GET['btnCategoria']) and $_GET['categoria']!='NULL'){
    $dados_periodos = remover_periodo($dados_periodos);
 
    $msg = ($qdt > count($dados_recu_cate))?'Recurso removido.':(($qdt_pe > count($dados_periodos))?'Periodo removido.':'');
-   $msg_id = 'sucesso';
+   $msg_id = 'success';
 
 
    

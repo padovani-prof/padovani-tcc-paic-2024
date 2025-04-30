@@ -33,12 +33,6 @@ if(isset($_GET['apagar']))
         $teste = apagar($cod_ensalamento);
     }
 
-   
-//     if(apagar($cod_ensalamento) === true)
-//     {
-//         //ver uma mensagem para usar
-//         echo 'sucesso';
-//     }
 }
 
 
@@ -106,7 +100,7 @@ if (isset($_GET['filtrar']))
 
 $op_p = gerarOpcoes($lista_de_periodos, $peri);
 $op_d = gerarOpcoesDisciplina($lista_de_disciplina, $disc);
-$op_s = mandar_options($lista_de_salas, $sala);
+$op_s = gerarOpcoes($lista_de_salas, $sala);
 
 $html = file_get_contents('View/vEnsalamento.php');
 $html = str_replace('{{periodo}}', $op_p, $html);

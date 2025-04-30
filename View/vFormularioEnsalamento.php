@@ -35,7 +35,7 @@
 
   <section class="container mt-4 border rounded shadow p-4 form-container">
 
-    <p class="text-center fw-bolder" id="mensagem-{{retorno}}">{{mensagem}}</p> 
+    <p class="text-center fw-bold text-{{retorno}}">{{mensagem}}</p> 
     <form action="cFormularioEnsalamento.php">
       
       <div class="d-flex gap-3 w-100">

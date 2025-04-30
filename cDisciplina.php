@@ -38,8 +38,8 @@ if (isset($_GET['apagar']))
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_disciplina', 2);
     
     $msg = apagar_diciplina($_GET['codigoPrim']);
-    $id_msg = ($msg)?'sucesso':'erro';
-    $msg = ($msg)?'Disciplina apagada com Sucesso':'Essa disciplina não pode ser apagada por esta sendo referênciada no Ensalamento.';
+    $id_msg = ($msg)?'success':'danger';
+    $msg = ($msg)?'Disciplina Apagada com Sucesso':'Essa disciplina não pode ser apagada por esta sendo Referênciada no Ensalamento.';
 
     // apagar ta ok
 }else if(isset($_GET['alterar'])){

@@ -21,8 +21,8 @@ if(isset($_GET['apagar']))
     $chave = $_GET['codigo_do_periodo'];
     Existe_essa_chave_na_tabela($chave, "periodo", "cPeriodo.php");
     $men = apagar_periodo($chave);
-    $idmen = ($men)?'sucesso':'erro';
-    $men = ($men)?'Periodo apagado com Sucesso!!':'Esse período não pode ser apagado pois está sendo referenciado na Disciplina.';
+    $idmen = ($men)?'success':'danger';
+    $men = ($men)?'Periodo Apagado com Sucesso!!':'Esse período não pode ser apagado pois está sendo Referenciado na Disciplina.';
 
 
 }

@@ -31,7 +31,8 @@
                 <h2 class="fw-bold text-primary">Bem Vindo</h2>
                 <p class="text-muted">Faça Login para continuar</p>
             </div>
-            <p id='{{resp}}'>{{mensagem}}</p> 
+
+            <p class="text-center fw-bold text-{{resp}}">{{mensagem}}</p> 
 
             <form class="d-flex flex-column" action="cLogin.php" method="post">
 

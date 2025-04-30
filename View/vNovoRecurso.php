@@ -32,7 +32,7 @@
      
      <section class="container border rounded shadow mt-4 p-4 form-container"> <!--Inicio Section-->
 
-      <p class="text-center fw-bolder" id="mensagem-{{retorno}}" >{{mensagem}}</p>
+      <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
        
       <form action="cFormularioRecurso.php">
         {{tipo_tela}}

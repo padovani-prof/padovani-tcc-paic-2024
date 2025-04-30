@@ -18,7 +18,7 @@ if (isset($_GET['apagar'])) {
     $cod_perfil = $_GET['codigo_do_perfil'];
     $resposta = apagar_perfil($cod_perfil);
     $msg = ($resposta)?'Perfil de usuário apagado com sucesso!':'Este perfil não pode ser apagado, pois existe usuários vinculados a ele.';
-    $resposta = ($resposta)?'sucesso':'erro';
+    $resposta = ($resposta)?'success':'danger';
 
 }
 else if(isset($_GET['atualizar'])){

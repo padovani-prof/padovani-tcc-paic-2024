@@ -9,15 +9,15 @@ verificação_acesso($_SESSION['codigo_usuario'], 'list_reserva', 2);
 
 include_once 'Model/mReserva.php';
 
-$id = 'nada';
+$id = 'danger';
 $msg = '';
 if (isset($_GET['codigo_da_reserva'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_reserva', 2);
 
     $cod_reserva = $_GET['codigo_da_reserva']; 
     $msg = apagar_reserva($cod_reserva);
-    $id = ($msg)?'sucesso':'erro';
-    $msg = ($msg)?'Reseva apagada com sucesso':'Essa reserva não pode ser apagada por esta sendo referenciada no ensalamento.';
+    $id = ($msg)?'success':'danger';
+    $msg = ($msg)?'Reseva Apagada com Sucesso':'Essa reserva não pode ser apagada por esta sendo Referenciada no Ensalamento.';
 
 }
 
@@ -26,6 +26,7 @@ $conteudo_reservas = '';
 
 
 $msg = (!isset($_GET['codigo_da_reserva']) and count($reservas)==0)?'Não há reservas no momento.':$msg;
+
 
 foreach ($reservas as $reserva) {
     $datas_reserva = listar_datas($reserva["codigo_reserva"]); 

@@ -17,6 +17,7 @@ $lista_de_disciplina = carrega_disciplina();
 $lista_de_salas = carregar_salas();
 
 $mensagem = '';
+$id_msg = 'danger';
 $disc = '';
 $sala = '';
 $semana = '';
@@ -28,8 +29,8 @@ $reserva = '';
 $cod_reserva = '';
 $datas_de_aula = '';
 $vet_mensagem = [
-    'Ensalamento feito com sucesso',
-    'Erro!!! disciplina não está cadastrada para esse período', 
+    'Ensalamento feito com Sucesso',
+    'Erro!!! disciplina não está Cadastrada para esse Período', 
     'Verifique se o campo dias da semana e hora inicial/final está preencido !!!'
 ];
 $justificativa = 'Ensalamento de períodos';
@@ -76,6 +77,7 @@ if (isset($_GET['salvar'])){
         $reserva = '';
         $cod_reserva = '';
         $datas_de_aula = '';
+        $id_msg = 'success';
 
         
     } else
@@ -93,5 +95,7 @@ $op_s = mandar_options($lista_de_salas, $sala);
 $html = str_replace('{{Disciplina}}', $op_d, $html);
 $html = str_replace('{{Sala}}', $op_s, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);
+
+$html = str_replace('{{retorno}}', $id_msg, $html);
 
 echo $html;

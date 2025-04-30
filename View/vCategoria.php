@@ -17,9 +17,10 @@
       <h1>Categoria</h1>
   </header>
 
-  <p id="id-{{resposta}}">{{msg}}</p>
+  
+  
   <section class="container mt-4 border rounded shadow p-4 col-12 col-sm-10 col-md-8 col-lg-6">
-
+  <p class="text-center fw-bold text-{{resposta}}">{{msg}}</p> 
     <div class="table-responsive">
       <table class="table table-striped table-bordered table-hover text-center align-middle">
         <thead class="table-primary">

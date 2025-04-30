@@ -25,9 +25,11 @@
   <header class="azul text-center text-white py-4">
       <h1>Disponibilidade</h1>
   </header>
+  
 
-  <p id='erro'>{{msg}}</p>
+  
   <section class="container border rounded shadow p-4 form-container">
+  <p class="text-center fw-bold text-{{retorno}}" >{{msg}}</p>
     <div>
       <form action="cResultadoDisponibilidade.php">
         <div class="table-reponsive">
