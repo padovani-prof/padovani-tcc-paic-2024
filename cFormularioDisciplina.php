@@ -57,7 +57,7 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
         }
     
 
-        $lMensa = ['Disciplina Atualizada com Sucesso!!', 'Nome do curso inválido','Nome da diciplina inválido', 'Nome da diciplina já está cadastrada.', 'Adicione um périodo.'];
+        $lMensa = ['Disciplina Atualizada com Sucesso!!', 'Nome do curso inválido','Nome da diciplina inválido', 'Nome da Diciplina e Périodo já está cadastrado.', 'Adicione um périodo.'];
 
 
         $mens = $lMensa[$resp];
@@ -85,7 +85,7 @@ else if(isset($_GET['salvar']))
     }
  
 
-    $lMensa = ['Disciplina Cadastrada com Sucesso!!', 'Nome do curso inválido','Nome inválido', 'Diciplina Existente','Adicione um périodo.'];
+    $lMensa = ['Disciplina Cadastrada com Sucesso!!', 'Nome do curso inválido','Nome inválido', 'Diciplina de mesno Nome e Périodo Existente','Adicione um périodo.'];
 
 
     $mens = $lMensa[$resp];
