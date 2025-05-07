@@ -69,15 +69,13 @@ function listar_usuarios(){
 
 function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $dr)
 {
-
-    
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
-    
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
     if($dr== 'D'){
+        // atuliza para o horario devolvido
         $data = explode(' ', $data_hora);
         date_default_timezone_set('America/Manaus');
         $i = date('H:i:s');
@@ -88,17 +86,24 @@ function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $
         ON data_reserva.codigo_reserva = reserva.codigo
         WHERE reserva.codigo_recurso = ? AND reserva.codigo_usuario_utilizador = ?
         AND data_reserva.data = ? AND data_reserva.hora_final > ? AND data_reserva.hora_inicial < ?";
-        
+
         $stmt = $conexao->prepare($sql);
         $stmt->bind_param("iisss", $recurso, $retirante, $data, $h_ini, $hora_fim);
         $stmt->execute();
         $resultado = $stmt->get_result();
-        $id = $resultado->fetch_assoc()['codigo'];
+        
+        $id = $resultado->fetch_assoc();
+        if (!$id==null){
+            $id = $id['codigo'];
+            $sql = "UPDATE data_reserva SET hora_final = ? WHERE codigo_reserva = ?";
+            $stmt = $conexao->prepare($sql);
+            $stmt->bind_param("si", $i, $id);
 
-        $sql = "UPDATE data_reserva SET hora_final = ? WHERE codigo_reserva = ?";
-        $stmt = $conexao->prepare($sql);
-        $stmt->bind_param("si", $i, $id);
-        $stmt->execute();
+            $stmt->execute();
+
+        }
+        
+        
 
     }
     
@@ -106,7 +111,7 @@ function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $
     $stmt = $conexao->prepare($sql);
     $stmt->bind_param("iisss", $retirante, $recurso, $data_hora, $dr, $hora_fim);
     $stmt->execute();
-    return $stmt->affected_rows > 0;
+    return ($dr== 'D')? $conexao->insert_id :true;
 }
 
 function carrega_recursos_emprestados()

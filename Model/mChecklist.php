@@ -97,4 +97,30 @@ function Existe_essa_chave_na_tabela($chave, $tabela, $jogar_pra_onde){
     }
 }
 
+
+
+function verificar_Selecionado($cod_checlist, $dados){
+    foreach ($dados as $dado){
+        if($dado == $cod_checlist){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+function Devolucao_checklist($dados, $recurso,  $id_devolucao){
+    $todos_os_chelist = carrega_dados($recurso);
+
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    foreach ($todos_os_chelist as $acessorio){
+            $devolvido = (verificar_Selecionado($acessorio['codigo'], $dados))?'S':'N';
+            $stmt = $conecxao->prepare("INSERT INTO devolucao_checklist (codigo_checklist, codigo_devolucao, devolvido	) VALUES (?, ?, ?)");
+            $stmt->bind_param("iis", $acessorio['codigo'], $id_devolucao, $devolvido);  //  "i" para inteiro
+            $stmt->execute();
+    }
+    
+}
+
 ?>

@@ -72,16 +72,17 @@ if(isset($_GET['btnConfirmar']) and isset($_GET['recurso']))
     {
         $hora_ini =  $data_atual->format('H:i:s');
         $hora_fim = $hora_fim.':00';
-
-
+        $tem_permição =  verificar_permicao_recurso($data, $hora_ini, $hora_fim, $recurso, $retirante, data_em_dia_semana($data));
         // verificar permição
-        if (verificar_permicao_recurso($data, $hora_ini, $hora_fim, $recurso, $retirante, data_em_dia_semana($data))){
+        if ($tem_permição){
                 // verificar se o recurso não está reservado
             $disponives = Disponibilidade([$data, $hora_ini, $hora_fim], [], [$recurso]);
             $disponives = (count($disponives)> 0)? criar_reserva_retirada($retirante, $recurso, $data, $hora_ini, $hora_fim) :false;
             $sua_reserva = verificar_reserva_do_retirante([$data, $hora_ini, $hora_fim], $retirante, $recurso);
+
             if ($disponives or $sua_reserva)
             {
+                
                 $data_hora = $data.' '.$hora_ini;
                 $tudo_certo = insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim,'R');
                 if($tudo_certo==true)

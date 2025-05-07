@@ -48,12 +48,34 @@
             </select>
             </div>
 
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 35%;"></th>
+                        <th style="width: 40%;"></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    {{chechlistRecurso}}
+                </tbody>
+            
+            </table>
+            
+
             <div class="d-flex justify-content-between">
               <a href="cMenu.php"><input class="btn btn-secondary" type="button" value="Voltar"></a>
               <input class="btn btn-primary" type="submit" value="Confirmar" name="btnConfirmar"> 
             </div>
             
         </form> 
+        
+        
+         
+        
+        
+        
 
         
       

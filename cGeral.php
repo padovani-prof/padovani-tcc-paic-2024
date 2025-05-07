@@ -64,6 +64,7 @@ function Esta_logado($mandar='cLogin.php' , $msg='Usuario desconectado!'){
             }
     
         }else{
+            
             foreach($lista as $dados)
             {
                 if($marcar==$dados['codigo']){
