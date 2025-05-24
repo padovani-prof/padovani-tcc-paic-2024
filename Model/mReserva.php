@@ -148,6 +148,8 @@ function inserir_reserva($justificativa, $recurso, $usuario_utilizador, $lista_d
 
 
 function apagar_reserva($codigo_reserva) {
+
+    // apaga so as reservas que não possui retirada
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
@@ -162,26 +164,61 @@ function apagar_reserva($codigo_reserva) {
     $stmt->execute();
     $resposta = $stmt->get_result();
 
-    // Se não houver ensalamento, prossegue com a exclusão
-    if ($resposta->num_rows == 0) {
-        // Deleta as entradas relacionadas à reserva
-        $stmt = $conexao->prepare("DELETE FROM data_reserva WHERE codigo_reserva = ?");
+    $tem_insalamento = $resposta->num_rows > 0;
+    $dados_resposta = 2; // possui ensamento
+
+    $stmt = $conexao->prepare("SELECT * FROM reserva_ensalamento WHERE codigo_reserva = ?");
+    $stmt->bind_param('i', $codigo_reserva);
+    $stmt->execute();
+    $resposta = $stmt->get_result();
+
+    
+    if (!$tem_insalamento){
+        
+        $stmt = $conexao->prepare("SELECT * FROM retirada_devolucao WHERE retirada_devolucao.codigo_reserva = ?");
         $stmt->bind_param('i', $codigo_reserva);
         $stmt->execute();
+        $resposta = $stmt->get_result();
+        if ($resposta->num_rows > 0){
+            $dados_resposta = 1;// possui retirada
+        }
+        else{
+            // Pre reserva ja foi ratirada
+            $stmt = $conexao->prepare("SELECT data_reserva.data, data_reserva.hora_inicial, data_reserva.hora_final, reserva.codigo_recurso FROM data_reserva 
+            INNER join reserva
+            on reserva.codigo = data_reserva.codigo_reserva
+            WHERE data_reserva.codigo_reserva = ?;");
+            $stmt->bind_param('i', $codigo_reserva);
+            $stmt->execute();
+            $resposta = $stmt->get_result();
+            $resposta = $resposta->fetch_assoc();
+            $codi_recuso = $resposta['codigo_recurso'];
+            $data = $resposta['data'];
+            $hora_ini = $resposta['hora_inicial'];
+            $hora_fim = $resposta['hora_final'];
+            $stmt = $conexao->prepare("SELECT * from retirada_devolucao WHERE DATE(datahora)=? and  TIME(datahora) <= ? and hora_final >= ? and retirada_devolucao.codigo_recurso = ?;");
+            $stmt->bind_param('sssi', $data, $hora_fim, $hora_ini, $codi_recuso);
+            $stmt->execute();
+            $resposta = $stmt->get_result();
+            if ($resposta->num_rows > 0){
+                $dados_resposta = 1;// possui retirada
 
-        $stmt = $conexao->prepare("DELETE FROM reserva WHERE codigo = ?");
-        $stmt->bind_param('i', $codigo_reserva);
-        $stmt->execute();
+            }else{
+                $stmt = $conexao->prepare("DELETE FROM data_reserva WHERE codigo_reserva = ?");
+                $stmt->bind_param('i', $codigo_reserva);
+                $stmt->execute();
 
-        $stmt->close();
-        $conexao->close();
-        return true; // Reserva apagada com sucesso
+                $stmt = $conexao->prepare("DELETE FROM reserva WHERE codigo = ?");
+                $stmt->bind_param('i', $codigo_reserva);
+                $stmt->execute();
+                $dados_resposta = 0;// reserva apagada
+            }
+        }
     }
-
     // Fecha os recursos
     $stmt->close();
     $conexao->close();
-    return false; // Não pode apagar devido a ensalamento
+    return $dados_resposta; // Não pode apagar devido a ensalamento
 }
 
 

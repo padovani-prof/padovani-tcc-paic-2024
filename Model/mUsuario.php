@@ -1,15 +1,18 @@
 <?php 
-
-function apagar_perfio_relacionado($codigo){
+function apagar_perfio_relacionado($codigo) {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
     if ($conexao->connect_error) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
-    $resultado = $conexao->query("DELETE  from usuario_perfil where codigo_usuario=$codigo;");
-    $conexao->close();
 
+    $stmt = $conexao->prepare("DELETE FROM usuario_perfil WHERE codigo_usuario = ?");
+    $stmt->bind_param("i", $codigo);
+
+    $stmt->execute();
+    $stmt->close();
+    $conexao->close();
 }
 
 function novo_usuario_atualizado($codigo, $nome, $email, $senha_usu){

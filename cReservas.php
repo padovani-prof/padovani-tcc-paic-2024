@@ -5,22 +5,18 @@ include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_reserva', 2);
-
-
 include_once 'Model/mReserva.php';
-
 $id = 'danger';
 $msg = '';
 if (isset($_GET['codigo_da_reserva'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_reserva', 2);
 
     $cod_reserva = $_GET['codigo_da_reserva']; 
-    $msg = apagar_reserva($cod_reserva);
-    $id = ($msg)?'success':'danger';
-    $msg = ($msg)?'Reseva Apagada com Sucesso':'Essa reserva não pode ser apagada por esta sendo Referenciada no Ensalamento.';
-
+    $msg_id = apagar_reserva($cod_reserva);
+    $id = ($msg_id==0)?'success':'danger';
+    $msg = ['Reseva Apagada com Sucesso', 'Esta reserva não pode ser excluída, pois o recurso já foi retirado.','Essa reserva não pode ser apagada por esta sendo Referenciada no Ensalamento.'];
+    $msg = $msg[$msg_id];
 }
-
 $reservas = listar_reserva();
 $conteudo_reservas = '';
 

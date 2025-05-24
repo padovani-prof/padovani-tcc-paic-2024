@@ -4,13 +4,14 @@
 
 function carrega_retirada_disponivel()
 {
+    
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
     $resultado = $cone->query("SELECT * from(
     select codigo, nome,  recurso.descricao, (
         select tipo from retirada_devolucao where recurso.codigo = codigo_recurso order by datahora desc limit 1
         ) as ultima_movimentacao from recurso) as rec
-    where rec.ultima_movimentacao = 'D' or rec.ultima_movimentacao is NULL;");
+    where rec.ultima_movimentacao = 'D'  or rec.ultima_movimentacao is NULL;");
    
     $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $cone->close();
@@ -20,17 +21,20 @@ function carrega_retirada_disponivel()
 
 function criar_reserva_retirada($usuario_utilizador, $recurso, $data, $hora_ini, $hora_fim){
     $justi = 'Retirada sem reserva';
-    $usuario_agendador = 1;  // sera colocado um codigo da pessoa que fez a retirada para o usuario
+    $usuario_agendador = 1;  // sera colocado um codigo da pessoa que fez a retirada para o usuario que no caso o agp 1
     include 'mReservaConjunta.php';
     $id = insere_reserva($justi, $usuario_agendador, $usuario_utilizador, $recurso);
-    return insere_data_reserva($data, $hora_ini, $hora_fim, $id);
+    insere_data_reserva($data, $hora_ini, $hora_fim, $id);
+    return $id;
 }
 
 
 function verificar_usuario_devolucao($cod_recu, $cod_usua){
     include 'confg_banco.php';
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
-    $resulta = $cone->query("SELECT r.codigo as codigo_recurso, codigo_usuario, r.nome as nome_recurso, tipo from sgrp.recurso r, sgrp.retirada_devolucao rd
+    $resulta = $cone->query("SELECT r.codigo as codigo_recurso, codigo_usuario, r.nome as nome_recurso, tipo, rd.codigo_reserva from sgrp.recurso r,
+
+  sgrp.retirada_devolucao rd
     where
         r.codigo = rd.codigo_recurso and
         r.codigo = $cod_recu
@@ -39,9 +43,9 @@ function verificar_usuario_devolucao($cod_recu, $cod_usua){
     $resulta = $resulta->fetch_assoc();
     if($resulta['codigo_usuario']==$cod_usua)
     {
-        return true;
+        return [true, $resulta['codigo_reserva']];
     }
-    return false;
+    return [false, null ];
 }
 
 
@@ -67,7 +71,7 @@ function listar_usuarios(){
     return $resultado;
 }
 
-function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $dr)
+function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $dr, $reserva)
 {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
@@ -107,11 +111,11 @@ function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $
 
     }
     
-    $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final) VALUES (?, ?, ?, ?, 'S', ?)";
+    $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final, codigo_reserva) VALUES (?, ?, ?, ?, 'S', ?, ?)";
     $stmt = $conexao->prepare($sql);
-    $stmt->bind_param("iisss", $retirante, $recurso, $data_hora, $dr, $hora_fim);
+    $stmt->bind_param("iisssi", $retirante, $recurso, $data_hora, $dr, $hora_fim, $reserva);
     $stmt->execute();
-    return ($dr== 'D')? $conexao->insert_id :true;
+    return $conexao->insert_id ;
 }
 
 function carrega_recursos_emprestados()
@@ -186,6 +190,116 @@ function verificar_reserva_do_retirante($periodo, $retirante, $recurso)
     return false;
 }
 
+function Verificar_se_pertence_a_lista($chave_recusso, $marcados){
+    foreach ($marcados as $acessorio){
+        if ($acessorio == $chave_recusso){
+            return true;
+        }
+    }
+    return false;
+}
+
+function retirada_checklist($checklist ,$marcados,  $id_retirada){
+    // essa função ela percorre os dados selecionados e insere uma retirada de checklist na tabela de devolução de checklist 
+    // mando o dado como não devolvido
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    foreach ($checklist as $acessorio){
+            $retirado = 'N';
+            $chave_recusso = $acessorio['codigo'];
+            if (Verificar_se_pertence_a_lista($chave_recusso, $marcados)){
+                $retirado = 'S';
+                $indice = array_search($chave_recusso, $marcados);
+                unset($marcados[$indice]);
+                $marcados = array_values($marcados);
+            }
+            $stmt = $conecxao->prepare("INSERT INTO devolucao_checklist (codigo_checklist, codigo_retirada_devolucao, retirado_devolvido) VALUES (?, ?, ?)");
+            $stmt->bind_param("iis", $chave_recusso, $id_retirada, $retirado);  //  "i" para inteiro
+            $stmt->execute();
+    }    
+}
+
+
+
+function cancelaRetirada($recurso, $devolvente){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    $executa = $conecxao->prepare("SELECT retirada_devolucao.codigo, retirada_devolucao.codigo_reserva from retirada_devolucao where retirada_devolucao.codigo_usuario = ? and retirada_devolucao.codigo_recurso = ? and retirada_devolucao.tipo = 'R' ORDER by retirada_devolucao.datahora desc LIMIT 1;");
+    $executa->bind_param('ii', $devolvente, $recurso);
+    
+    $executa->execute();
+
+    $resultado = $executa->get_result();
+    
+    if($resultado->num_rows > 0){
+        // apaga o checklist e apos a retirada
+        $resultado = $resultado->fetch_assoc();
+        $codigo = $resultado['codigo'];
+        $codigo_reserva =  $resultado['codigo_reserva'];
+        
+        $conecxao->query("DELETE from devolucao_checklist WHERE devolucao_checklist.codigo_retirada_devolucao = $codigo;");
+        $conecxao->query("DELETE from retirada_devolucao WHERE retirada_devolucao.codigo = $codigo;");
+        $conecxao->query("DELETE from data_reserva WHERE data_reserva.codigo = $codigo_reserva;");
+        $conecxao->query("DELETE from reserva WHERE reserva.codigo = $codigo_reserva;");
+
+        
+        $resposta =  true;
+
+    }else{
+        
+        $resposta =  false;
+    }
+    $executa->close();
+    $conecxao->close();
+    return $resposta;
+
+    
+
+}
+
+
+
+
+function carrega_recurssos_devolvidos(){
+
+    include 'confg_banco.php';
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resultado = $cone->query("SELECT recurso.codigo, recurso.nome, recurso.descricao
+    FROM retirada_devolucao
+    INNER JOIN recurso
+    on recurso.codigo = retirada_devolucao.codigo_recurso
+    WHERE datahora = (SELECT MAX(datahora) FROM retirada_devolucao) and retirada_devolucao.tipo = 'D'");
+   
+    $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
+    $cone->close();
+    return $resultado;
+
+}
+
+function verificar_devolucao_usuario($recuso, $devolvente){
+
+    include 'confg_banco.php';
+    $cone = new mysqli($servidor, $usuario, $senha, $banco);
+    $resultado = $cone->prepare("SELECT retirada_devolucao.codigo, retirada_devolucao.codigo_usuario, retirada_devolucao.tipo FROM retirada_devolucao   WHERE retirada_devolucao.codigo_recurso = ? ORDER by retirada_devolucao.datahora desc LIMIT 1;");
+    $resultado->bind_param('i', $recuso);
+    $resultado->execute(); 
+    $resultado = $resultado->get_result();
+    $resposta = false;
+    if($resultado->num_rows > 0){
+        $resultado = $resultado->fetch_assoc();
+        if($resultado['tipo']=='D' and $resultado['codigo_usuario']==$devolvente){
+            $id_devolucao = $resultado['codigo'];
+            $cone->query("DELETE from devolucao_checklist WHERE devolucao_checklist.codigo_retirada_devolucao = $id_devolucao;");
+            $cone->query("DELETE from retirada_devolucao WHERE retirada_devolucao.codigo = $id_devolucao;");
+
+
+            $resposta = true;
+        }
+    }
+
+    $cone->close();
+    return $resposta;
+}
 
 
 ?>

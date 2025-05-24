@@ -216,7 +216,10 @@ VALUES
   ('list_disciplina','Disciplina: listar','O usuário ver a listagem de disciplinas do sistema','S'),
   ('cad_disciplina','Disciplina: cadastrar','O usuário pode cadastrar novas disciplinas no sistema','S'),
   ('alt_disciplina','Disciplina: alterar','O usuário alterar as disciplinas do sistema','S'),
-  ('apag_disciplina','Disciplina: apagar','O usuário pode apagar as disciplinas do sistema','S');
+  ('apag_disciplina','Disciplina: apagar','O usuário pode apagar as disciplinas do sistema','S'),
+  ('cancela_retirada','Retirada: cancelar','O usuário pode cancelar retiradas do sistema','S'),
+  ('cancela_devolucao','Devolução: cancelar','O usuário pode cancelar devoluções do sistema','S');
+
 
 
 
@@ -345,8 +348,13 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`retirada_devolucao` (
   `tipo` CHAR(1) NOT NULL,
   `ativo` CHAR(1) NOT NULL,
   `hora_final` TIME NOT NULL,
+  `codigo_reserva` int,
   PRIMARY KEY (`codigo`),
+  CONSTRAINT `fk_retirada_devolucao_reserva1`  FOREIGN KEY (`codigo_reserva`) REFERENCES `sgrp`.`reserva` (`codigo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_retirada_devolucao_usuario1`  FOREIGN KEY (`codigo_usuario`) REFERENCES `sgrp`.`usuario` (`codigo`)
+    
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_retirada_devolucao_recurso1`  FOREIGN KEY (`codigo_recurso`) REFERENCES `sgrp`.`recurso` (`codigo`)
@@ -362,15 +370,16 @@ ENGINE = InnoDB;
 
     codigo int PRIMARY KEY AUTO_INCREMENT not null,
     codigo_checklist int not null,
-    codigo_devolucao int not null,
-    devolvido char(1) not null,
+    codigo_retirada_devolucao int not null,
+    retirado_devolvido char(1) not null,
     
     FOREIGN KEY (codigo_checklist)
     REFERENCES checklist(codigo),
     
-    FOREIGN KEY (codigo_devolucao)
+    FOREIGN KEY (codigo_retirada_devolucao)
     REFERENCES retirada_devolucao(codigo)
     
 )ENGINE = InnoDB;
+
 
 

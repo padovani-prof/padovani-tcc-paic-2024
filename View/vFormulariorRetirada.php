@@ -50,18 +50,34 @@
                 <label class="m-0" for="">Horário Final:</label>
                 <input class="form-control w-auto" type="time" name="hora_final"  id="" value="{{hora_fim}}">
               </div> 
+              <table>
+                <thead>
+                    <tr>
+                        <th style="width: 35%;"></th>
+                        <th style="width: 40%;"></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    {{chechlistRecurso}}
+                </tbody>
+            
+            </table>
 
             <div class="d-flex justify-content-between">
               <a href="cMenu.php" class="btn btn-secondary" type="button" value="Voltar">Voltar</a>
 
               <input class="btn btn-primary" type="submit" value="Confirmar" name="btnConfirmar"> 
             </div>
+
+            
               
         </form> 
   </section>
 
     <div class="text-center">
-      <a href="">Cancelar Retirada</a>
+      <a href="cFormularioRetirada.php?cancela=true">Cancelar Retirada</a>
     </div>
 
 </body>

@@ -29,7 +29,7 @@ function carrega_dados($codigo) {
     }
 
     // Preparar a consulta para evitar SQL injection
-    $stmt = $conexao->prepare("SELECT * FROM checklist WHERE codigo_recurso = ?");
+    $stmt = $conexao->prepare("SELECT * FROM checklist WHERE codigo_recurso = ? ");
     
     // Verificar se a preparação da consulta foi bem-sucedida
     if ($stmt === false) {
@@ -99,28 +99,70 @@ function Existe_essa_chave_na_tabela($chave, $tabela, $jogar_pra_onde){
 
 
 
-function verificar_Selecionado($cod_checlist, $dados){
-    foreach ($dados as $dado){
-        if($dado == $cod_checlist){
-            return true;
-        }
-    }
-    return false;
-}
 
 
-function Devolucao_checklist($dados, $recurso,  $id_devolucao){
-    $todos_os_chelist = carrega_dados($recurso);
+function Devolucao_checklist($dados,  $id_devolucao){
+    // devolução esta atualizando de devolvido N para S 
+   
 
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    foreach ($todos_os_chelist as $acessorio){
-            $devolvido = (verificar_Selecionado($acessorio['codigo'], $dados))?'S':'N';
-            $stmt = $conecxao->prepare("INSERT INTO devolucao_checklist (codigo_checklist, codigo_devolucao, devolvido	) VALUES (?, ?, ?)");
-            $stmt->bind_param("iis", $acessorio['codigo'], $id_devolucao, $devolvido);  //  "i" para inteiro
+    $retirado = 'N';
+    foreach ($dados as $acessorio){
+            $stmt = $conecxao->prepare("INSERT INTO devolucao_checklist (codigo_checklist, codigo_retirada_devolucao, retirado_devolvido) VALUES (?, ?, ?)");
+            $stmt->bind_param("iis", $acessorio, $id_devolucao, $retirado);  //  "i" para inteiro
             $stmt->execute();
     }
     
+}
+
+
+function carregar_devolução_checklist($cod_recurso, $cod_usuario){
+    // Incluir a configuração do banco de dados
+    include 'confg_banco.php';
+
+    // Conectar ao banco de dados com a classe mysqli
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    // Verificar se a conexão foi bem-sucedida
+    if ($conexao->connect_error) {
+        die('Erro de conexão: ' . $conexao->connect_error);
+    }
+
+    
+    $stmt = $conexao->prepare("SELECT retirada_devolucao.codigo FROM retirada_devolucao WHERE retirada_devolucao.codigo_usuario = ? and retirada_devolucao.codigo_recurso = ? and retirada_devolucao.tipo = 'R' ORDER BY retirada_devolucao.datahora desc LIMIT 1;");
+
+    // Vincular o parâmetro para o prepared statement (assumindo que $codigo seja um número inteiro)
+    $stmt->bind_param("ii", $cod_usuario, $cod_recurso);
+    
+    // Executar a consulta
+    $stmt->execute();
+    
+    // Obter o resultado da consulta
+    $resultado = $stmt->get_result();
+
+    // Usar fetch_all para obter todos os dados de uma vez e armazenar em um array associativo
+    $id_retirada = $resultado->fetch_all(MYSQLI_ASSOC)[0]['codigo'];
+
+    $stmt = $conexao->prepare("SELECT checklist.codigo, checklist.item FROM  checklist INNER JOIN `devolucao_checklist` on devolucao_checklist.codigo_checklist = checklist.codigo WHERE devolucao_checklist.codigo_retirada_devolucao = ? and devolucao_checklist.retirado_devolvido = 'S';");
+
+    // Vincular o parâmetro para o prepared statement (assumindo que $codigo seja um número inteiro)
+    $stmt->bind_param("i", $id_retirada);
+    
+    // Executar a consulta
+    $stmt->execute();
+    
+    // Obter o resultado da consulta
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_all(MYSQLI_ASSOC);
+    // Fechar o statement e a conexão
+    $stmt->close();
+    $conexao->close();
+    
+    // Retornar os dados
+    return $dados;
+
+
 }
 
 ?>

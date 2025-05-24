@@ -28,13 +28,13 @@
 </head>
 <body class="bg-light">
   <header class="azul text-white text-center py-4">
-      <h1>Devolução</h1>
+      <h1>{{tela}}</h1>
   </header>
 
   <section class="container mt-4 border rounded shadow p-4 mb-5 form-container">
 
     <p class="text-center fw-bold text-{{retorno}}">{{mensagem}}</p>  
-        <form action="cFormularioDevolucao.php">  
+        <form action="{{mandar}}">  
             <div class="mb-3">
               <label for="">Recursos Retirado: </label>
               <select class="form-select" name="recurso" id="">
@@ -68,6 +68,8 @@
               <a href="cMenu.php"><input class="btn btn-secondary" type="button" value="Voltar"></a>
               <input class="btn btn-primary" type="submit" value="Confirmar" name="btnConfirmar"> 
             </div>
+
+            {{cancelaRetirada}}
             
         </form> 
         
@@ -82,7 +84,7 @@
   </section>
 
       <div class="text-center">
-        <a href="">Cancelar Retirada</a>
+        <a href="{{link}}">{{texto}}</a>
       </div>
 
 
