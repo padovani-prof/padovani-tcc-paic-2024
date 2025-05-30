@@ -31,9 +31,6 @@ $id_retorno = 'danger';
 $lista_datas = isset($_GET['lista_datas']) ? json_decode(urldecode($_GET['lista_datas']), true) : [];
 
 
-
-
-
 if (!is_array($lista_datas)) {
     $lista_datas = []; 
 }

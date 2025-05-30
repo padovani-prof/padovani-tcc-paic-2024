@@ -2,17 +2,20 @@
 
 <?php
 
-function Tabela_chacklist($dados){
+function Tabela_chacklist($dados, $marcado){
     $aux = "<tr>"; 
     $cont = 1;
     foreach ($dados as $linha) {
+        $mar =  in_array( $linha['codigo'], $marcado)?' checked ':'';
         $aux .= '
-        <td ><input type="checkbox" name="dados[]" value="'. $linha['codigo'] .'"/>'.$linha['item'].($cont%3==0?'<br>&nbsp;</td></tr>':'<br>&nbsp;</td>');
+        <td><input '.$mar.' type="checkbox" name="dados[]" value="'. $linha['codigo'] .'">'.$linha['item'].($cont%3==0?'<br>&nbsp;</td></tr>':'<br>&nbsp;</td>');
         $cont ++;
     }
     $aux.='<input type="hidden" name="nada_marcado" value="nada">';
     return $aux;
-}
+
+    
+} 
 
 
 
@@ -116,21 +119,20 @@ if (isset($_GET['cancela'])){
     echo $html;
 
 }else{
-   
     verificação_acesso($_SESSION['codigo_usuario'], 'cad_retir_devoluc', 2);
     $html = file_get_contents('View/vFormulariorRetirada.php');
-    
+    $senha_usuario = '';
     $msg = '';
     $id_msg = 'danger'; 
     $marca_recu = '';
     $marca_reti = '';
     $mar_hora = '';
     $checklistRecurso = '';
-    if(isset($_GET['btnConfirmar']))
+    if(isset($_POST['btnConfirmar']))
     {
-        $recurso = $_GET['recurso'];
-        $retirante = $_GET['retirante'];
-        $hora_fim = $_GET['hora_final'];
+        $recurso = $_POST['recurso'];
+        $retirante = $_POST['retirante'];
+        $hora_fim = $_POST['hora_final'];
         $marca_recu = $recurso;
         $marca_reti = $retirante;
         $mar_hora = $hora_fim;
@@ -160,11 +162,25 @@ if (isset($_GET['cancela'])){
                 {
                     $data_hora = $data.' '.$hora_ini;
                     $checklistRecurso = carrega_dados($recurso);
-                    $msg = (count($checklistRecurso)>0)?'Selecione os checklist de recurso apenas que vai ser retirado':'';
-                    if (isset($_GET['nada_marcado']) or count($checklistRecurso)==0){
+                    $checklistMarcado = isset($_POST['dados'])?$_POST['dados']:[]; // dados selecionados
+
+                    
+                    $msg = (count($checklistRecurso)>0)?'Selecione os checklist de recurso apenas que vai ser retirado e ':'';
+                    $msg .= 'Solicite ao Retirante que insira sua senha';
+                    
+                    $focar_senha = '';
+                    $confimar_senha = false;
+                    if (isset($_POST['senha_usuario'])){
+                        $focar_senha = ' autofocus ';
+                        $senha_usuario = hash('sha256', $_POST['senha_usuario']);
+                        $confimar_senha = Confirmar_usuario_retirada($retirante, $senha_usuario); // local onde veririfara sem tem essa login e  senha
+                        $msg = $confimar_senha?'':'Senha inválida. Digite novamente.';
+                        
+                    }
+                    if((isset($_POST['nada_marcado']) or count($checklistRecurso)==0) and $confimar_senha){
+                        $senha_usuario = '';
                         $id_reseva = ($disponives)? criar_reserva_retirada($retirante, $recurso, $data, $hora_ini, $hora_fim): null;
                         $checklistRecurso = $checklistRecurso;
-                        $checklistMarcado = isset($_GET['dados'])?$_GET['dados']:[]; // dados selecionados
                         //fazer a reserva de checlist
                         $id_retirada = insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim,'R', $id_reseva);
                         retirada_checklist($checklistRecurso,  $checklistMarcado, $id_retirada);
@@ -179,7 +195,14 @@ if (isset($_GET['cancela'])){
                     }
                     else
                     {
-                    $checklistRecurso = Tabela_chacklist($checklistRecurso);   
+
+                        // deixar marcado os checklistes caso eles tenha errado a senha
+
+                    
+                    $checklistRecurso = Tabela_chacklist($checklistRecurso, $checklistMarcado);   
+                    $senha_usuario = '<label for="">Senha do Retirante</label>
+                                    <input type="password" name="senha_usuario"'.$focar_senha.'>';
+
                     }  
                 }
                 else{
@@ -219,6 +242,7 @@ if (isset($_GET['cancela'])){
     $html = str_replace('{{mensagem}}',$msg, $html);
     $html = str_replace('{{retorno}}', $id_msg, $html);
     $html = str_replace('{{hora_fim}}',$mar_hora, $html);
+    $html = str_replace('{{senha_usuario}}',$senha_usuario, $html);
 
 
 
