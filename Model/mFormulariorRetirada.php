@@ -302,22 +302,4 @@ function verificar_devolucao_usuario($recuso, $devolvente){
 }
 
 
-
-
-function Confirmar_usuario_retirada($chave_usu, $senha_usuario){
-    include 'confg_banco.php';
-    $cone = new mysqli($servidor, $usuario, $senha, $banco);
-    $resultado = $cone->prepare("SELECT * FROM usuario WHERE usuario.codigo = ? and usuario.senha = ?; ");
-    $resultado->bind_param('is', $chave_usu, $senha_usuario);
-    $resultado->execute(); 
-    $resultado = $resultado->get_result();
-
-    $resultado = $resultado->num_rows > 0;
-
-    $cone->close();
-    return $resultado;
-
-}
-
-
 ?>

@@ -31,7 +31,7 @@
   <section class="container mt-4 border rounded shadow p-4 mb-5 form-container">
         <p class="text-center fw-bold text-{{retorno}}">{{mensagem}}</p> 
     
-        <form action="cFormularioRetirada.php" method="post">  
+        <form action="cFormularioRetirada.php">  
             <p>
               <label for="">Recurso: </label>
               <select class="form-select" name="recurso" id="">
@@ -65,12 +65,6 @@
             
             </table>
 
-            <div>
-                {{senha_usuario}}
-            </div>
-            
-
-
             <div class="d-flex justify-content-between">
               <a href="cMenu.php" class="btn btn-secondary" type="button" value="Voltar">Voltar</a>
 
@@ -88,5 +82,4 @@
 
 </body>
 </html>
-
 
