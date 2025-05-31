@@ -125,6 +125,8 @@ function mostra_periodos_1($lista_datas, $inf){
 
 
 function mostra_periodos_2($lista_datas, $inf_disp, $inf_per, $html, $verificar){
+
+    // não esquecer de colocar o n para s
     $data_reserva = '';
     $ht_dispo_e = '<td><span title="Este recurso já tem reserva para este periodo.">❌</span> </td>';
     $ht_dispo_v = '<td><span title="Recurso disponivel ok.">✅</span> </td> ';
@@ -191,16 +193,9 @@ if (isset($_GET['btnSalvar'])) {
     }
     else {
         // verifica se tem permição para reservar
-        $inf = verificar_permiçoes($lista_datas, $usuario_utilizador, $recurso);
+        $inf =  verificar_permiçoes($lista_datas, $usuario_utilizador, $recurso);
         // consulta de disponibilidade
         $inf_dispo = verificar_disponibilidade($lista_datas, $recurso);
-        "if ((mb_substr_count($inf_dispo, 'n')>0)) {
-            $mensagem = 'O recurso já está reservado para'.((mb_substr_count($inf_dispo, 'n')>1)?' os periodos marcados.':' o periodo marcado.');
-            $inf = $inf_dispo;
-        }elseif ((mb_substr_count($inf, 'n')>0)) {
-            $mensagem = 'O ultilizador não possui permição para reserva'.((mb_substr_count($inf, 'n')>1)?' nos periodos marcados.':' no periodo marcado.');
-           
-        }";
 
         if((mb_substr_count($inf_dispo, 'n')>0) or (mb_substr_count($inf, 'n')>0)){
             $vere = "<th>Disponivel</th><th>Permitido</th>";// tabelas de verificação

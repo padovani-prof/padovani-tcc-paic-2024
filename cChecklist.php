@@ -33,13 +33,14 @@ $id_msg = (isset($_GET['msgId']))?$_GET['msgId']:'danger';
 $codigo = $_GET ['codigo'];
 Existe_essa_chave_na_tabela($codigo, 'recurso', "cRecursos.php");
 
+
 if (isset($_GET['apagar']))
 {
     // apagar dado do check list
     $chave_pri = $_GET['codigo_item'];
-    apagar_acesso_ao_recurso($chave_pri);
-    $msg = 'Item removido do recurso com Sucesso.';
-    $id_msg = 'success';
+    $resposta = apagar_acessorio_ao_recurso($chave_pri);
+    $msg = ($resposta)?'Item removido do recurso com Sucesso.': 'Esse item não pode ser apagado, pois possui Retirada.';
+    $id_msg = ($resposta)?'success':'danger';
     header("Location: cChecklist.php?msg=$msg&codigo=$codigo&msgId=$id_msg");
     exit();
 
@@ -73,7 +74,7 @@ $html = str_replace('{{codigo}}', $codigo, $html);
 $html = str_replace('{{itens}}',$dados_checlist, $html);
 $html = str_replace('{{respe}}',$id_msg, $html);
 $html = str_replace('{{msg}}',$msg, $html);
-$html = str_replace('{{item}}',$item, $html);
+$html = str_replace('{{nome}}',$item, $html);
 
 echo $html;
 

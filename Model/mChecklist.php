@@ -68,16 +68,17 @@ function salva_no_banco($item, $codigo)
     $conecxao->close();
 }
 
-function apagar_acesso_ao_recurso($chave_pri)
+function apagar_acessorio_ao_recurso($chave_pri)
 {
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-
     // Usando prepared statement para evitar SQL Injection
     $stmt = $conecxao->prepare("DELETE FROM checklist WHERE codigo = ?");
     $stmt->bind_param("i", $chave_pri);  // "i" para inteiro
     $stmt->execute();
+    $respo = $stmt->execute();
     $conecxao->close();
+    return $respo;
 }
 
 function Existe_essa_chave_na_tabela($chave, $tabela, $jogar_pra_onde){

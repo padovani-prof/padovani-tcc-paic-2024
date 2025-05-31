@@ -115,13 +115,16 @@ if (isset($_GET['cancela'])){
             $data_hora = $data_atual->format('Y/m/d H:i:s');
             $hora = $data_atual->format('H:i');
             $verificacao = verificar_usuario_devolucao($recurso, $devolvente);
-            if($verificacao[0] == true)
-            {
-
-            include 'Model/mChecklist.php';
 
             
-                if(isset($_GET['dados']) or  count($recursos_emprestados)==0 ){
+
+            if($verificacao[0] == true)
+            {
+            include 'Model/mChecklist.php';
+            $checklistRecurso = carregar_devolução_checklist($recurso, $devolvente);
+
+                if(isset($_GET['dados']) or  count($checklistRecurso)==0 ){
+
                     $dados = (isset($_GET['dados']))? $_GET['dados']:[];
                     $id_reserva = $verificacao[1];
                     $id_devolucao = insere_reserva_devolucao($devolvente, $recurso, $data_hora, $hora, "D", $id_reserva);
@@ -132,7 +135,7 @@ if (isset($_GET['cancela'])){
                     exit();
                 }else {
                     
-                    $checklistRecurso = carregar_devolução_checklist($recurso, $devolvente);
+                    
                     $msg = (count($checklistRecurso)>0)?'Selecione os checklist de recurso que foram devolvidos':'';
                     $checklistRecurso = Tabela_chacklist($checklistRecurso);
                     // Mostra checklist do recurso para selecionar

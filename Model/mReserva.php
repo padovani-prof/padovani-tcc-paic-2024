@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 function listar_reserva() {
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
@@ -62,6 +59,11 @@ function carregar_usuario() {
     $conexao->close();
     return $resultado;
 }
+
+
+
+
+
 
 function Validar_reserva($justificativa, $data, $hora_inicial, $hora_final) {
     if (empty($justificativa)) {
@@ -220,6 +222,73 @@ function apagar_reserva($codigo_reserva) {
     $conexao->close();
     return $dados_resposta; // Não pode apagar devido a ensalamento
 }
+
+
+
+
+
+function carregar_filtragem($recu, $usua, $data_ini, $data_fim) {
+    include 'confg_banco.php';
+    $conexao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    // Parte fixa da SQL
+    $sql = "SELECT reserva.codigo, usuario.nome as usuario, recurso.nome as recurso, data_reserva.hora_inicial, data_reserva.hora_final,
+    DATE_FORMAT(data_reserva.data, '%d/%m/%Y') as data 
+    FROM reserva
+    INNER JOIN usuario ON usuario.codigo = reserva.codigo_usuario_utilizador
+    INNER JOIN recurso ON recurso.codigo = reserva.codigo_recurso
+    INNER JOIN data_reserva ON data_reserva.codigo_reserva = reserva.codigo";
+
+    $params = [];
+    $types = [];
+    $condicoes = [];
+
+    // Construindo WHERE dinamicamente e coletando parâmetros
+    if ($recu !== null) {
+        $condicoes[] = "reserva.codigo_recurso = ?";
+        $params[] = $recu;
+        $types[] = "i";
+    }
+
+    if ($usua !== null) {
+        $condicoes[] = "reserva.codigo_usuario_utilizador = ?";
+        $params[] = $usua;
+        $types[] = "i";
+    }
+
+    if ($data_ini !== null && $data_fim !== null) {
+        $condicoes[] = "data_reserva.data >= ? AND data_reserva.data <= ?";
+        $params[] = $data_ini;
+        $params[] = $data_fim;
+        $types[] = "s";
+        $types[] = "s";
+    }
+
+    // Adiciona WHERE se houver condições
+    if (!empty($condicoes)) {
+        $sql .= " WHERE " . implode(" AND ", $condicoes);
+    }
+
+    $sql .= " ORDER BY data_reserva.data DESC";
+
+    $stmt = $conexao->prepare($sql);
+
+    if (!empty($params)) {
+
+        $bind_types = implode('', $types);
+
+        $stmt->bind_param($bind_types, ...$params);
+    }
+
+    $stmt->execute();
+    $resultado = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    $stmt->close();
+    $conexao->close();
+
+    return $resultado;
+}
+
 
 
 ?>

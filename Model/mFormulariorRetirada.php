@@ -34,7 +34,7 @@ function verificar_usuario_devolucao($cod_recu, $cod_usua){
     $cone = new mysqli($servidor, $usuario, $senha, $banco);
     $resulta = $cone->query("SELECT r.codigo as codigo_recurso, codigo_usuario, r.nome as nome_recurso, tipo, rd.codigo_reserva from sgrp.recurso r,
 
-  sgrp.retirada_devolucao rd
+    sgrp.retirada_devolucao rd
     where
         r.codigo = rd.codigo_recurso and
         r.codigo = $cod_recu
@@ -112,6 +112,9 @@ function insere_reserva_devolucao($retirante, $recurso, $data_hora, $hora_fim, $
     }
     
     $sql = "INSERT INTO retirada_devolucao(codigo_usuario, codigo_recurso, datahora, tipo, ativo, hora_final, codigo_reserva) VALUES (?, ?, ?, ?, 'S', ?, ?)";
+
+
+
     $stmt = $conexao->prepare($sql);
     $stmt->bind_param("iisssi", $retirante, $recurso, $data_hora, $dr, $hora_fim, $reserva);
     $stmt->execute();

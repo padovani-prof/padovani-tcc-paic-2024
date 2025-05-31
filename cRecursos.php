@@ -13,6 +13,8 @@ function  Carregar_recursos_htm(){
         <div class="d-flex gap-2 align-items-center">
         <a href="cChecklist.php?codigo='. $nome["codigo"].'" class="btn btn-outline-success">Ver Check List</a>
         <a href="cPermissaoRecurso.php?codigo_recurso='.$nome["codigo"] .'" class="btn btn-outline-primary">Ver Permissões</a>
+
+        <a href="cHistoricoRetiradaRecurso.php?codigo_recurso='.$nome["codigo"] .'" class="btn btn-outline-primary">HISTORICO</a>
         <form action="cRecursos.php" class="d-flex gap-2">
             <input type="hidden" name="codigo_do_recurso" value="'. $nome['codigo'] .'"> 
             <input class="btn btn-outline-secondary" name="altera" type="submit" value="Alterar">
@@ -65,5 +67,4 @@ $html = str_replace('{{recursos}}', $recursos, $html); // Substitui cada recurso
 echo $html; // Exibe o HTML atualizado
 
 ?>
-
 

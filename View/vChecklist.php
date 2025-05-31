@@ -30,7 +30,7 @@
             <div>
                 <p>Recurso: {{nomerecurso}}</p>  
                 <label for="txtitem">Item:</label>
-                <input class="form-control" type="text" name="txtitem" id="txtitem">
+                <input class="form-control" type="text" name="txtitem" id="txtitem" value="{{nome}}">
                 <input type="hidden" name='codigo' value="{{codigo}}">
 
             </div>
