@@ -67,16 +67,27 @@ function nova_senha_usuario($email, $nova_senha){
   $resultado_da_consulta->execute();
   $connecxao->close();
 
-
-
-
-
-
-
 }
 
 
 
+
+function checar_senha($pessoa, $senha_usuario){
+
+  include 'confg_banco.php';
+  $connecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+  // Consulta o banco 
+  $senha_usuario = hash('sha256', $senha_usuario);
+  $resultado_da_consulta = $connecxao->prepare("SELECT * from usuario WHERE usuario.codigo = ? and usuario.senha = ?;");
+  $resultado_da_consulta->bind_param('is', $pessoa, $senha_usuario);
+  $resultado_da_consulta->execute();
+  $resultado_da_consulta = $resultado_da_consulta->get_result();
+  $connecxao->close();
+
+  return $resultado_da_consulta->num_rows > 0;
+
+}
 
 
 ?>
