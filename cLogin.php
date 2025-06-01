@@ -49,14 +49,13 @@ else
         $msg = $_GET['msg'];
     }
 
-    $msm = file_get_contents('View/vLogin.php');
+    $html = file_get_contents('View/vLogin.php');
     $html = str_replace('{{resp}}', 'danger', $html);
-    $msm = str_replace('{{mensagem}}',$msg, $msm);
-    echo $msm;
+    $html = str_replace('{{mensagem}}',$msg, $html);
+    echo $html;
 
 
 }
 
 ?>
-
 

@@ -51,7 +51,7 @@
             </div>
                 
             <div class="text-end " id="esqueceu_senha" >
-                <a href="#" class="text-primary text-decoration-none fw-semibold">Esqueceu sua senha?</a>
+                <a href="cEsquecelSenha.php" class="text-primary text-decoration-none fw-semibold">Esqueceu sua senha?</a>
             </div>
             </form>
         </section>
