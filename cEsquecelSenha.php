@@ -59,7 +59,7 @@ function enviar_email($nova_senha, $destinatario) {
 
 
 
-$msg = '';
+$msg = 'Informe seu E-mail de cadastrado.';
 $email = '';
 $id = 'danger';
 $html = file_get_contents('View/vEsquecelSenha.php');
@@ -85,7 +85,7 @@ if(isset($_GET['mandar'])){
         $id = 'success';
 
     }else{
-        $msg = 'E-mail ínvalido. Informe o  E-mail que foi cadastrado.';
+        $msg = 'E-mail ínvalido.';
 
     }
 

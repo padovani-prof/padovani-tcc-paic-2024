@@ -39,12 +39,9 @@
       <select class="form-select" name="usuario" id="" >
               {{usuario}}
               </select>
-      Período: <input type="date" name="p_ini"> á <input type="date" name="p_fim">
+      Data inicial: <input type="date" name="p_ini" value="{{data_ini}}"> Data limite <input type="date" name="p_fim" value="{{data_fim}}" >
       <input type="submit" name="filtra" value="FILTRAR">
-  </form>
-      
-
-      <form action="cReservas.php"> 
+ 
       
         <table class="table table-striped table-bordered table-hover text-center align-middle"> 
           <thead class="table-primary">

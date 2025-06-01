@@ -29,7 +29,8 @@ function listar_datas($codigo_reserva) {
         die("Falha na conexão: " . $conexao->connect_error);
     }
 
-    $consulta = $conexao->prepare("SELECT * FROM data_reserva WHERE codigo_reserva = ?");
+    $consulta = $conexao->prepare("SELECT data_reserva.hora_inicial, data_reserva.hora_final,
+    DATE_FORMAT(data_reserva.data, '%d/%m/%Y') as data FROM data_reserva WHERE codigo_reserva = ? ORDER BY data_reserva.data DESC");
     $consulta->bind_param('i', $codigo_reserva);
     $consulta->execute();
     $resultado = $consulta->get_result();
@@ -232,8 +233,9 @@ function carregar_filtragem($recu, $usua, $data_ini, $data_fim) {
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
     // Parte fixa da SQL
-    $sql = "SELECT reserva.codigo, usuario.nome as usuario, recurso.nome as recurso, data_reserva.hora_inicial, data_reserva.hora_final,
-    DATE_FORMAT(data_reserva.data, '%d/%m/%Y') as data 
+    $sql = "SELECT reserva.codigo, usuario.nome as usuario, recurso.nome as recurso,
+    data_reserva.hora_inicial, data_reserva.hora_final,
+    DATE_FORMAT(data_reserva.data, '%d/%m/%Y') as data
     FROM reserva
     INNER JOIN usuario ON usuario.codigo = reserva.codigo_usuario_utilizador
     INNER JOIN recurso ON recurso.codigo = reserva.codigo_recurso
@@ -242,6 +244,8 @@ function carregar_filtragem($recu, $usua, $data_ini, $data_fim) {
     $params = [];
     $types = [];
     $condicoes = [];
+
+    $ordem = ' ORDER BY data_reserva.data DESC';
 
     // Construindo WHERE dinamicamente e coletando parâmetros
     if ($recu !== null) {
@@ -262,6 +266,24 @@ function carregar_filtragem($recu, $usua, $data_ini, $data_fim) {
         $params[] = $data_fim;
         $types[] = "s";
         $types[] = "s";
+        
+    }
+     if ($data_ini !== null) {
+        $condicoes[] = "data_reserva.data >= ? ";
+        $params[] = $data_ini;
+        $types[] = "s";
+        
+    }
+    if ($data_fim !== null) {
+        $condicoes[] = "data_reserva.data <= ? ";
+        $params[] = $data_fim;
+        $types[] = "s";
+        
+    }
+
+    if($data_ini !== null or $data_fim !== null){
+        $ordem = ' ORDER BY data_reserva.data asc ';
+
     }
 
     // Adiciona WHERE se houver condições
@@ -269,7 +291,7 @@ function carregar_filtragem($recu, $usua, $data_ini, $data_fim) {
         $sql .= " WHERE " . implode(" AND ", $condicoes);
     }
 
-    $sql .= " ORDER BY data_reserva.data DESC";
+    $sql .= " $ordem";
 
     $stmt = $conexao->prepare($sql);
 
