@@ -218,7 +218,13 @@ VALUES
   ('alt_disciplina','Disciplina: alterar','O usuário alterar as disciplinas do sistema','S'),
   ('apag_disciplina','Disciplina: apagar','O usuário pode apagar as disciplinas do sistema','S'),
   ('cancela_retirada','Retirada: cancelar','O usuário pode cancelar retiradas do sistema','S'),
-  ('cancela_devolucao','Devolução: cancelar','O usuário pode cancelar devoluções do sistema','S');
+  ('cancela_devolucao','Devolução: cancelar','O usuário pode cancelar devoluções do sistema','S'),
+
+  ('cperfisalheios_usuario','Usuário: perfis alheios','O usuário pode visualizar (e adicionar ao usuário cadastrado) perfil de usuários criados por outros usuário (se não tiver essa permissão, ele visualizará apenas seus próprios perfis criados)','S'),
+  ('func_perfil','Perfil de usuário: funcionalidades','O usuário pode acrescentar funcionalidades ao perfil de usuário','S')
+  
+  
+  ;
 
 
 

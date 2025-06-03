@@ -60,7 +60,7 @@
                 </div>
             </div> <!--Fim nome e email-->
                       
-            <label class="mb-3" for="">Perfis: </label>
+            <label class="mb-3" for="">{{titulo}}</label>
 
                 <table style="width: 100%;">
                     <thead>

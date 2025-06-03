@@ -51,7 +51,7 @@
             </div>
             
 
-            <label for="">Funcionalidades: </label>
+            <label for="">{{titulo}}</label>
             <table>
                 <thead>
                     <tr>

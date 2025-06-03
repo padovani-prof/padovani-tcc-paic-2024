@@ -8,8 +8,13 @@ Esta_logado();
 
 
 
-include_once 'Model/mUsuario.php';  
-$perfil = listar_perfil();
+include_once 'Model/mUsuario.php'; 
+
+$perfil =  possui_permicão_para_adicionar_perfis($_SESSION['codigo_usuario']);
+$titulo = ($perfil)?'Perfis: ':'';
+
+$perfil = ($perfil)?listar_perfil(): [];
+
 
 
 $nome = '';
@@ -63,9 +68,7 @@ if (isset($_POST["salvar"])) {
         elseif ($senha !== $conf_senha) {
             $mensagem = 'As senhas não correspondem';
         }
-        elseif (empty($perfis_selecionados)) {
-            $mensagem = 'Você deve selecionar pelo menos um perfil!';
-        } else{
+        else{
             $resposta =  atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados);
         
             // Definindo mensagens para mostrar
@@ -90,9 +93,7 @@ if (isset($_POST["salvar"])) {
             $mensagem = 'Confirme a senha';
         }elseif ($senha !== $conf_senha) {
             $mensagem = 'As senhas não correspondem';
-        } elseif (empty($perfis_selecionados)) {
-            $mensagem = 'Você deve selecionar pelo menos um Perfil';
-        }else{
+        } else{
             $resposta = cadastrar_usuario($nome, $email, $senha, $perfis_selecionados);
             // Definindo mensagens para mostrar
             $men = ['Nome inválido', 'Senha está Vazia', 'Senha Inválida', 'Usuário cadastrado com Sucesso!','Nome existente. Insira um novo.', 'E-mail existente. Insira um novo endereço.'];
@@ -145,5 +146,9 @@ $html = str_replace('{{campoConfirma}}', $conf_senha, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);
 $html = str_replace('{{perfis}}', $perfis, $html);
 $html = str_replace('{{retorno}}', $id_resposta, $html);
+
+$html = str_replace('{{titulo}}', $titulo, $html);
+
+
 echo $html;
 ?>

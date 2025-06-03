@@ -272,4 +272,28 @@ function verificar_existencia_nome_perfio($nome)
 
 
 
+function possui_permicão_para_adicionar_permic($usua){
+
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+
+    $stmt = $conecxao->prepare("SELECT funcionalidade.nome as Possui_a_permicao FROM funcionalidade_perfil
+        INNER join perfil_usuario
+        on perfil_usuario.codigo = funcionalidade_perfil.codigo_perfil
+        INNER JOIN funcionalidade
+        ON funcionalidade.codigo = funcionalidade_perfil.codigo_funcionalidade
+        INNER join usuario_perfil
+        ON usuario_perfil.codigo_perfil= perfil_usuario.codigo
+        WHERE usuario_perfil.codigo_usuario = ? and funcionalidade.sigla = 'func_perfil';");
+    $stmt->bind_param("i", $usua);
+    $stmt->execute();
+    $resulta = $stmt->get_result();
+
+    $stmt->close();
+    $conecxao->close();
+
+    return $resulta->num_rows > 0;
+
+}
+
 ?>

@@ -11,7 +11,11 @@ Esta_logado();
 
 
 include_once 'Model/mPerfilUsuario.php';  
-$funcionalidades = listar_funcionalidade();
+
+
+$funcionalidades = possui_permicão_para_adicionar_permic($_SESSION['codigo_usuario']);
+$titulo = ($funcionalidades)?'Funcionalidades: ':'';
+$funcionalidades = ($funcionalidades)?listar_funcionalidade():[];
 $id_resposta = 'danger';
 $tipo_tela = '';
 $nome = '';
@@ -48,10 +52,6 @@ if (isset($_GET["salvar"])) {
     } 
     elseif ((mb_strlen($descricao) > 100  or (mb_strlen($descricao) < 5 ))) {
         $mensagem = "Adicione uma descrição com no mínimo 5 e no máximo 100 caracteres.";
-    }
-     elseif (empty($funcionalidades_selecionadas)) {
-        $mensagem = "Você deve selecionar pelo menos uma funcionalidade!";
-
     } else {
         if(isset($_GET['codigo'])){
             // atualizar dados
@@ -149,6 +149,9 @@ $html = str_replace('{{mensagem}}', $mensagem, $html);
 $html = str_replace('{{funcionalidades}}', $aux, $html);
 $html = str_replace('{{tipo_tela}}', $tipo_tela, $html);
 $html = str_replace('{{retorno}}', $id_resposta, $html);
+
+
+$html = str_replace('{{titulo}}', $titulo, $html);
 echo $html;
 ?>
 
