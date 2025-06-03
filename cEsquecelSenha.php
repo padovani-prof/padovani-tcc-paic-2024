@@ -19,7 +19,7 @@ function randomizar_senha(){
             $alea = $numeros[$alea];
         }else{
             $alea = random_int(0, 25); 
-            $alea = ($i == 3 or $i==7)?strtoupper($letras[$alea]):$letras[$alea];
+            $alea = strtoupper($letras[$alea]);
 
         }
         $senha.= $alea;
@@ -38,12 +38,12 @@ function enviar_email($nova_senha, $destinatario) {
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'flp.lic23@uea.edu.br'; // e-mail que envia
-    $mail->Password = 'vvtg eowl sfbu cild'; // senha de app
+    $mail->Username = 'sgrp.uea@gmail.com'; // e-mail que envia
+    $mail->Password = 'hgyb sibb icbw ldov'; // senha de app
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;
 
-    $mail->setFrom('flp.lic23@uea.edu.br', 'Gerenciamento de Recursos UEA');// email ultilizado para envio
+    $mail->setFrom('sgrp.uea@gmail.com', 'SGRP (CESIT/UEA)');// email ultilizado para envio
     $mail->addAddress($destinatario); // usa o destinatário passado
 
     $mail->isHTML(true);
