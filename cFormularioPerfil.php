@@ -13,6 +13,7 @@ Esta_logado();
 include_once 'Model/mPerfilUsuario.php';  
 
 
+
 $funcionalidades = possui_permicão_para_adicionar_permic($_SESSION['codigo_usuario']);
 $titulo = ($funcionalidades)?'Funcionalidades: ':'';
 $funcionalidades = ($funcionalidades)?listar_funcionalidade():[];
