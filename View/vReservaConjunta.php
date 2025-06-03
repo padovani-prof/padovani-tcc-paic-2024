@@ -32,7 +32,7 @@
   <p class="text-center fw-bold text-{{retorno}}" >{{msg}}</p>
 
     <form action="cReservaConjunta.php">  
-      <div class="table-responsive">
+      <div class="table-responsive"  style="max-height: 400px; overflow-y: auto;">
         <table class="table table-striped table-bordered table-hover text-center align-middle">  
           <thead class="table-primary">
             <tr>
@@ -79,3 +79,5 @@
 
 </body>
 </html>
+
+

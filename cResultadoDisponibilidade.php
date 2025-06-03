@@ -85,6 +85,9 @@ $recursos = isset($_GET['recursos'])?json_decode(urldecode($_GET['recursos'])):[
 $periodos = isset($_GET['periodos'])?json_decode(urldecode($_GET['periodos'])):[];
 
 
+ $todos_os_dados = " utilizador=".$_GET['utilizador'].'& periodo=' . urlencode(json_encode($periodos)).(((count($recursos)> 0)? "& cate_recu=" . urlencode(json_encode($recursos)):'')).(((count($categorias)> 0)? "& cate_recu=" . urlencode(json_encode($categorias)):''));
+
+
 
 
 
@@ -160,7 +163,13 @@ $html = str_replace('{{Colunas}}',$coluna,$html);
 
 $html = str_replace('{{retorno}}', $id_msg, $html);
 $html = str_replace('{{Disponibilidades}}', $recurs_dados, $html);
+
+$html = str_replace('{{informa}}', $todos_os_dados, $html);
 echo $html;
+
+
+
+
 
 ?>
 

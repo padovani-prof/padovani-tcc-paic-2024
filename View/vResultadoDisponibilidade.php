@@ -51,7 +51,9 @@
         </div>
       
       <div class="d-flex justify-content-between mt-4">
-        <a href="cFiltroDisponibildade.php" class="btn btn-secondary" type="button" value="Voltar">Voltar</a>
+        <a href="cFiltroDisponibildade.php?link=1&{{informa}}" class="btn btn-secondary" type="button" value="Voltar">Voltar</a>
+
+
         <input class="btn btn-primary" type="submit" name="reserva" value="Reservar">
       </div>
       

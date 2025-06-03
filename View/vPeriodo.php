@@ -38,6 +38,8 @@
   <section class="container w-75 mt-4 border rounded shadow p-4 ">
   <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
     <div class="table-reponsive">
+
+    
         <table class="table table-bordered table-striped table-hover text-center align-middle">
           <thead  class="table-primary">
             <tr>

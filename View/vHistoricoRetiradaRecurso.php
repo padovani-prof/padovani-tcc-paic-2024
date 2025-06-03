@@ -28,8 +28,11 @@
           </table>
 
 
-          <a href="cRecursos.php"> voltar</a>
+          
           </div>  
+          <a href="cRecursos.php"> voltar</a>
 </body>
 </html>
+
+
 

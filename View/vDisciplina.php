@@ -26,7 +26,7 @@
     <section class="container mt-4 w-50 border rounded shadow p-4">
       <p class="text-center fw-bold text-{{resp}}">{{msg}}</p> 
 
-          <div class="table-responsive">
+          <div class="table-responsive"  style="max-height: 400px; overflow-y: auto;">
             <table class="table table-striped table-bordered table-hover text-center align-middle">
               <thead class="table-primary"> 
                 <tr>
@@ -41,12 +41,13 @@
               
                   
           </table>
-            <div class="d-flex justify-content-between mt-4">
+            
+        </div>
+        <div class="d-flex justify-content-between mt-4">
               <a href="cMenu.php"><input class="btn btn-secondary"  type="button" value="Voltar"></a>
 
               <a href="cFormularioDisciplina.php"><input class="btn btn-primary" type="button" value="Nova Disciplina"></a> 
             </div>
-        </div>
 
               
     </section>

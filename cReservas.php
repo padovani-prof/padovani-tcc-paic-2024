@@ -143,10 +143,10 @@ if (isset($_GET['apagar'])) {
         $data_fim = '';
 
     }else{
-
+        $reservas = carregar_filtragem($recu, $usua, $data_ini, $data_fim );
         $msg =(count($reservas)==0)?'Nem uma reserva encontrada.':'';
         $id = 'danger';
-        $reservas = carregar_filtragem($recu, $usua, $data_ini, $data_fim );
+        
         $condi = ($recu == null and $usua== null and $data_fim == null and $data_ini==null);
         $conteudo_reservas = ($condi)?tabela_reserva($reservas):tabela_reserva_filtrada($reservas);
         
@@ -154,16 +154,7 @@ if (isset($_GET['apagar'])) {
 
     }
     
-
-    
-    
-
-    
 }
-
-
-
-
 
 
 $usuarios = mandar_options($usuarios, $usua);

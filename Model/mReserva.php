@@ -30,7 +30,7 @@ function listar_datas($codigo_reserva) {
     }
 
     $consulta = $conexao->prepare("SELECT data_reserva.hora_inicial, data_reserva.hora_final,
-    DATE_FORMAT(data_reserva.data, '%d/%m/%Y') as data FROM data_reserva WHERE codigo_reserva = ? ORDER BY data_reserva.data DESC");
+    DATE_FORMAT(data_reserva.data, '%d/%m/%Y') as data FROM data_reserva WHERE codigo_reserva = ? ORDER BY data_reserva.data asc");
     $consulta->bind_param('i', $codigo_reserva);
     $consulta->execute();
     $resultado = $consulta->get_result();

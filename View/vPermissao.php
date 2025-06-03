@@ -99,7 +99,7 @@
                           
       
 
-            <div class="table-reponsive"> 
+            <div class="table-reponsive" > 
                 <table class="table table-striped table-bordered table-hover text-center align-middle">
                   <thead class="table-primary">
                     <tr>
@@ -127,3 +127,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+

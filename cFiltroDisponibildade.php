@@ -6,23 +6,28 @@ function mandar_options_dispo($lista, $lado='a'){
    $opt = '<option value="NULL">...</option>';
    foreach($lista as $dados)
       { 
-         $opt .= '<option title="'.$dados['descricao'].'" value="'. $dados['codigo'].','.mb_strtoupper($dados['nome']).','.$lado.'">'.mb_strtoupper($dados['nome'] ) .'</option>';    
+         $opt .= '<option title="'.$dados['descricao'].'" value="'. $dados['codigo'].','.$dados['nome'].','.$lado.'">'.mb_strtoupper($dados['nome'] ) .'</option>';    
       }
    return $opt;
 }
 
-function remover_lista($lista, $dados , $tipo){
-   for ($i=0; $i < count($dados); $i++) { 
-      $d = explode(',', $dados[$i]);
-      for ($l=0; $l < count($lista); $l++) { 
-         if($d[0] == $lista[$l]['codigo'] and $tipo==$d[2]){
-            unset($lista[$l]); 
-            $lista = array_values($lista);
-            
-            break;
+function remover_lista($lista, $dados ){
+      // var_dump($lista[0]);
+      // echo "<br>";
+      // var_dump($dados);
+      for ($i=0; $i < count($dados); $i++) { 
+         $recuso = explode(',', $dados[$i]);
+         for ($l=0; $l < count($lista); $l++) { 
+            if($recuso[1]== $lista[$l]['nome'] and $recuso[0]== $lista[$l]['codigo'] ){
+               unset($lista[$l]); 
+               $lista = array_values($lista);
+               break;
+            }
          }
-      }
    }
+
+   
+   
    
    
    return $lista;
@@ -228,8 +233,10 @@ if(isset($_GET['btnCategoria']) and $_GET['categoria']!='NULL'){
    
 }
 
-$care_recursos = remover_lista($care_recursos, $dados_recu_cate , 'r');
-$carre_categorias = remover_lista($carre_categorias, $dados_recu_cate , 'c');
+
+$care_recursos = remover_lista($care_recursos, $dados_recu_cate );
+$carre_categorias = remover_lista($carre_categorias, $dados_recu_cate );
+
 $tabe_recu_pere = tabela_cate_recu($dados_recu_cate);
 $tabe_periodo = tabela_periodo($dados_periodos);
 $dados_recu_cate = '<input type="hidden" name="cate_recu" value=" '.urlencode(json_encode($dados_recu_cate)).'">';

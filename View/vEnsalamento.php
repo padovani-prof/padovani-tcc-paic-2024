@@ -68,7 +68,7 @@
 
     </form>
 
-      <div class="table-responsive">
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
           <table class="table table-striped table-bordered table-hover text-center align-middle">
             <thead>
               <tr class="table-primary">

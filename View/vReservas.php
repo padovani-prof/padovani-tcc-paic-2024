@@ -41,9 +41,11 @@
               </select>
       Data inicial: <input type="date" name="p_ini" value="{{data_ini}}"> Data limite <input type="date" name="p_fim" value="{{data_fim}}" >
       <input type="submit" name="filtra" value="FILTRAR">
- 
-      
-        <table class="table table-striped table-bordered table-hover text-center align-middle"> 
+
+
+      <div class="table-reponsive" style="max-height: 400px; overflow-y: auto;">
+
+      <table class="table table-striped table-bordered table-hover text-center align-middle"> 
           <thead class="table-primary">
             <tr>
               <th>Recurso</th>
@@ -57,6 +59,11 @@
 
           </tbody>
         </table>
+
+      </div>
+ 
+      
+        
       </div>
         
       <div class="d-flex justify-content-end">
@@ -69,3 +76,5 @@
   </section>
 </body>
 </html>
+
+
