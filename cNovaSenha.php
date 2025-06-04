@@ -11,7 +11,7 @@ $senha_at = '';
 $senha_atual = '';
 $senha_comf = '';
 
-$msg = (isset($_GET['msg']))?$_GET['msg']:'';
+$msg = (isset($_GET['msg']))?$_GET['msg']:' Comfirme sua senha atual.';
 $id = (isset($_GET['msg']))?'success':'danger';
 
 

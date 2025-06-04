@@ -134,9 +134,6 @@ if(isset($_GET['reservar'])){
         $msg = 'Selecione o agendador.';
     }else{
 
-
-        
-
         $disponivel =  count(Disponibilidade($periodos, [], $recu)) > 0;
         if($disponivel){
             Reserva_conjunta ($dados, $agendador, $utilizador, $justific);
@@ -166,15 +163,9 @@ $html = str_replace('{{reservas}}', $tabe_htm, $html);
 $html = str_replace('{{agendador}}', $usuarios_agendador, $html);
 $html = str_replace('{{usuario}}', '<input type="hidden" name="utilizador" value="'.$utilizador.'">', $html);
 $html = str_replace('{{just}}', $justific, $html);
-
 $html = str_replace('{{retorno}}', $id_msg, $html);
-
 $html = str_replace('{{msg}}', $msg, $html);
-
 $html = str_replace('{{link}}', $voltar, $html);
-
-
-
 echo $html;
 
 ?>
