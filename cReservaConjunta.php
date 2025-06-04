@@ -65,6 +65,27 @@ function dados_hidem($dados){
     return $ht_dados;
 }
 
+
+
+
+function dados_em_lista($dados){
+    $peri_data = [[], [], []];
+    foreach($dados as $reseva){
+        $recurso_v = explode(',', $reseva);
+        $peri_data[0][] = $recurso_v[2];
+        $peri_data[0][] = $recurso_v[3];
+        $peri_data[0][] = $recurso_v[4];
+        $peri_data[1][] = $recurso_v[0];
+
+        $peri_data[2][] = $recurso_v[0].','.$recurso_v[1];
+        
+
+
+    }
+    return $peri_data;
+}
+
+
 include_once 'Model/mVerificacao_acesso.php';
 
 include 'cGeral.php';
@@ -74,9 +95,21 @@ verificação_acesso($_SESSION['codigo_usuario'], 'cons_disponibilidade', 2);
 
 include 'Model/mFormulariorRetirada.php';
 include  'Model/mReservaConjunta.php';
+include 'Model/mDisponibilidade.php';
 
 
 $dados = json_decode(urldecode($_GET['marcas'])); //transforma um array string para
+
+
+
+$recu = dados_em_lista($dados);
+$re_volta = $recu[2];
+$periodos = $recu[0];
+$recu = $recu[1];
+
+
+
+$voltar = " utilizador=".$_GET['utilizador'].'& periodo=' . urlencode(json_encode($periodos)).(((count($re_volta)> 0)? "& cate_recu=" . urlencode(json_encode($re_volta)):''));
 
 $marca_ult = '';
 $marca_agen = '';
@@ -100,11 +133,24 @@ if(isset($_GET['reservar'])){
         // agendador
         $msg = 'Selecione o agendador.';
     }else{
-        Reserva_conjunta ($dados, $agendador, $utilizador, $justific);
+
+
+        
+
+        $disponivel =  count(Disponibilidade($periodos, [], $recu)) > 0;
+        if($disponivel){
+            Reserva_conjunta ($dados, $agendador, $utilizador, $justific);
         // se der reserva disponibilidade 
         // joga pra disponibilidade
         header('Location: cReservas.php');
         exit();
+
+        }
+        $msg = 'Infelizmente, outro usuário concluiu uma reserva antes de você finalizar a sua. Por favor, volte e refaça a consulta para verificar a disponibilidade atual.';
+
+
+        
+        
     }
     
     
@@ -124,6 +170,11 @@ $html = str_replace('{{just}}', $justific, $html);
 $html = str_replace('{{retorno}}', $id_msg, $html);
 
 $html = str_replace('{{msg}}', $msg, $html);
+
+$html = str_replace('{{link}}', $voltar, $html);
+
+
+
 echo $html;
 
 ?>

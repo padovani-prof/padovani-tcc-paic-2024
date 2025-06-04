@@ -66,7 +66,7 @@
         {{dados}}
         
         <div class="d-flex justify-content-between ">
-          <a href="cFiltroDisponibildade.php"><input class="btn btn-secondary" type="button" value="Voltar"></a> 
+          <a href="cFiltroDisponibildade.php?{{link}}"><input class="btn btn-secondary" type="button" value="Voltar"></a> 
 
           <input class="btn btn-primary" type="submit" value="Reservar" name="reservar">
         </div>

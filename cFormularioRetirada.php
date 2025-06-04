@@ -156,7 +156,7 @@ if (isset($_GET['cancela'])){
             if ($tem_permição){
                     // verificar se o recurso não está reservado
                 $disponives = Disponibilidade([$data, $hora_ini, $hora_fim], [], [$recurso]);
-                $disponives = (count($disponives)> 0)? true :  false;
+                $disponives = count($disponives)> 0;
                 $sua_reserva = verificar_reserva_do_retirante([$data, $hora_ini, $hora_fim], $retirante, $recurso);
                 if ($disponives or $sua_reserva)
                 {

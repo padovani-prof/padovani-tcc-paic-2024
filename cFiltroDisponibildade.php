@@ -12,9 +12,6 @@ function mandar_options_dispo($lista, $lado='a'){
 }
 
 function remover_lista($lista, $dados ){
-      // var_dump($lista[0]);
-      // echo "<br>";
-      // var_dump($dados);
       for ($i=0; $i < count($dados); $i++) { 
          $recuso = explode(',', $dados[$i]);
          for ($l=0; $l < count($lista); $l++) { 
@@ -232,7 +229,6 @@ if(isset($_GET['btnCategoria']) and $_GET['categoria']!='NULL'){
 
    
 }
-
 
 $care_recursos = remover_lista($care_recursos, $dados_recu_cate );
 $carre_categorias = remover_lista($carre_categorias, $dados_recu_cate );
