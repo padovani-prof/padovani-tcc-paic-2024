@@ -4,10 +4,6 @@ include 'cGeral.php';
 Esta_logado();
 include_once 'Model/mCategoria.php';
 $html = file_get_contents('View/vFormularioCategoria.php');
-
-
-
-
 $nome = '';
 $descre = '';
 $retorno = (isset($_GET['id_msg']))?$_GET['id_msg']:'';
@@ -41,7 +37,7 @@ if(isset($_GET["codigo"])){
             $descre = $_GET['descricao'];
             $Ambiente = (isset($_GET['ambiente_fisico']))?$_GET['ambiente_fisico']:null;
             $resposta = atualizar_dados($chave, $nome, $descre, $Ambiente);
-            $mensagem = ['Categoria Atualizada com Sucesso!!', 'Numero maximo de caracter na descrição é 100','Nome da Categoria ínvalida', 'Nome existente. Insira um novo.' ];
+            $mensagem = ['Categoria Atualizada com Sucesso!!', 'A descrição deve conter pelo menos 3 e no máximo 100 caracteres','Nome da Categoria ínvalida', 'Nome existente. Insira um novo' ];
     
             // respostas
             $mensagem = $mensagem[$resposta];

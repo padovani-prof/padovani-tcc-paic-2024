@@ -8,7 +8,7 @@ function Validar_categoria($nome, $desc)
         return 2; // numero de caracter do nome invalido
     }
 
-    if (mb_strlen($desc) > 100) {
+    if (mb_strlen($desc)<3 or mb_strlen($desc) > 100) {
         return 1; // passou do numero maximo de caracter da descrição
     }
 

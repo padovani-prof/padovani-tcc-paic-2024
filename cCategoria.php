@@ -1,15 +1,10 @@
-   
-
 <?php
 
 
 include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
-
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_categoria_rec', 2);
-
-
 $id_resposta = '';
 $resposta = '';
 include_once 'Model/mCategoriaRecurso.php';
@@ -22,7 +17,7 @@ if (isset($_GET['apagar']))
 
     // $retorno =  ($resposta>0)?'erro':'sucesso';
     $id_resposta = ($resposta)?'success':'danger';
-    $resposta = ($resposta)?'A Categoria foi removida com Sucesso.':'Esta Categoria não pode ser Apagada, pois está vinculada a Recursos.';
+    $resposta = ($resposta)?'A Categoria foi apagada com Sucesso.':'Esta Categoria não pode ser Apagada, pois está vinculada a Recursos.';
     
 }
 if(isset($_GET['alterar'])){
