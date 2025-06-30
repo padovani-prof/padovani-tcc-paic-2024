@@ -46,10 +46,10 @@ if(isset($_GET['codigo']) and !isset($_POST['salvar'])){
 if (isset($_POST["salvar"])) {
     $resposta = -1;
     
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-    $conf_senha = $_POST['conf_senha'];
+    $nome = trim($_POST['nome']);
+    $email = trim($_POST['email']);
+    $senha = trim($_POST['senha']);
+    $conf_senha = trim($_POST['conf_senha']);
     // Captura os perfis selecionados
     $perfis_selecionados = isset($_POST['perfis']) ? $_POST['perfis'] : [];
     
@@ -60,8 +60,8 @@ if (isset($_POST["salvar"])) {
             $mensagem = 'O nome é obrigatório';
         } elseif (empty($email)){
             $mensagem = 'O email é obrigatório';
-        }  elseif (!empty($conf_senha) and empty($senha)){
-            $mensagem = 'Crie uma nova senha.';
+        }  elseif (empty($senha) and !empty($conf_senha)){
+            $mensagem = 'Por favor, preencha todos os campos de senha';
         }elseif (!empty($senha) and empty($conf_senha)){
             $mensagem = 'Confirme sua nova senha.';
         }
@@ -85,6 +85,8 @@ if (isset($_POST["salvar"])) {
             $mensagem = 'O nome é obrigatório';
         } elseif (empty($email)){
             $mensagem = 'O email é obrigatório';
+        }elseif (empty($senha) and !empty($conf_senha) ) {
+            $mensagem = 'Por favor, preencha todos os campos de senha';
         } elseif (empty($senha)){
             $mensagem = 'Crie uma senha';
         }elseif ((mb_strlen($senha) < 3 || mb_strlen($senha) > 50)) {

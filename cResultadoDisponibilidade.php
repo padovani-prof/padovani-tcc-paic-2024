@@ -146,9 +146,7 @@ for ($i=0; $i < $qdt; $i++)
             $recurs_dados .='<span title="'.(($livre and !$permitido)?'O ultilizador não possui permição do recurso para esse periodo.':'Recurso já reservado.').'">X</span>';
             $qdt_ind ++;
             
-        }
-
-        
+        }     
     }
     $recurs_dados .= '</tr>';
 }
@@ -166,11 +164,6 @@ $html = str_replace('{{Disponibilidades}}', $recurs_dados, $html);
 
 $html = str_replace('{{informa}}', $todos_os_dados, $html);
 echo $html;
-
-
-
-
-
 ?>
 
 

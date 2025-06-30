@@ -1,5 +1,3 @@
-
-
 <?php
 
 function Tabela_chacklist($dados, $marcado){
@@ -151,7 +149,7 @@ if (isset($_GET['cancela'])){
         {
             $hora_ini =  $data_atual->format('H:i:s');
             $hora_fim = $hora_fim.':00';
-            $tem_permição = verificar_permicao_recurso($data, $hora_ini, $hora_fim, $recurso, $retirante, data_em_dia_semana($data));
+            $tem_permição =  verificar_permicao_recurso($data, $hora_ini, $hora_fim, $recurso, $retirante, data_em_dia_semana($data));
             // verificar permição
             if ($tem_permição){
                     // verificar se o recurso não está reservado

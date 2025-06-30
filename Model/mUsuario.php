@@ -201,10 +201,6 @@ function listar_perfil(){
 function Validar_usuario($nome, $senha, $email)
 {
 
-    $nome = str_replace(' ','',$nome);
-    $senha = str_replace(' ', '', $senha);
-    $email = str_replace(' ', '',$email);
-   
 
     if (strlen($nome) < 3 || strlen($nome) > 50) {
         return 0; // Nome inválido
@@ -218,6 +214,7 @@ function Validar_usuario($nome, $senha, $email)
         return 2; // Senha inválida
     }
     if(verificar_existencia($nome, 'nome')){
+        
         return 4; // nome repetido
        
    

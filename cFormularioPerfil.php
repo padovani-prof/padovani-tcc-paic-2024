@@ -45,15 +45,19 @@ if (isset($_GET["salvar"])) {
     if (isset($_GET['funcionalidades']) && is_array($_GET['funcionalidades'])) {
         $funcionalidades_selecionadas = $_GET['funcionalidades'];
     }
+    
     if (empty($nome)) {
         $mensagem = "O nome é obrigatório!";
     }elseif (mb_strlen($nome)< 3 or mb_strlen($nome)> 30 ) {
-        $mensagem = 'O nome informado é inválido. Ele deve ter no mínimo 3 caracteres e no máximo 30.';
+        $mensagem = 'O nome informado é inválido. Ele deve ter no mínimo 3 caracteres e no máximo 30';
         
     } 
     elseif ((mb_strlen($descricao) > 100  or (mb_strlen($descricao) < 5 ))) {
-        $mensagem = "Adicione uma descrição com no mínimo 5 e no máximo 100 caracteres.";
-    } else {
+        $mensagem = "Adicione uma descrição com no mínimo 5 e no máximo 100 caracteres";
+    }elseif(count($funcionalidades_selecionadas)==0){
+        $mensagem = "Por favor, selecione uma funcionalidade para o Perfil.";
+    }
+     else {
         if(isset($_GET['codigo'])){
             // atualizar dados
             $resposta = atualizar_fucionalidade($codigo, $nome, $descricao, $funcionalidades_selecionadas);
@@ -69,7 +73,7 @@ if (isset($_GET["salvar"])) {
                 $id_resposta = 'success';
             }
             else if($resposta ==0){
-                $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres.";
+                $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres";
 
             }
             else {
@@ -92,7 +96,7 @@ if (isset($_GET["salvar"])) {
                 $id_resposta = 'success';
             }
             else if($resposta==0){
-                $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres.";
+                $mensagem = "O nome do Perfil informado é inválido. Ele deve ter no mínimo 3 caracteres";
 
             }
              else {
@@ -150,7 +154,6 @@ $html = str_replace('{{mensagem}}', $mensagem, $html);
 $html = str_replace('{{funcionalidades}}', $aux, $html);
 $html = str_replace('{{tipo_tela}}', $tipo_tela, $html);
 $html = str_replace('{{retorno}}', $id_resposta, $html);
-
 
 $html = str_replace('{{titulo}}', $titulo, $html);
 echo $html;
