@@ -54,8 +54,6 @@ if (isset($_GET["salvar"])) {
     } 
     elseif ((mb_strlen($descricao) > 100  or (mb_strlen($descricao) < 5 ))) {
         $mensagem = "Adicione uma descrição com no mínimo 5 e no máximo 100 caracteres";
-    }elseif(count($funcionalidades_selecionadas)==0){
-        $mensagem = "Por favor, selecione uma funcionalidade para o Perfil.";
     }
      else {
         if(isset($_GET['codigo'])){

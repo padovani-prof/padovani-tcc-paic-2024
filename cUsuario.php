@@ -5,7 +5,7 @@ function tabela_usuarios(){
     $usuarios = '';
     foreach ($usuario as $user) {
             $usuarios = $usuarios. '<tr>
-                <td>'.$user["nome"].'</td>
+                <td>'.mb_strtoupper($user["nome"]).'</td>
                 <td>'.$user["email"].'</td>
                 <td>
                     <form action="cUsuario.php" method="post">   

@@ -33,7 +33,7 @@ $perfil = listar_perfis();
 $perfis = '';
 foreach ($perfil as $p) {
     $perfis .= '<tr>
-        <td>'.$p["nome"].'</td>
+        <td>'.mb_strtoupper($p["nome"]).'</td>
         <td>'.$p["descricao"].'</td>
         
             <form action="cPerfilUsuario.php">   
