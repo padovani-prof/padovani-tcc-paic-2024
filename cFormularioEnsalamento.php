@@ -1,6 +1,19 @@
 <?php
 
 
+function adaptar_disponibilidade_hora($datas_de_aula, $hora_ini, $hora_fin, $recurso){
+    foreach ($datas_de_aula as $data) {
+        $periodo = [$data, $hora_ini, $hora_fin];
+        $disponivel = count(Disponibilidade($periodo, [], [$recurso])) > 0;
+        if (!$disponivel){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
 include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
 Esta_logado();
@@ -10,6 +23,7 @@ verificação_acesso($_SESSION['codigo_usuario'], 'cad_ensalamento', 2);
 include_once 'Model/mPeriodo.php';
 include_once 'Model/mDisciplina.php';
 include_once 'Model/mEnsalamento.php';
+include_once 'Model/mDisponibilidade.php';
 
 $html = file_get_contents('View/vFormularioEnsalamento.php');
 $lista_de_periodos = carrega_periodo();
@@ -54,31 +68,25 @@ if (isset($_GET['salvar'])){
         }
 
         $datas_de_aula = dias_aulas($disc, $dia_semana);
-
-        $consulta = cosultas ($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $datas_de_aula);
-        
-        // var_dump($consulta);
-
-        if ($consulta !== null){
+        $disponivel = adaptar_disponibilidade_hora($datas_de_aula, $hora_ini, $hora_fin, $sala);
+        if ($disponivel == true){
             $reserva = ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin);
-
             $cod_reserva = cod_ensalamento($disc, $sala, $dia_semana, $hora_ini, $hora_fin, $usuario_agendador, $justificativa, $datas_de_aula);
             $mensagem = $vet_mensagem[$reserva];
+            $disc = '';
+            $sala = '';
+            $semana = '';
+            $hora_ini = '';
+            $hora_fin = '';
+            $reserva = '';
+            $cod_reserva = '';
+            $datas_de_aula = '';
+            $id_msg = 'success';
 
+        }else{
+            $id_msg = 'danger';
+            $mensagem = 'Conflito de reserva detectado';// mensagen quando der conflito de reserva
         }
-
-        
-
-        $disc = '';
-        $sala = '';
-        $semana = '';
-        $hora_ini = '';
-        $hora_fin = '';
-        $reserva = '';
-        $cod_reserva = '';
-        $datas_de_aula = '';
-        $id_msg = 'success';
-
         
     } else
     {

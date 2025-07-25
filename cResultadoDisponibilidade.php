@@ -133,7 +133,7 @@ for ($i=0; $i < $qdt; $i++)
     { 
         $recurs_dados .= ' <td> ';
         $livre = ta_livre($recurso_catego[$i]['codigo_recurso'], $periodos[$d], $periodos[$d+1].':00', $periodos[$d+2].':00', $disponives);
-        $permitido = verificar_permicao_recurso($periodos[$d], $periodos[$d+1], $periodos[$d+2], $recurso_catego[$i]['codigo_recurso'], $ultilizador, data_em_dia_semana($periodos[$d]));
+        $permitido =true ;// verificar_permicao_recurso($periodos[$d], $periodos[$d+1], $periodos[$d+2], $recurso_catego[$i]['codigo_recurso'], $ultilizador, data_em_dia_semana($periodos[$d]));
         if($livre and $permitido)
         {
             $recurs_dados .='<label>

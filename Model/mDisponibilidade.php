@@ -78,10 +78,16 @@ function Disponibilidade($periodo, $categorias, $recursos)
     $t = count($periodo);
     for ($i = 0; $i < $t; $i += 3) 
     { 
-        $data = trim(str_replace('[', '', $periodo[$i]));
-        $hora_in = trim($periodo[$i + 1]);
-        $hora_fim = trim(str_replace(']', '', $periodo[$i + 2]));
-
+        if (is_string($periodo[$i])) {
+            $data = trim(str_replace('[', '', $periodo[$i]));
+            $hora_in = trim($periodo[$i + 1]);
+            $hora_fim = trim(str_replace(']', '', $periodo[$i + 2]));
+            
+        }else{
+            $data = $periodo[$i][0];
+            $hora_in = $periodo[$i][1];
+            $hora_fim = $periodo[$i][2];
+        }
         // Aspas simples para delimitar valores de data e hora
         $sql .= "SELECT CAST('$data' AS date) AS data, CAST('$hora_in' AS TIME) AS hora_inicial, CAST('$hora_fim' AS TIME) AS hora_final";
         if ($i < $t - 3) {
@@ -117,8 +123,6 @@ function Disponibilidade($periodo, $categorias, $recursos)
     $sql .= "GROUP BY 1, 2, 3, 4, 5 HAVING COUNT(dtr.data) = 0 order by 1,3,4,5";
 
     //echo $sql;
-    
-    
     $resultado = $cone->query($sql);
     $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $cone->close();

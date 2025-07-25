@@ -13,6 +13,15 @@
     btn-custom{
       background-color: #026cb6;
     }
+    .conteudo-completo {
+      display: none;
+    }
+
+    .ver-mais {
+      color: blue;
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
 
 </head>
@@ -74,6 +83,28 @@
 
     <a href="cMenu.php" class="btn btn-secondary" type="button" value="Voltar">Voltar</a> 
   </section>
+  <script>
+      function alternarConteudo(elemento) {
+        const td = elemento.parentElement;
+        const resumo = td.querySelector('.resumo');
+        const completo = td.querySelector('.completo');
+
+        const estaExpandido = completo.style.display === 'inline';
+
+        if (estaExpandido) {
+          // Ocultar conteúdo completo e mostrar resumo
+          completo.style.display = 'none';
+          resumo.style.display = 'inline';
+          elemento.textContent = 'Todas as datas';
+        } else {
+          // Mostrar conteúdo completo e esconder resumo
+          completo.style.display = 'inline';
+          resumo.style.display = 'none';
+          elemento.textContent = 'Esconder datas';
+        }
+      }
+
+  </script>
 </body>
 </html>
 

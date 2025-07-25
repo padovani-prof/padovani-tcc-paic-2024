@@ -28,6 +28,15 @@ function tabela_reserva($reservas){
 
         if(!$repetido){
             $data_hoarios = data_reservas($cod_reserva);
+            if (mb_strlen($data_hoarios) > 40)
+            {
+                $resumo = substr($data_hoarios, 0, 41);
+                $data_hoarios = '<span class="resumo">'.$resumo.'...</span>
+                <span class="completo" style="display: none;">
+                    '.$data_hoarios.'
+                </span>
+                <span class="toggle" onclick="alternarConteudo(this)" style="color: blue; cursor: pointer;">Todas as datas</span>';
+            }
             $acao = '
             <input type="hidden" name="codigo_da_reserva" value="'.$reserva['codigo'].'">
             <input  class="btn btn-outline-danger" type="submit" value="Apagar"  name="apagar">';
