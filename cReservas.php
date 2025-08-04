@@ -62,8 +62,6 @@ function tabela_reserva($reservas){
 
 
 function tabela_reserva_filtrada($reservas){
-
-
     $conteudo_reservas = '';
     foreach ($reservas as $reserva) {
 
@@ -166,6 +164,10 @@ if (isset($_GET['apagar'])) {
 }
 
 
+
+
+$data_ini = ($data_ini != null)?$data_ini:'';
+$data_fim = ($data_fim != null)?$data_fim:'';
 $usuarios = mandar_options($usuarios, $usua);
 $recusos = mandar_options($recusos, $recu);
 // Carregar o HTML do arquivo de visualização
