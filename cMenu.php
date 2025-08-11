@@ -14,7 +14,12 @@ Use isto:
 include 'cGeral.php';
 
 $html = file_get_contents('View/vMenu.php');
-$html = cabecalho($html);
+
+
+
+$html = cabecalho($html, $_SESSION['codigo_usuario']);
+
+
 
 $html = str_replace('{{msg}}',  (isset($_GET['msg']))?$_GET['msg']:'', $html);
 //$html = str_replace('{{saudacao}}', 'Bem vindo(a), ' . htmlspecialchars($usuario) . '!', $html);

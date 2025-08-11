@@ -145,7 +145,7 @@ if (is_array($funcionalidades)) {
 }
 
 $html = file_get_contents('View/vFormularioPerfil.php');
-$html = cabecalho($html);
+$html = cabecalho($html, $_SESSION['codigo_usuario']);
 $html = str_replace('{{campoNome}}', $nome, $html);
 $html = str_replace('{{campoDescricao}}', $descricao, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);  

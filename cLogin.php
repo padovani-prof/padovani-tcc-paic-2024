@@ -7,7 +7,7 @@ if (isset($_GET['desconectar']) or isset($_GET['msg'])){
     }
     $msm = file_get_contents('View/vLogin.php');
     $msm = str_replace('{{mensagem}}','Desconectado do sistema!',$msm);
-    $msm = str_replace('{{resp}}', 'success', $msm); // success ou danger sair
+    $msm = str_replace('{{resp}}', 'danger', $msm); // success ou danger sair
     echo $msm;
 }
 else if (isset($_POST['txtemail']) and isset($_POST['txtsenha']))
@@ -43,12 +43,7 @@ else if (isset($_POST['txtemail']) and isset($_POST['txtsenha']))
 }
 else
 {
-    $msg = '';
-    if(isset($_GET['msg']))
-    {
-        $msg = $_GET['msg'];
-    }
-
+    $msg = (isset($_GET['msg']))? $_GET['msg']:'';
     $html = file_get_contents('View/vLogin.php');
     $html = str_replace('{{resp}}', 'danger', $html);
     $html = str_replace('{{mensagem}}',$msg, $html);

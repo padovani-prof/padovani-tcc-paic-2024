@@ -1,6 +1,9 @@
 <?php
-function cabecalho($html){
+function cabecalho($html, $codigo){
+    include 'Model/mUsuario.php';
+    $nome = strtoupper(carregar_dados($codigo)['nome']);
     $cabecario = file_get_contents('View/vHeader.php');
+    $cabecario = str_replace('{{usuario}}', $nome, $cabecario);
     $html = str_replace('{{cabecario}}', $cabecario, $html);
     return $html;    
     }
@@ -96,6 +99,5 @@ function Verificar_codigo($tabela, $codigo){
 
 
 ?>
-
 
 
