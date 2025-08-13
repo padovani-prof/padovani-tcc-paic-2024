@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,6 +39,7 @@
   </header>
 
     <section class="container mt-4 border rounded shadow p-4 w-100 w-md-75 w-lg-50 form-container">
+      <p class="text-center fw-bold text-{{cor}}">{{msg}}</p>
       <form action="cEnsalamento.php">
         
         <div class="d-flex align-itens-center mb-3">

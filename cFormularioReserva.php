@@ -87,6 +87,7 @@ function verificar_disponibilidade($listar_datas, $recurso){
             $str.='n';
         }
     }
+    
     return $str;
 
 }

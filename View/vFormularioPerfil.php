@@ -27,7 +27,6 @@
 </head>
 <body class="bg-light">
     
-    {{cabecario}}
 
     <header class="azul text-center text-white py-4">
         <h1>Perfil de Usuário</h1>

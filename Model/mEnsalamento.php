@@ -26,7 +26,7 @@ function carregar_salas()
 //=================================================================================================================================================
 //=================================================================================================================================================
 
-function filtrar($periodo=null, $disciplina=null, $sala=null)
+function filtrar($periodo, $disciplina, $sala)
 {
     // Inclui o arquivo de configuração do banco
     include 'confg_banco.php';
@@ -103,16 +103,10 @@ function filtrar($periodo=null, $disciplina=null, $sala=null)
     }
    
     $resultado = $conexao->query($query);
+    $resulta = $resultado->fetch_all(MYSQLI_ASSOC);
+    $conexao->close();
 
-    if ($resultado->num_rows > 0) {
-        $dados = [];
-        while ($linha = $resultado->fetch_assoc()) {
-            $dados[] = $linha;
-        }
-        return $dados; // Retorna os dados encontrados
-    } else {
-        return []; // Retorna um array vazio se não houver resultados
-    }
+    return $resulta;
 }
 
 //==========================================================================================================================================
@@ -340,6 +334,9 @@ function apagar($cod_ensalamento)
         // echo '<br>';
         
         $apagar = $conecxao->query("DELETE FROM sgrp.ensalamento WHERE codigo = '$cod_ensalamento'");
+        $conecxao->close();
+
+        return $apagar;
 
         // var_dump($apagar);
         // echo '<br>';

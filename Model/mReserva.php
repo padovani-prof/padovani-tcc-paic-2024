@@ -281,6 +281,7 @@ function carregar_filtragem($recu, $usua, $data_ini, $data_fim) {
         
     }
 
+    // comenta caso queria deixa ordenado por data da ordem decresente
     if($data_ini !== null or $data_fim !== null){
         $ordem = ' ORDER BY data_reserva.data asc ';
 
@@ -292,7 +293,7 @@ function carregar_filtragem($recu, $usua, $data_ini, $data_fim) {
     }
 
     $sql .= " $ordem";
-
+    
     $stmt = $conexao->prepare($sql);
 
     if (!empty($params)) {

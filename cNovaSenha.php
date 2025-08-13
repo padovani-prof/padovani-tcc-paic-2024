@@ -27,7 +27,7 @@ $input = (!isset($_POST['senha_nova']))?'<label for="">Senha Atual: </label>
     '<label for="">Senha Nova: </label>
     <input type="password" name="senha_nova" value="{{nova}}" >
     <label for="">Confirmar Senha</label>
-    <input type="password" name="senha_repatida" value="{{comf}}">';
+    <input type="password" name="senha_repatida" value="{{comf}}">'; // madificar
 
 
 if (isset($_POST['mandar'])){

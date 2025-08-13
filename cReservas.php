@@ -16,6 +16,8 @@ function data_reservas($cod_reserva){
 
 
 function tabela_reserva($reservas){
+
+    $reservas_adicionadas = [];
     $conteudo_reservas = '';
     $pri = -1;
     foreach ($reservas as $reserva) {
@@ -26,8 +28,11 @@ function tabela_reserva($reservas){
 
         $repetido = ($cod_reserva == $pri);
 
-        if(!$repetido){
+        if(!$repetido and !in_array($cod_reserva, $reservas_adicionadas) ) {
+            
             $data_hoarios = data_reservas($cod_reserva);
+            $reservas_adicionadas[] = $cod_reserva;
+
             if (mb_strlen($data_hoarios) > 40)
             {
                 $resumo = substr($data_hoarios, 0, 41);
@@ -120,7 +125,7 @@ if (isset($_GET['apagar'])) {
     $cod_reserva = $_GET['codigo_da_reserva']; 
     $msg_id = apagar_reserva($cod_reserva);
     $id = ($msg_id==0)?'success':'danger';
-    $msg = ['Reseva Apagada com Sucesso', 'Esta reserva não pode ser excluída, pois o recurso já foi retirado.','Essa reserva não pode ser apagada por esta sendo Referenciada no Ensalamento.'];    
+    $msg = ['Reseva apagada com sucesso', 'Esta reserva não pode ser excluída, pois o recurso já foi retirado.','Essa reserva não pode ser apagada por esta sendo referenciada no ensalamento.'];    
     $recu = (filter_var($_GET['recurso'], FILTER_VALIDATE_INT) !== false)?$_GET['recurso']:null;
     $usua = (filter_var($_GET['usuario'], FILTER_VALIDATE_INT) !== false)?$_GET['usuario']:null;
     $data_ini = (mb_strlen($_GET['p_ini']) == 10)?$_GET['p_ini']:null;

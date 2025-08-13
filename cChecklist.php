@@ -23,17 +23,11 @@ include 'cGeral.php';
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'adm_checklist_rec', 2);
 include_once 'Model/mChecklist.php';
-
-
-
-
 $item = '';
 $msg = (isset($_GET['msg']))?$_GET['msg']: '';
 $id_msg = (isset($_GET['msgId']))?$_GET['msgId']:'danger';
 $codigo = $_GET ['codigo'];
 Existe_essa_chave_na_tabela($codigo, 'recurso', "cRecursos.php");
-
-
 if (isset($_GET['apagar']))
 {
     // apagar dado do check list
