@@ -4,6 +4,7 @@ include 'cGeral.php';
 Esta_logado();
 include_once 'Model/mCategoria.php';
 $html = file_get_contents('View/vFormularioCategoria.php');
+$html = cabecalho($html, 'Categoria do Recurso');
 $nome = '';
 $descre = '';
 $retorno = (isset($_GET['id_msg']))?$_GET['id_msg']:'';

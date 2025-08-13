@@ -96,8 +96,6 @@ if(isset($_GET['mandar'])){
 
 $html = str_replace('{{email}}',$email ,$html);
 
-
-
 $html = str_replace('{{msg}}',$msg ,$html);
 $html = str_replace('{{resposta}}',$id ,$html);
 echo $html;

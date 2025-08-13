@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Alterar Senha</h1>
+     {{cabecario}}
 
 
     <p id="{{resp}}" >{{msg}}</p>

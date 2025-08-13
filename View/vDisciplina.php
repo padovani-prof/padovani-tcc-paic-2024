@@ -19,9 +19,7 @@
 
 </head>
 <body class="bg-light">
-  <header class="azul text-white text-center py-4 ">
-      <h1>Disciplina</h1>
-  </header>
+  {{cabecario}}
 
     <section class="container mt-4 w-50 border rounded shadow p-4">
       <p class="text-center fw-bold text-{{resp}}">{{msg}}</p> 

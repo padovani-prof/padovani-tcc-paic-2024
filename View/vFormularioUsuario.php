@@ -28,9 +28,7 @@
 
 </head>
 <body class="bg-light">
-    <header class="azul text-center text-white py-4">
-        <h1>Usuário</h1>
-    </header>
+     {{cabecario}}
     <section class="container border rounded shadow mt-4 p-4 form-container">
         <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
 

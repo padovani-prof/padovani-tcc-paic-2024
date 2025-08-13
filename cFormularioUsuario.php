@@ -148,7 +148,7 @@ $html = str_replace('{{campoConfirma}}', $conf_senha, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);
 $html = str_replace('{{perfis}}', $perfis, $html);
 $html = str_replace('{{retorno}}', $id_resposta, $html);
-
+$html = cabecalho($html, 'Usuário');
 $html = str_replace('{{titulo}}', $titulo, $html);
 
 

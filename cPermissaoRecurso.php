@@ -167,7 +167,7 @@ $opt = opition($marcar);
 $html = str_replace('{{permissoes}}', $tabela, $html);
 $html = str_replace('{{perfis}}',$opt, $html);
 $html = str_replace('{{nomerecurso}}', $nome_recurso, $html);
-
+$html = cabecalho($html, 'Permição do Recurso');
 $html = str_replace('{{rep}}', $id_msg, $html);
 $html = str_replace('{{mensagemAnomalia}}', $msg, $html);
 $html = str_replace('{{codigorecurso}}', $recurso_codigo, $html);

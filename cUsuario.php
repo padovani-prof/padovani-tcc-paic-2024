@@ -51,6 +51,7 @@ if (isset($_POST['apagar'])) {
 $usuarios = tabela_usuarios();
 
 $html = file_get_contents('View/vUsuario.php');
+$html = cabecalho($html, 'Usuário');
 $html = str_replace('{{msg}}', $msg, $html);
 $html = str_replace('{{resp}}', $id_msg, $html);
 

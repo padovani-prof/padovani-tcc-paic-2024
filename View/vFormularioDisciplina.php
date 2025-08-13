@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,9 +27,7 @@
     </style>
 </head>
 <body class="bg-light">
-  <header class="azul text-center text-white py-4">
-    <h1>{{tela}}  Disciplina </h1>
-  </header>
+   {{cabecario}}
 
   <section  class="container mt-4 border rounded shadow p-4 form-container">
     <p class="text-center fw-bold text-{{retorno}}">{{mensagem}}</p>

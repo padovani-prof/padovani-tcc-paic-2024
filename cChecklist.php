@@ -69,7 +69,7 @@ $html = str_replace('{{itens}}',$dados_checlist, $html);
 $html = str_replace('{{respe}}',$id_msg, $html);
 $html = str_replace('{{msg}}',$msg, $html);
 $html = str_replace('{{nome}}',$item, $html);
-
+$html = cabecalho($html, 'Checklist do Recurso');
 echo $html;
 
 

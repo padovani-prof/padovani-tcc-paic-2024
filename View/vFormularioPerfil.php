@@ -26,11 +26,10 @@
 
 </head>
 <body class="bg-light">
-    
 
-    <header class="azul text-center text-white py-4">
-        <h1>Perfil de Usuário</h1>
-    </header>
+    {{cabecario}}
+
+    
     
     <section class="container mt-4 form-container">
 

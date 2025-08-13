@@ -77,6 +77,7 @@ if (isset($_POST['mandar'])){
 
 
 $html = str_replace('{{dados}}', $input, $html);
+$html = cabecalho($html, 'Alterar Senha');
 $html = str_replace('{{antiga}}', $senha_at, $html);
 $html = str_replace('{{nova}}', $senha_atual, $html);
 $html = str_replace('{{comf}}', $senha_comf, $html);

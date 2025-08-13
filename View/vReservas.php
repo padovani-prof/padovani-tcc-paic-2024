@@ -26,9 +26,7 @@
 
 </head>
 <body class="bg-light">
-  <header class="azul text-center text-white py-4">
-      <h1>Reservas</h1>
-  </header>
+   {{cabecario}}
 
   <section class="container mt-4 border rounded shadow p-4 col-12 col-sm-10 col-md-8 col-lg-6">
 

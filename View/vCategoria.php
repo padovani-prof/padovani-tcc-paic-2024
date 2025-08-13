@@ -13,9 +13,9 @@
   </style>
 </head>
 <body class="bg-light">
-  <header class="azul text-center text-white py-4">
-      <h1>Categoria</h1>
-  </header>
+
+{{cabecario}}
+  
 
   
   

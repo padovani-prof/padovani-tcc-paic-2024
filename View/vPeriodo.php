@@ -31,9 +31,7 @@
   
 </head>
 <body class="bg-light">
-  <header class="azul text-center text-white py-4">
-      <h1>Período</h1>
-  </header>
+   {{cabecario}}
 
   <section class="container w-75 mt-4 border rounded shadow p-4 ">
   <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>

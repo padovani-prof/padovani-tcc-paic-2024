@@ -1,8 +1,13 @@
 <?php
 function cabecalho($html, $codigo){
-    include 'Model/mUsuario.php';
-    $nome = strtoupper(carregar_dados($codigo)['nome']);
     $cabecario = file_get_contents('View/vHeader.php');
+    if (is_int($codigo)){
+        include 'Model/mUsuario.php';
+        $nome = carregar_dados($codigo)['nome'] ;
+    }else{
+        $nome = $codigo;
+    }
+    $nome = mb_strtoupper($nome);
     $cabecario = str_replace('{{usuario}}', $nome, $cabecario);
     $html = str_replace('{{cabecario}}', $cabecario, $html);
     return $html;    

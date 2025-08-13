@@ -34,9 +34,7 @@
 
 </head>
 <body>
-  <header class="azul text-white text-center py-4">
-      <h1>Dias da Semana</h1>
-  </header>
+  {{cabecario}}
 
     <section class="container mt-4 border rounded shadow p-4 w-100 w-md-75 w-lg-50 form-container">
       <p class="text-center fw-bold text-{{cor}}">{{msg}}</p>

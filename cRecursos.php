@@ -61,6 +61,7 @@ $recursos = Carregar_recursos_htm();
 
 
 $html = file_get_contents('View/vRecursos.php');
+$html = cabecalho($html, 'Recursos');
 $html = str_replace('{{repos}}', $id_msg, $html);
 $html = str_replace('{{msg}}', $msg, $html);
 $html = str_replace('{{recursos}}', $recursos, $html); // Substitui cada recurso

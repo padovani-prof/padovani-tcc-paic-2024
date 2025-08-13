@@ -99,7 +99,7 @@ else if(isset($_GET['salvar']))
 $op = mandar_options($lista_de_periodos, $marcar);
 
 $html = file_get_contents('View/vFormularioDisciplina.php');
-
+$html = cabecalho($html, 'Disciplina');
 $html = str_replace('{{Camponome}}', $nome, $html);
 $html = str_replace('{{Campocurso}}', $curso, $html);
 $html = str_replace('{{Periodo}}', $op, $html);

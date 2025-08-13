@@ -159,6 +159,8 @@ $usuarios_agendador = mandar_options($usuarios, $marca_agen);
 $hidem_dados = dados_hidem($dados);
 $tabe_htm = tabe_html($dados);
 $html = str_replace('{{dados}}', $hidem_dados, $html);
+
+$html = cabecalho($html, 'Reserva Conjunta');
 $html = str_replace('{{reservas}}', $tabe_htm, $html);
 $html = str_replace('{{agendador}}', $usuarios_agendador, $html);
 $html = str_replace('{{usuario}}', '<input type="hidden" name="utilizador" value="'.$utilizador.'">', $html);

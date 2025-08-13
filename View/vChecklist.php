@@ -19,9 +19,7 @@
   </head>
 
 <body class="bg-light">
-     <header class="azul text-center text-white py-4">
-      <h1>Checklist</h1>
-     </header>
+     {{cabecario}}
 
      
      <section class="container border shadow rounded col-12 col-sm-10 col-md-8 col-lg-6 mt-4 p-4"> <!--Inicio Section-->

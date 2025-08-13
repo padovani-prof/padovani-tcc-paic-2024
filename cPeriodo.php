@@ -58,7 +58,7 @@ $html = file_get_contents('View/vPeriodo.php');
 
 $html = str_replace('{{mensagem}}', $men, $html); // mensagem de apagado
 $html = str_replace('{{retorno}}', $idmen, $html); // id de estilização da mensagem
-
+$html = cabecalho($html, 'Períodos');
 $html = str_replace('{{Categoria}}', $periodos, $html);
 echo $html; // Exibe o HTML atualizado
 ?>

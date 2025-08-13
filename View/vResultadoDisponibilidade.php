@@ -22,9 +22,7 @@
   </style>
 </head>
 <body>
-  <header class="azul text-center text-white py-4">
-      <h1>Disponibilidade</h1>
-  </header>
+   {{cabecario}}
   
 
   

@@ -29,9 +29,7 @@
 
 </head>
 <body class="bg-light container-fluid">
-  <header class="azul text-center text-white py-4">
-      <h1>Novo Ensalamento</h1>
-  </header>
+   {{cabecario}}
 
   <section class="container mt-4 border rounded shadow p-4 form-container">
 

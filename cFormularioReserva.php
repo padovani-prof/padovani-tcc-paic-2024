@@ -315,7 +315,7 @@ $html = str_replace('{{Recursos}}', $sel_recursos, $html);
 $html = str_replace('{{Usuarios}}', $sel_usuarios, $html);
 
 $html = str_replace('{{mensagem}}', $mensagem, $html);
-
+$html = cabecalho($html, 'Reserva');
 $html = str_replace('{{retorno}}', $id_retorno, $html);
 
 

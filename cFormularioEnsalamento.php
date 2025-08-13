@@ -103,7 +103,7 @@ $op_s = mandar_options($lista_de_salas, $sala);
 $html = str_replace('{{Disciplina}}', $op_d, $html);
 $html = str_replace('{{Sala}}', $op_s, $html);
 $html = str_replace('{{mensagem}}', $mensagem, $html);
-
+$html = cabecalho($html, 'Ensalamento');
 $html = str_replace('{{retorno}}', $id_msg, $html);
 
 echo $html;

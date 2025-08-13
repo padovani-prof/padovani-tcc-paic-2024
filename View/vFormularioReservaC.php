@@ -6,9 +6,7 @@
   <title>Reserva Conjunta</title>
 </head>
 <body>
-  <header>
-      <h1>Reserva Conjunta</h1>
-  </header>
+   {{cabecario}}
 
   <section>
     

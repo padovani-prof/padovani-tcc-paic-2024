@@ -69,7 +69,7 @@ $html = str_replace('{{disciplina}}', $op_d, $html);
 $html = str_replace('{{sala}}', $op_s, $html);
 $html = str_replace('{{Categoria}}', $dados, $html);
 $html = str_replace('{{msg}}', $msg, $html);
-
+$html = cabecalho($html, 'Ensalamento');
 $html = str_replace('{{cor}}', $cor, $html);
 echo $html;
 

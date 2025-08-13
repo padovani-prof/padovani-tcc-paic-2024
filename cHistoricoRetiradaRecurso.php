@@ -111,13 +111,14 @@ function dados_tabela($acessorio_retiradaos, $acessorio_devolvidos){
 
 
 include 'Model/mHistoricoRetiradaRecuso.php';
-
+include 'cGeral.php';
 if (isset($_GET['codigo_recurso'])){
     $html = file_get_contents('View/vHistoricoRetiradaRecurso.php');
     $recurso = $_GET['codigo_recurso'];
     $dados = dados_retirada($recurso);
     $dados_tabela = percorrer_dados_tabela($dados, $recurso);
     $html = str_replace('{{historico_recurso}}', $dados_tabela, $html);
+    $html = cabecalho($html, 'Historicos de Retiradas do Recurso');
     echo $html;
 
 }elseif (isset($_GET['dados'])) {
@@ -135,6 +136,7 @@ if (isset($_GET['codigo_recurso'])){
     $html = str_replace('{{hora_devolucao}}',$dados[3] ,$html);
     $html = str_replace('{{cod}}',$recuso,$html);
     $html = str_replace('{{historico_checklist}}',$tabela ,$html);
+    $html = cabecalho($html, 'Historico Checklist');
     echo $html;
     
 }else{

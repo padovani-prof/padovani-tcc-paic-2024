@@ -24,9 +24,7 @@
     </style>
 </head>
 <body class="bg-light">
-  <header class="azul text-center text-white py-4">
-      <h1>Reserva Conjunta</h1>
-  </header>
+   {{cabecario}}
 
   <section class="container mt-4 border rounded shadow p-4 form-container">
   <p class="text-center fw-bold text-{{retorno}}" >{{msg}}</p>

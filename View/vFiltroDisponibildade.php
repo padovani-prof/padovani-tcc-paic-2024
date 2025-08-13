@@ -18,9 +18,7 @@
 </head>
 
 <body class="bg-light">
-  <header class="azul text-center text-white py-4 ">
-      <h1>Disponibilidade</h1>
-  </header>
+   {{cabecario}}
 
   <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
 

@@ -29,6 +29,7 @@ $devolventes = listar_usuarios();
 if (isset($_GET['cancela'])){
     verificação_acesso($_SESSION['codigo_usuario'], 'cancela_devolucao', 2);
     $html = file_get_contents('View/vFormularioDevolucao.php');
+    $html = cabecalho($html, 'Cancelar Devolução');
     $msg = '';
     $msg_resp = 'danger';
 
@@ -94,6 +95,7 @@ if (isset($_GET['cancela'])){
     $recursos_emprestados = carrega_recursos_emprestados();
     
     $html = file_get_contents('View/vFormularioDevolucao.php');
+    $html = cabecalho($html, 'Devolução');
     $msg = (isset($_GET['msg']))?$_GET['msg']:((count($recursos_emprestados)==0)?'Nomento não temos nem um recurso emprestado.':'');
     $msg_resp = (isset($_GET['msg']))?'success':'danger';
 

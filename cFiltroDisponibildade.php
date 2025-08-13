@@ -249,7 +249,7 @@ $html = str_replace('{{data}}', $data, $html);
 $html = str_replace('{{hora_ini}}', $hora_ini, $html);
 $html = str_replace('{{hora_fim}}', $hora_fim, $html);
 
-
+$html = cabecalho($html, 'Disponibilidade');
 $html = str_replace('{{retorno}}', $msg_id, $html);
 $html = str_replace('{{mensagem}}', $msg, $html);
 

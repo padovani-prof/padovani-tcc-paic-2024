@@ -30,9 +30,7 @@
     </style>
 </head>
 <body class="bg-light">
-  <header class="azul text-white text-center py-4">
-      <h1>Categoria do Recurso</h1>
-  </header>
+   {{cabecario}}
 
   <section class="container mt-4 border rounded shadow p-4 form-container">
     <p class="text-center fw-bold text-{{resposta}}">{{mensagem}}</p>  <!--Erro = danger, sucesso = success-->

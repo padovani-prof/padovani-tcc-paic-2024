@@ -159,6 +159,7 @@ $html = str_replace('{{recu}}', $hid_recu, $html);
 $html = str_replace('{{periodo}}',$hid_peri, $html);
 $html = str_replace('{{Colunas}}',$coluna,$html);
 
+$html = cabecalho($html, 'Disponibilidade');
 $html = str_replace('{{retorno}}', $id_msg, $html);
 $html = str_replace('{{Disponibilidades}}', $recurs_dados, $html);
 

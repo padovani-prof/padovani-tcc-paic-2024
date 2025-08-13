@@ -52,7 +52,7 @@ if (isset($_GET['apagar']))
 
 $disciplinas = carrega_disciplina();
 $disciplinas = tabela_disciplina($disciplinas);
-
+$html = cabecalho($html, 'Disciplinas');
 $html = str_replace('{{resp}}', $id_msg, $html);
 $html = str_replace('{{msg}}', $msg, $html);
 $html = str_replace('{{disciplinas}}', $disciplinas, $html);

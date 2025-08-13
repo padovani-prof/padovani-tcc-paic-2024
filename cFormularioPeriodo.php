@@ -184,7 +184,7 @@ $html = str_replace('{{dataIni}}',$dataIn, $html);
 $html = str_replace('{{dataFim}}',$dataFim, $html);
 $html = str_replace('{{tipo_tela}}', $tela, $html);
 $html = str_replace('{{tela}}', $tipo_tela, $html);
-
+$html = cabecalho($html, 'Período');
 $html = str_replace('{{mensagem}}',$msm, $html);
 $html = str_replace('{{msg}}',$respo , $html);
 

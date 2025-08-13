@@ -53,6 +53,7 @@ foreach ($perfil as $p) {
 
 
 $html = file_get_contents('View/vPerfilUsuario.php');
+$html = cabecalho($html, 'Perfil de Usuário');
 $html = str_replace('{{perfis}}', $perfis, $html);
 $html = str_replace('{{resp}}', $resposta, $html);
 $html = str_replace('{{msg}}', $msg, $html);

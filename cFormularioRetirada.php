@@ -114,6 +114,7 @@ if (isset($_GET['cancela'])){
     $html = str_replace( '{{devolvente}}', $usuarios, $html);
     $html = str_replace( '{{mandar}}', 'cFormularioRetirada.php', $html);
     $html = str_replace( '{{cancelaRetirada}}', '<input type="hidden" name="cancela" value="true">', $html);
+    $html = cabecalho($html, 'Cancelar Retirada');
     echo $html;
 
 }else{
@@ -235,6 +236,7 @@ if (isset($_GET['cancela'])){
 
 
     $html = str_replace('{{chechlistRecurso}}', $checklistRecurso, $html); 
+    $html = cabecalho($html, 'Retirada');
     $html = str_replace('{{retirante}}', $opicoes_retirantes, $html);
     $html = str_replace('{{recursos}}',$opicoes_recurso , $html);
     $html = str_replace('{{mensagem}}',$msg, $html);

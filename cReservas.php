@@ -185,6 +185,7 @@ $html = str_replace('{{usuario}}', $usuarios, $html);
 $html = str_replace('{{data_ini}}', $data_ini, $html);
 $html = str_replace('{{data_fim}}', $data_fim, $html);
 
+$html = cabecalho($html, 'Reservas');
 echo $html;
 ?>
 

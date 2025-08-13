@@ -11,6 +11,7 @@ include_once 'Model/mCategoriaRecurso.php';
 include_once 'Model/mRecurso.php';
 $Lcategorias = carrega_categorias_recurso();
 $html = file_get_contents('View/vNovoRecurso.php');
+$html = cabecalho($html, 'Recurso');
 
 
 $categoria = '';

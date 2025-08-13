@@ -47,6 +47,7 @@ foreach ($categoria as $nome) {
 
 
 $html = file_get_contents('View/vCategoria.php');
+$html = cabecalho($html, 'Categoria do Recurso');
 $html = str_replace('{{Categoria}}', $categorias, $html);
 $html = str_replace('{{resposta}}', $id_resposta,$html);
 $html = str_replace('{{msg}}',$resposta,$html);
