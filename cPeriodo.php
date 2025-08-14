@@ -1,64 +1,64 @@
-
 <?php
-
-
 
 include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
+
 Esta_logado();
 verificação_acesso($_SESSION['codigo_usuario'], 'list_periodo', 2);
 
-
 include_once 'Model/mPeriodo.php';
 
+$mensagem = '';
+$id_resposta = 'nada';
 
-$men = '';
-$idmen = 'nada';
-
-if(isset($_GET['apagar']))
-{
+// Exclusão de período
+if (isset($_GET['apagar'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_periodo', 2);
     $chave = $_GET['codigo_do_periodo'];
+    
     Existe_essa_chave_na_tabela($chave, "periodo", "cPeriodo.php");
-    $men = apagar_periodo($chave);
-    $idmen = ($men)?'success':'danger';
-    $men = ($men)?'Periodo Apagado com Sucesso!!':'Esse período não pode ser apagado pois está sendo Referenciado na Disciplina.';
-
-
+    
+    $resposta = apagar_periodo($chave);
+    if ($resposta) {
+        $mensagem = 'O período foi apagado com sucesso.';
+        $id_resposta = 'success';
+    } else {
+        $mensagem = 'Este período não pode ser removido, pois está sendo referenciado em uma disciplina.';
+        $id_resposta = 'danger';
+    }
 }
-elseif(isset($_GET['atualizar'])){
+
+// Atualização de período
+elseif (isset($_GET['atualizar'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'alt_periodo', 2);
     $codigo = $_GET['codigo_do_periodo'];
     header("Location: cFormularioPeriodo.php?codigo=$codigo");
     exit();
 }
 
-$periodo = carrega_periodo();
-
-// Substitui os recursos no template HTML
+// Listagem de períodos
+$periodos_array = carrega_periodo();
 $periodos = '';
-foreach ($periodo as $nome)
-{
-    $periodos = $periodos. '<tr>
-        <td>'. $nome["nome"].'</td>                           
-        <td> 
+foreach ($periodos_array as $periodo) {
+    $periodos .= '<tr>
+        <td>'. $periodo["nome"] .'</td>
+        <td>
             <form action="cPeriodo.php">   
-                <input type="hidden" name="codigo_do_periodo" value="' .$nome['codigo'].  '"> 
+                <input type="hidden" name="codigo_do_periodo" value="'. $periodo['codigo'] .'"> 
                 <input class="btn btn-outline-secondary" type="submit" value="Alterar" name="atualizar"> 
                 <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar">
             </form> 
         </td>
-
     </tr>';
-    
 }
 
-
+// Substituição no template HTML
 $html = file_get_contents('View/vPeriodo.php');
-
-$html = str_replace('{{mensagem}}', $men, $html); // mensagem de apagado
-$html = str_replace('{{retorno}}', $idmen, $html); // id de estilização da mensagem
+$html = str_replace('{{mensagem}}', $mensagem, $html);
+$html = str_replace('{{retorno}}', $id_resposta, $html);
 $html = cabecalho($html, 'Períodos');
 $html = str_replace('{{Categoria}}', $periodos, $html);
-echo $html; // Exibe o HTML atualizado
+
+echo $html;
+
 ?>

@@ -1,6 +1,5 @@
 <?php
 
-
 include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
 Esta_logado();
@@ -8,19 +7,20 @@ verificação_acesso($_SESSION['codigo_usuario'], 'list_categoria_rec', 2);
 $id_resposta = '';
 $resposta = '';
 include_once 'Model/mCategoriaRecurso.php';
-if (isset($_GET['apagar']))
-{
-   verificação_acesso($_SESSION['codigo_usuario'], 'apag_categoria_rec', 2);
+
+if (isset($_GET['apagar'])) {
+    verificação_acesso($_SESSION['codigo_usuario'], 'apag_categoria_rec', 2);
 
     $codi = $_GET['codigo_da_categoria'];
     $resposta = apagar_categoria($codi);
 
-    // $retorno =  ($resposta>0)?'erro':'sucesso';
-    $id_resposta = ($resposta)?'success':'danger';
-    $resposta = ($resposta)?'A Categoria foi apagada com Sucesso.':'Esta Categoria não pode ser Apagada, pois está vinculada a Recursos.';
-    
+    $id_resposta = ($resposta) ? 'success' : 'danger';
+    $resposta = ($resposta) 
+        ? 'A categoria foi excluída com sucesso.' 
+        : 'Não foi possível excluir esta categoria, pois ela está vinculada a recursos.';
 }
-if(isset($_GET['alterar'])){
+
+if (isset($_GET['alterar'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'alt_categoria_rec', 2);
     $codi = $_GET['codigo_da_categoria'];
     header("Location: cFormularioCategoria.php?codigo=$codi");
@@ -28,31 +28,28 @@ if(isset($_GET['alterar'])){
 }
 
 $categoria = carrega_categorias_recurso();
+
 // Substitui os recursos no template HTML
 $categorias = '';
 foreach ($categoria as $nome) {
-    $categorias = $categorias . '<tr>
-        <td>' .mb_strtoupper($nome["nome"], "UTF-8") . '</td>                              
+    $categorias .= '<tr>
+        <td>' . mb_strtoupper($nome["nome"], "UTF-8") . '</td>                              
         <td> 
             <form action="cCategoria.php">   
-                <input type="hidden" name="codigo_da_categoria" value="'.$nome['codigo'].'"> 
+                <input type="hidden" name="codigo_da_categoria" value="' . $nome['codigo'] . '"> 
                 <input class="btn btn-outline-secondary" type="submit" name="alterar" value="Alterar">&nbsp;
                 <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar" onclick="deseja_apagar()"> 
             </form> 
         </td>
-
-        
     </tr>';
 }
 
-
 $html = file_get_contents('View/vCategoria.php');
-$html = cabecalho($html, 'Categoria do Recurso');
+$html = cabecalho($html, 'Categorias dos Recursos');
 $html = str_replace('{{Categoria}}', $categorias, $html);
-$html = str_replace('{{resposta}}', $id_resposta,$html);
-$html = str_replace('{{msg}}',$resposta,$html);
+$html = str_replace('{{resposta}}', $id_resposta, $html);
+$html = str_replace('{{msg}}', $resposta, $html);
 
 echo $html; // Exibe o HTML atualizado
 
 ?>
-

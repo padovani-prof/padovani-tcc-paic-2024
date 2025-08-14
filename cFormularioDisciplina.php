@@ -4,9 +4,6 @@ include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
 Esta_logado();
 
-
-
-
 include_once 'Model/mPeriodo.php';
 $lista_de_periodos = carrega_periodo();
 
@@ -29,7 +26,6 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
     if(isset($_GET['codigo'])){
 
         $chave = $_GET['codigo'];
-        
         $dados = mandar_informações($chave, 'disciplina');
         $tipo_tela = '<input type="hidden" name="cod" value="'.$chave.'">';
         $nome = $dados['nome'];
@@ -37,8 +33,8 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
         $peri = $dados['codigo_periodo'];
         $marcar = $peri;
 
-    }else{
-        
+    } else {
+
         $chave = $_GET['cod'];
         $tipo_tela = '<input type="hidden" name="cod" value="'.$chave.'">';
         $nome = $_GET['nome'];
@@ -55,19 +51,21 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
             $curso = '';
             $id_resp = 'success';
         }
-    
 
-        $lMensa = ['Disciplina Atualizada com Sucesso!!', 'Nome do curso inválido','Nome da diciplina inválido', 'Nome da Diciplina e Périodo já está cadastrado.', 'Adicione um périodo.'];
-
+        $lMensa = [
+            'Disciplina atualizada com êxito.',
+            'O nome do curso informado é inválido.',
+            'O nome da disciplina informado é inválido.',
+            'A disciplina com o mesmo nome e período já está cadastrada.',
+            'É necessário selecionar um período.'
+        ];
 
         $mens = $lMensa[$resp];
 
     }
-    
-}
 
-else if(isset($_GET['salvar']))
-{
+} else if(isset($_GET['salvar'])) {
+
     $id_resp = 'danger';
     $nome = $_GET['nome'];
     $curso = $_GET['curso'];
@@ -83,18 +81,21 @@ else if(isset($_GET['salvar']))
         $curso = '';
         $id_resp = 'success';
     }
- 
 
-    $lMensa = ['Disciplina Cadastrada com Sucesso!!', 'Nome do curso inválido','Nome inválido', 'Diciplina de mesno Nome e Périodo Existente','Adicione um périodo.'];
-
+    $lMensa = [
+        'Disciplina cadastrada com êxito.',
+        'O nome do curso informado é inválido.',
+        'O nome da disciplina informado é inválido.',
+        'Já existe uma disciplina com o mesmo nome e período.',
+        'É necessário selecionar um período.'
+    ];
 
     $mens = $lMensa[$resp];
-}else{
+
+} else {
     // cadastrar
     verificação_acesso($_SESSION['codigo_usuario'], 'cad_disciplina', 2);
-
 }
-
 
 $op = mandar_options($lista_de_periodos, $marcar);
 
@@ -110,9 +111,3 @@ $html = str_replace('{{tela}}', $tela, $html);
 
 echo $html;
 ?>
-
-
-
-
-
-

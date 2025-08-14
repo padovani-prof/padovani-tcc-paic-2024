@@ -1,6 +1,5 @@
 <?php 
 
-
 function Tabela_chacklist($dados){
     $aux = "<tr>"; 
     $cont = 1;
@@ -12,20 +11,16 @@ function Tabela_chacklist($dados){
     return $aux;
 }
 
-
-
-
 include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
 Esta_logado();
-
-
 
 include 'Model/mFormulariorRetirada.php';
 
 $recurso = '';
 $devolvente = '';
 $devolventes = listar_usuarios();
+
 if (isset($_GET['cancela'])){
     verificação_acesso($_SESSION['codigo_usuario'], 'cancela_devolucao', 2);
     $html = file_get_contents('View/vFormularioDevolucao.php');
@@ -34,7 +29,7 @@ if (isset($_GET['cancela'])){
     $msg_resp = 'danger';
 
     $recusos_devolvidos = carrega_recurssos_devolvidos();
-    $msg = (count($recusos_devolvidos) > 0)?'': 'No momento não possuimos nem um recurso que foi devolvido.';
+    $msg = (count($recusos_devolvidos) > 0)?'': 'No momento, não há recursos devolvidos disponíveis.';
 
     if(isset($_GET['btnConfirmar']))
     {
@@ -44,121 +39,88 @@ if (isset($_GET['cancela'])){
 
             $resposta = verificar_devolucao_usuario($recurso, $devolvente);
             if ($resposta) {
-                $msg = 'Devolução Cancelada com Sucesso!!';
+                $msg = 'A devolução foi cancelada com sucesso.';
                 $recurso = '';
                 $devolvente = '';
                 $msg_resp = 'success';
                 $recusos_devolvidos = carrega_recurssos_devolvidos();
-
-
-            }else{
-                $msg = 'Devolução não Encontar. Selecione as informações corretamente.';
+            } else {
+                $msg = 'Devolução não localizada. Por favor, verifique e selecione as informações corretamente.';
             }
-
-
         }
-
-
     }
 
-
-
-
-
-    // carrega os dados que foram devolvidos
-    
     $recusos_devolvidos = mandar_options($recusos_devolvidos, $recurso);
-
-
     $devolventes = mandar_options($devolventes, $devolvente);
     $html = str_replace('{{devolvente}}', $devolventes, $html);
-
-
-    $html = str_replace( '{{texto}}', 'Devolução', $html);
-    $html = str_replace( '{{recursos}}', $recusos_devolvidos, $html);
-    $html = str_replace( '{{link}}', 'cFormularioDevolucao.php?', $html);
-    $html = str_replace( '{{tela}}', 'Cancelar Devolução', $html);
-    $html = str_replace( '{{cancelaRetirada}}', '<input type="hidden" name="cancela" value="true">', $html);
+    $html = str_replace('{{texto}}', 'Devolução', $html);
+    $html = str_replace('{{recursos}}', $recusos_devolvidos, $html);
+    $html = str_replace('{{link}}', 'cFormularioDevolucao.php?', $html);
+    $html = str_replace('{{tela}}', 'Cancelar Devolução', $html);
+    $html = str_replace('{{cancelaRetirada}}', '<input type="hidden" name="cancela" value="true">', $html);
     $recurso = '';
     $devolvente = '';
     $checklistRecurso = '';
-    $html = str_replace( '{{mandar}}', 'cFormularioDevolucao.php', $html);
-    $html = str_replace( '{{cancelaRetirada}}', '', $html);
+    $html = str_replace('{{mandar}}', 'cFormularioDevolucao.php', $html);
+    $html = str_replace('{{cancelaRetirada}}', '', $html);
     $html = str_replace('{{chechlistRecurso}}', '', $html);
     $html = str_replace('{{retorno}}', $msg_resp, $html);
     $html = str_replace('{{mensagem}}', $msg, $html);
     echo $html;
 
-}else{
-
+} else {
     verificação_acesso($_SESSION['codigo_usuario'], 'cad_retir_devoluc', 2);
     $recursos_emprestados = carrega_recursos_emprestados();
     
     $html = file_get_contents('View/vFormularioDevolucao.php');
     $html = cabecalho($html, 'Devolução');
-    $msg = (isset($_GET['msg']))?$_GET['msg']:((count($recursos_emprestados)==0)?'Nomento não temos nem um recurso emprestado.':'');
+    $msg = (isset($_GET['msg']))?$_GET['msg']:((count($recursos_emprestados)==0)?'No momento, não há recursos emprestados disponíveis.':'');
     $msg_resp = (isset($_GET['msg']))?'success':'danger';
 
-    
     $checklistRecurso = '';
-    $html = str_replace( '{{mandar}}', 'cFormularioDevolucao.php', $html);
-    $html = str_replace( '{{cancelaRetirada}}', '', $html);
+    $html = str_replace('{{mandar}}', 'cFormularioDevolucao.php', $html);
+    $html = str_replace('{{cancelaRetirada}}', '', $html);
+    $html = str_replace('{{texto}}', 'Cancelar Devolução', $html);
+    $html = str_replace('{{link}}', 'cFormularioDevolucao.php?cancela=true', $html);
+    $html = str_replace('{{tela}}', 'Devolução', $html);
 
-    $html = str_replace( '{{texto}}', 'Cancelar Devolução', $html);
-    $html = str_replace( '{{link}}', 'cFormularioDevolucao.php?cancela=true', $html);
-    $html = str_replace( '{{tela}}', 'Devolução', $html);
     if(isset($_GET['btnConfirmar']))
     {
         $recurso = $_GET['recurso'];
         $devolvente = $_GET['devolvente'];
-        if($_GET['recurso']!='NULL' and  $_GET['devolvente'] !='NULL'){
+        if($_GET['recurso']!='NULL' and $_GET['devolvente'] !='NULL'){
             date_default_timezone_set('America/Manaus'); 
             $data_atual = new DateTime();
             $data_hora = $data_atual->format('Y/m/d H:i:s');
             $hora = $data_atual->format('H:i');
             $verificacao = verificar_usuario_devolucao($recurso, $devolvente);
 
-            
-
             if($verificacao[0] == true)
             {
-            include 'Model/mChecklist.php';
-            $checklistRecurso = carregar_devolução_checklist($recurso, $devolvente);
+                include 'Model/mChecklist.php';
+                $checklistRecurso = carregar_devolução_checklist($recurso, $devolvente);
 
-                if(isset($_GET['dados']) or  count($checklistRecurso)==0 ){
-
+                if(isset($_GET['dados']) or count($checklistRecurso)==0){
                     $dados = (isset($_GET['dados']))? $_GET['dados']:[];
                     $id_reserva = $verificacao[1];
                     $id_devolucao = insere_reserva_devolucao($devolvente, $recurso, $data_hora, $hora, "D", $id_reserva);
-                    // verificar se todos os checklist foram devolvidos
                     Devolucao_checklist($dados, $id_devolucao); 
-                    $msg = 'Recurso devolvido com Sucesso!';
+                    $msg = 'O recurso foi devolvido com sucesso.';
                     header("Location: cFormularioDevolucao.php?msg=$msg");
                     exit();
-                }else {
-                    
-                    
-                    $msg = (count($checklistRecurso)>0)?'Selecione os checklist de recurso que foram devolvidos':'';
+                } else {
+                    $msg = 'Selecione os itens do checklist correspondentes aos recursos devolvidos.';
                     $checklistRecurso = Tabela_chacklist($checklistRecurso);
-                    // Mostra checklist do recurso para selecionar
-                    
-
-
                 }   
-            }else
-            {
-                $msg = 'Devolução inválida, pois o retirante não é a mesma pessoa que está devolvendo.';   
+            } else {
+                $msg = 'A devolução não pôde ser efetuada, pois o retirante não corresponde ao usuário que está realizando a devolução.';   
             }
-        }
-        else {
-            $msg = 'Por favor adicione todas as informações.';
+        } else {
+            $msg = 'Por favor, preencha todas as informações obrigatórias.';
         }
     }
 
-
-    
     $recursos_emprestados = mandar_options($recursos_emprestados, $recurso);
-
     $devolventes = mandar_options($devolventes, $devolvente);
     $html = str_replace('{{devolvente}}', $devolventes, $html);
     $html = str_replace('{{recursos}}', $recursos_emprestados, $html);
@@ -167,11 +129,5 @@ if (isset($_GET['cancela'])){
     $html = str_replace('{{chechlistRecurso}}', $checklistRecurso, $html); 
 
     echo $html;
-
-
 }
-
-
-
 ?>
-

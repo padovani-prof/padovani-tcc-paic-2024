@@ -20,85 +20,62 @@ function randomizar_senha(){
         }else{
             $alea = random_int(0, 25); 
             $alea = strtoupper($letras[$alea]);
-
         }
         $senha.= $alea;
-
-       
     }
     return $senha;
-
 }
 
 function enviar_email($nova_senha, $destinatario) {
-
     $mail = new PHPMailer(true);
-
    
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'sgrp.uea@gmail.com'; // e-mail que envia
-    $mail->Password = 'hgyb sibb icbw ldov'; // senha de app
+    $mail->Username = 'sgrp.uea@gmail.com'; // E-mail utilizado para envio
+    $mail->Password = 'xnii wppw xdsw ndwr'; // Senha de aplicativo
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;
 
-    $mail->setFrom('sgrp.uea@gmail.com', 'SGRP (CESIT/UEA)');// email ultilizado para envio
-    $mail->addAddress($destinatario); // usa o destinatário passado
+    $mail->setFrom('sgrp.uea@gmail.com', 'SGRP (CESIT/UEA)'); // Remetente
+    $mail->addAddress($destinatario); // Destinatário informado
 
     $mail->isHTML(true);
-    $mail->Subject = 'Sua nova senha'; // titulo do email
-    $mail->Body    = "Olá, sua nova senha é: <h1>$nova_senha</h1>"; // corpo do email
-    $mail->AltBody = "Olá, sua nova senha é: $nova_senha"; // final do email
+    $mail->Subject = 'Recuperação de Senha'; // Assunto do e-mail
+    $mail->Body    = "Olá, sua nova senha é: <h1>$nova_senha</h1>"; // Corpo do e-mail em HTML
+    $mail->AltBody = "Olá, sua nova senha é: $nova_senha"; // Corpo do e-mail em texto simples
 
     $mail->send();
-        
-    
 }
 
-
-
-
-$msg = 'Informe seu E-mail de cadastrado.';
+$msg = 'Informe o endereço de e-mail cadastrado.';
 $email = '';
 $id = 'danger';
 $html = file_get_contents('View/vEsquecelSenha.php');
+
 if(isset($_GET['mandar'])){
     include 'Model/mLogin.php';
     $email = $_GET['email'];
     $temos_esse_email = verifificar_email($email);
 
-    
-
-    
-
     if ($temos_esse_email){
         $nova_senha = randomizar_senha();
-        // mandar senha para o banco
+        
+        // Atualiza a senha no banco de dados
         nova_senha_usuario($email, $nova_senha);
 
-
-        // eviar email com a nova senha
+        // Envia e-mail com a nova senha
         enviar_email($nova_senha, $email);
-        $msg = 'Eviamos uma nova senha para seu E-mail.';
+        $msg = 'Uma nova senha foi enviada para o seu e-mail.';
         $email = '';
         $id = 'success';
-
     }else{
-        $msg = 'E-mail ínvalido.';
-
+        $msg = 'Endereço de e-mail inválido.';
     }
-
-
-
 }
 
-
 $html = str_replace('{{email}}',$email ,$html);
-
 $html = str_replace('{{msg}}',$msg ,$html);
 $html = str_replace('{{resposta}}',$id ,$html);
 echo $html;
-
 ?>
-

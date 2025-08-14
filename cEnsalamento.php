@@ -13,7 +13,7 @@ function Dados_Ensalamento($dados){
                 <td> 
                     <form action="cEnsalamento.php">   
                         <input type="hidden" name="codigo_ensalamento" value="' .$controle['codigo'].  '"> 
-                        <input class="btn btn-outline-danger" type="submit" name="apagar" value="Apagar">
+                        <input class="btn btn-outline-danger" type="submit" name="apagar" value="Excluir">
                     </form> 
                 </td>
             </tr>';
@@ -21,8 +21,6 @@ function Dados_Ensalamento($dados){
     $categoria .= '<tbody/>';
     return $categoria;
 }
-
-
 
 include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
@@ -42,21 +40,21 @@ $sala = isset($_GET['sala'])? $_GET['sala']:null;
 $msg = '';
 $cor = 'danger';
 
-
 if(isset($_GET['apagar']))
 {
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_ensalamento', 2);
     $cod_ensalamento = $_GET['codigo_ensalamento'];
     if ($cod_ensalamento != null){
         $teste = apagar($cod_ensalamento);
-        $msg = ($teste==true)?'Ensalamento apagado com sucesso.':'O ensalamento não pode ser apagado pois, já possuem retiradas relacionadas as reservas deste ensalamento.';//(Teste) apagou True, não apagou NULL
+        $msg = ($teste==true)
+            ? 'Ensalamento excluído com sucesso.'
+            : 'O ensalamento não pode ser excluído, pois já existem retiradas relacionadas às reservas vinculadas.';
         $cor = ($teste==true)?'success':'danger';
     }
-
 }
 
 $dados = filtrar($peri, $disc, $sala);
-$msg =  (count($dados)>0 or mb_strlen($msg)>0)?$msg:'Nem um ensalamento encontrado.';
+$msg =  (count($dados)>0 or mb_strlen($msg)>0) ? $msg : 'Nenhum ensalamento encontrado.';
 
 $dados = Dados_Ensalamento($dados);
 $op_p = gerarOpcoes($lista_de_periodos, $peri);
@@ -69,9 +67,8 @@ $html = str_replace('{{disciplina}}', $op_d, $html);
 $html = str_replace('{{sala}}', $op_s, $html);
 $html = str_replace('{{Categoria}}', $dados, $html);
 $html = str_replace('{{msg}}', $msg, $html);
-$html = cabecalho($html, 'Ensalamento');
+$html = cabecalho($html, 'Ensalamentos');
 $html = str_replace('{{cor}}', $cor, $html);
 echo $html;
 
 ?>
-
