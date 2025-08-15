@@ -21,6 +21,20 @@
       width: 100%; /* não extrapole em telas menores */
       margin: auto; /* Vai centralizar o formulário*/
     }
+    .link-cancelar {
+    display: inline-block;
+    color: #ff4d4d;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .link-cancelar:hover {
+    color: #fff;
+    background-color: #ff4d4d;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
     </style>
 </head>
 <body class="bg-light">
@@ -81,7 +95,7 @@
   </section>
 
     <div class="text-center">
-      <a href="cFormularioRetirada.php?cancela=true">Cancelar Retirada</a>
+      <a href="cFormularioRetirada.php?cancela=true" class="link-cancelar">Cancelar Retirada</a>
     </div>
 
 </body>

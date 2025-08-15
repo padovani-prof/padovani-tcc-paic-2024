@@ -64,7 +64,7 @@ if (isset($_GET["codigo"])) {
         $resposta = insere_categoria_recurso($nome, $descre, $Ambiente);
         $mensagens_possiveis = [
             'Categoria cadastrada com sucesso.',
-            'Número máximo de caracteres na descrição é 100.',
+            'A descrição deve conter entre 3 e 100 caracteres.',
             'Nome da categoria inválido.',
             'Nome já existente. Insira um novo.'
         ];

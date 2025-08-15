@@ -21,6 +21,36 @@
       width: 100%; /* não extrapole em telas menores */
       margin: auto; /* Vai centralizar o formulário*/
     }
+    /* ===== CANCELAR (qualquer tipo) ===== */
+  .text-center a[href*="cancela"] {
+      color: red;
+      font-weight: bold;
+      text-decoration: none;
+  }
+
+  .text-center a[href*="cancela"]:hover {
+      color: #fff;
+      background-color: #ff4d4d;
+      padding: 5px 10px;
+      border-radius: 5px;
+  }
+
+  /* ===== RETIRADA ou DEVOLUÇÃO ===== */
+  .text-center a[href*="FormularioRetirada.php"]:not([href*="cancela"]),
+  .text-center a[href*="FormularioDevolucao.php"]:not([href*="cancela"]) {
+      color: #0d6efd; /* Azul Bootstrap */
+      font-weight: bold;
+      text-decoration: none;
+  }
+
+  .text-center a[href*="FormularioRetirada.php"]:not([href*="cancela"]):hover,
+  .text-center a[href*="FormularioDevolucao.php"]:not([href*="cancela"]):hover {
+      color: white;
+      background-color: #0d6efd; /* Azul Bootstrap */
+      padding: 4px 8px;
+      border-radius: 5px;
+  }
+
 
     </style>
     

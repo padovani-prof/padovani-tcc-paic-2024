@@ -111,9 +111,8 @@
                                         Opções do Usuário
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">Editar Perfil</a></li>
+                                        
                                         <li><a class="dropdown-item" href="cNovaSenha.php">Alterar Senha</a></li>
-                                        <li><a class="dropdown-item" href="#">Configurações</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="cLogin.php?desconectar=1">Sair</a></li>
                                     </ul>

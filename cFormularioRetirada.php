@@ -90,7 +90,7 @@ if (isset($_GET['cancela'])){
     $html = str_replace('{{recursos}}', $recursos_emprestados, $html);
     $html = str_replace('{{devolvente}}', $usuarios, $html);
     $html = str_replace('{{mandar}}', 'cFormularioRetirada.php', $html);
-    $html = str_replace('{{cancelaRetirada}}', '<input type="hidden" name="cancela" value="true">', $html);
+    $html = str_replace('{{cancelaRetirada}}', '<input type="hidden" name="cancela" value="true" class="link-cancelar">', $html);
     $html = cabecalho($html, 'Cancelar Retirada');
     echo $html;
 

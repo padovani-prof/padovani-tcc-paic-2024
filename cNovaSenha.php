@@ -19,11 +19,13 @@ $usuario = $_SESSION['codigo_usuario'];
 // Define os campos de input conforme o fluxo
 $input = (!isset($_POST['senha_nova'])) 
     ? '<label for="">Senha Atual:</label>
-       <input type="password" name="senha_antiga" value="{{antiga}}">' 
+       <input type="password" name="senha_antiga" value="{{antiga}}" placeholder="Digite sua senha.">' 
     : '<label for="">Senha Nova:</label>
-       <input type="password" name="senha_nova" value="{{nova}}">
+        
+       <input type="password" name="senha_nova" value="{{nova}}" placeholder="Crie uma nova senha.">
+       
        <label for="">Confirmar Senha:</label>
-       <input type="password" name="senha_repatida" value="{{comf}}">';
+       <input type="password" name="senha_repatida" value="{{comf}}" placeholder="Confirme sua nova senha.">>';
 
 if (isset($_POST['mandar'])) {
 
@@ -51,9 +53,10 @@ if (isset($_POST['mandar'])) {
         $verificar_senha = checar_senha($usuario, $senha);
         if ($verificar_senha) {
             $input = '<label for="">Senha Nova:</label>
-                      <input type="password" name="senha_nova" value="{{nova}}">
+                      <input type="password" name="senha_nova" value="{{nova}}" placeholder="Crie uma nova senha.">
+
                       <label for="">Confirmar Senha:</label>
-                      <input type="password" name="senha_repatida" value="{{comf}}">';
+                      <input type="password" name="senha_repatida" value="{{comf}}" placeholder="Confirme sua nova senha.">';
             $msg = 'Por favor, crie uma nova senha.';
         } else {
             $senha_at = $senha;
@@ -70,8 +73,9 @@ $html = str_replace('{{comf}}', $senha_comf, $html);
 $html = str_replace('{{msg}}', $msg, $html);
 $html = str_replace('{{resp}}', $id, $html);
 
-$html = cabecalho($html, 'Alterar Senha');
+$html = cabecalho($html, 'Definir Nova Senha');
 
 echo $html;
 
 ?>
+

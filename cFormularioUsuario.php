@@ -56,8 +56,11 @@ if (isset($_POST["salvar"])) {
             $mensagem = 'Por favor, preencha todos os campos de senha.';
         } elseif (!empty($senha) && empty($conf_senha)) {
             $mensagem = 'Confirme a nova senha.';
-        }  
-         
+        }  elseif ($senha !== $conf_senha) {
+            $mensagem = 'As senhas informadas não correspondem.';
+        } else if(count($perfis_selecionados) == 0){
+            $mensagem = 'Selecione algun perfil de usuário.';
+        }
          else {
             $resposta = atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados);
             $men = [
@@ -86,7 +89,9 @@ if (isset($_POST["salvar"])) {
             $mensagem = 'Confirme a senha.';
         } elseif ($senha !== $conf_senha) {
             $mensagem = 'As senhas informadas não correspondem.';
-        } else {
+        }else if(count($perfis_selecionados) == 0){
+            $mensagem = 'Selecione algun perfil de usuário.'; 
+        }else {
             $resposta = cadastrar_usuario($nome, $email, $senha, $perfis_selecionados);
             $men = [
                 'Nome inválido. Deve ter entre 3 e 50 caracteres.',

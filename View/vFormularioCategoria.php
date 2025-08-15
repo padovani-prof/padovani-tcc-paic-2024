@@ -52,19 +52,16 @@
           <input class="form-check-input" type="checkbox" name="ambiente_fisico" id="cambiente" {{Campoambiente}}>
         </div>
         
-        <div class="d-flex justify-content-between">
-          <div class="text-start">
-            <a href="cCategoria.php" class="btn btn-outline-danger">Cancelar</a>
-          </div>
-          <div class="text-end">
-            <button type="submit" name="salvar" class="btn btn-primary">Salvar</button>
-          </div>
+        <div class="d-flex justify-content-between mt-4">
+          <a href=" cCategoria.php" class="btn btn-secondary" type="button" value="Voltar">Voltar</a>
+          <input class="btn btn-primary" type="submit" name="salvar" value="Salvar">
         </div>
       </form>
       
       
   </section>
 
+ 
   
   
 </body>
