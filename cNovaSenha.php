@@ -25,7 +25,7 @@ $input = (!isset($_POST['senha_nova']))
        <input type="password" name="senha_nova" value="{{nova}}" placeholder="Crie uma nova senha.">
        
        <label for="">Confirmar Senha:</label>
-       <input type="password" name="senha_repatida" value="{{comf}}" placeholder="Confirme sua nova senha.">>';
+       <input type="password" name="senha_repatida" value="{{comf}}" placeholder="Confirme sua nova senha.">';
 
 if (isset($_POST['mandar'])) {
 
@@ -39,7 +39,10 @@ if (isset($_POST['mandar'])) {
 
         if (mb_strlen($senha) < 3 || mb_strlen($senha) > 50) {
             $msg = 'O número de caracteres da senha é inválido. Deve conter entre 3 e 50 caracteres.';
-        } elseif ($senha !== $senha_repetida) {
+        } elseif (mb_strlen($senha_comf) == 0) {
+            $msg = 'Digite todos as informações.';
+        } 
+        elseif ($senha !== $senha_repetida) {
             $msg = 'As senhas informadas não correspondem. Por favor, digite novamente.';
         } else {
             // Atualizar senha

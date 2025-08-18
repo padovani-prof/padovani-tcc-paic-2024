@@ -1,5 +1,4 @@
 <?php 
-
 function opition($perfis){
     $lista = carrega_opition();
     $usua = '<option value="NULL">...</option>';
@@ -26,7 +25,7 @@ function Tabela_acesso_recurso_carrega($codigo){
         $semana = lista_dias_da_semana($dados['semana']);
         $informa .= '<tr>';
         $informa .= '<td>'. $dados["perfil"] .'</td>'; // coluna nome
-        $informa .= '<td>'. $dados['ini'] .' - '. $dados['fim'] .'</td>'; // coluna horários
+        $informa .= '<td>'. $dados['ini'] .' ás '. $dados['fim'] .'</td>'; // coluna horários
         $informa .= '<td>'. $semana .'</td>'; // semana
         $informa .= '<td>'. $dados['d_ini'].' até '.(($dados['d_fim']!=null)?$dados['d_fim']:'Indefinitivo').'</td>'; // datas
         $informa .= '<td>
