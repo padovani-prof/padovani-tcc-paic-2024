@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Retirada </title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+  
   <style>
       .azul{
         background-color: #0059b3;
@@ -29,7 +30,7 @@
         <form action="cFormularioRetirada.php">  
             <p>
               <label for="">Recurso: </label>
-              <select class="form-select" name="recurso" id="">
+              <select  class="selectpicker" data-live-search="true" class="form-select" name="recurso" id="">
               {{recursos}}
               
               </select>
@@ -58,6 +59,10 @@
     <div class="text-center">
       <a href="">Cancelar Retirada</a>
     </div>
+  
+
+    
+
 
 </body>
 </html>

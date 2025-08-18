@@ -33,13 +33,6 @@ function remover_periodo($lista_datas) {
     return -1;
 }
 
-function data_em_dia_semana($data){
-    $dias = [
-        'Sunday' => 1, 'Monday' => 2, 'Tuesday' => 3, 'Wednesday' => 4,
-        'Thursday' => 5, 'Friday' => 6, 'Saturday' => 7
-    ];
-    return $dias[date('l', strtotime($data))];
-}
 
 function verificar_permissoes($listar_datas, $usuario_utilizador, $recurso){
     $str = '';
@@ -163,6 +156,7 @@ if (isset($_GET['btnAdicionar'])) {
     if ($data && $hora_inicial && $hora_final) {
         date_default_timezone_set('America/Manaus');
         $data_atual = new DateTime();
+        $data_atual = $data_atual->modify('-1 minute');
         $data_inicial = new DateTime("$data $hora_inicial");
         $data_final = new DateTime("$data $hora_final");
 
@@ -172,10 +166,12 @@ if (isset($_GET['btnAdicionar'])) {
                 $inicio_hr = new DateTime($periodo['data'] . ' ' . $periodo['hora_inicial']);
                 $fim_hr = new DateTime($periodo['data'] . ' ' . $periodo['hora_final']);
                 if ($data_inicial < $fim_hr && $data_final > $inicio_hr) {
-                    $conflito = true; break;
+                    $conflito = true;
+                    break;
                 }
             }
             if (!$conflito) {
+                $id_retorno = 'success';
                 $lista_datas[] = ['data'=>$data,'hora_inicial'=>$hora_inicial,'hora_final'=>$hora_final];
                 $mensagem = 'Período adicionado com sucesso.';
                 $data = $hora_inicial = $hora_final = '';

@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nova Reserva</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+
   <style>
     .azul{
       background-color: #0059b3;
@@ -30,14 +33,20 @@
     <form action="cFormularioReserva.php"> 
       <div>
         <label for="">Recurso: </label>
-        <select class="form-select" name="recurso" id="recurso">
+        <select class="selectpicker" data-live-search="true" class="form-select" name="recurso" id="recurso"
+          
+              data-none-selected-text="Pesquisar Recurso"
+              data-live-search-placeholder="Pesquisar Recurso">
           {{Recursos}}
         </select>
       </div> 
         
       <div>
         <label for="">Agendado por: </label>
-        <select class="form-select" name="usuario_agendador" id="usuario_agendador">
+        <select class="selectpicker" data-live-search="true"  name="usuario_agendador" id="usuario_agendador"
+        class="selectpicker" data-live-search="true"
+          data-none-selected-text="Pesquisar Agendador"
+          data-live-search-placeholder="Pesquisar Agendador">
           {{UsuariosAgendador}}
         </select>
       </div>
@@ -88,7 +97,9 @@
           
         <div>
           <label for="">Agendado para: </label>
-          <select class="form-select" name="usuario_utilizador" id="usuario_utilizador">
+          <select class="selectpicker " data-live-search="true"  name="usuario_utilizador" 
+          data-none-selected-text="Pesquisar Ultilizador"
+          data-live-search-placeholder="Pesquisar Ultilizador" id="usuario_utilizador">
             {{Usuarios}}
           </select>
         </div>
@@ -103,5 +114,12 @@
     </form> 
  
   </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+  
 </body>
 </html>
+
+aa

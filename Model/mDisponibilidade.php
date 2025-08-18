@@ -19,10 +19,6 @@ function verificar_permicao_recurso($data, $h_ini, $h_fim, $recurso, $retirador,
             AND SUBSTRING(acesso_recurso.dias_semana, ?, 1) = 'S'
         )
     ) AND usuario.codigo = ?";
-
-
-
-
     $stmt = $cone->prepare($sql);
     $stmt->bind_param("ssssiii", $h_ini, $h_fim, $data, $data, $recurso, $dia_semana, $retirador);
     $stmt->execute();

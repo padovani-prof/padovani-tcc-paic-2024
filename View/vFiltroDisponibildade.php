@@ -20,12 +20,13 @@
 <body class="bg-light">
    {{cabecario}}
 
-  <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
+  
 
   <section class="container w-75 p-4 border">
     <form action="cFiltroDisponibildade.php">
 
     <div class="row">
+      <p class="text-center fw-bold text-{{retorno}}" >{{mensagem}}</p>
             <!--Inicio Tabela Categoria-->
             <div class="col-sm-12 col-md-6 border p-3 rounded">  
               <div class="table-responsive">

@@ -27,8 +27,9 @@
 
   
   <section class="container border rounded shadow p-4 form-container">
-  <p class="text-center fw-bold text-{{retorno}}" >{{msg}}</p>
+  
     <div>
+      <p class="text-center fw-bold text-{{retorno}}" >{{msg}}</p>
       <form action="cResultadoDisponibilidade.php">
         <div class="table-reponsive">
           <table class="table table-striped table-bordered table-hover text-center align-middle">

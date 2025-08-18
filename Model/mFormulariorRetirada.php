@@ -227,23 +227,24 @@ function retirada_checklist($checklist ,$marcados,  $id_retirada){
 function cancelaRetirada($recurso, $devolvente){
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
-    $executa = $conecxao->prepare("SELECT retirada_devolucao.codigo, retirada_devolucao.codigo_reserva from retirada_devolucao where retirada_devolucao.codigo_usuario = ? and retirada_devolucao.codigo_recurso = ? and retirada_devolucao.tipo = 'R' ORDER by retirada_devolucao.datahora desc LIMIT 1;");
+    $executa = $conecxao->prepare("SELECT retirada_devolucao.codigo, retirada_devolucao.codigo_reserva, reserva.justificativa from retirada_devolucao, reserva where retirada_devolucao.codigo_usuario = ? and retirada_devolucao.codigo_recurso = ? and retirada_devolucao.tipo = 'R' ORDER by retirada_devolucao.datahora desc LIMIT 1;");
     $executa->bind_param('ii', $devolvente, $recurso);
-    
     $executa->execute();
-
-    $resultado = $executa->get_result();
-    
+    $resultado = $executa->get_result(); 
     if($resultado->num_rows > 0){
         // apaga o checklist e apos a retirada
         $resultado = $resultado->fetch_assoc();
         $codigo = $resultado['codigo'];
-        $codigo_reserva =  $resultado['codigo_reserva'];
+        $retirada_sem_reseva = $resultado['justificativa']=='Retirada sem reserva';
         
+        $codigo_reserva =  $resultado['codigo_reserva'];
         $conecxao->query("DELETE from devolucao_checklist WHERE devolucao_checklist.codigo_retirada_devolucao = $codigo;");
         $conecxao->query("DELETE from retirada_devolucao WHERE retirada_devolucao.codigo = $codigo;");
-        $conecxao->query("DELETE from data_reserva WHERE data_reserva.codigo = $codigo_reserva;");
-        $conecxao->query("DELETE from reserva WHERE reserva.codigo = $codigo_reserva;");
+        if($retirada_sem_reseva == true){
+            $conecxao->query("DELETE from data_reserva WHERE data_reserva.codigo_reserva = $codigo_reserva;");
+            $conecxao->query("DELETE from reserva WHERE reserva.codigo = $codigo_reserva;");
+        }
+        
 
         
         $resposta =  true;

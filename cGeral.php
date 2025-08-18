@@ -101,6 +101,18 @@ function Verificar_codigo($tabela, $codigo){
 
 }
 
+function data_em_dia_semana($data){
+    $dias = [
+        'Sunday' => 1,
+        'Monday' => 2,
+        'Tuesday' => 3,
+        'Wednesday' => 4,
+        'Thursday' => 5,
+        'Friday' => 6,
+        'Saturday' => 7
+    ];
+    return $dias[date('l', strtotime($data))];
+}
 
 
 ?>

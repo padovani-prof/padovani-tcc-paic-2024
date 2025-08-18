@@ -1,0 +1,10 @@
+
+
+Fazer uma retirada para o Kaue do Lab Designer com horário final às 18:00. (Falha)
+Inserir uma permissão em 15/08/2025, das 08:00 às 22:00 (sexta-feira), do Lab Designer para a categoria Bolsista do João e Bolsista do Kleber.
+Inserir uma permissão em 15/08/2025, das 13:00 às 18:00 (sexta-feira), do DATASHOW 1 para a categoria Bolsista do Kleber e Bolsista do João.
+Fazer uma retirada para o usuário Kaue (Bolsista do João) do Lab Designer com horário final às 18:00. (sucesso)
+Fazer uma consulta de disponibilidade do usuário Fábio (Bolsista do Kleber) do Lab Designer das 17:00 às 19:00 de 15/08/2025 e das 18:00 às 19:00 de 15/08/2025.
+Adicionar uma disponibilidade para o recurso DATASHOW 1 para Fábio (Bolsista do Kleber) no horário das 15:00 às 18:00 de 15/08/2025.
+Fazer a retirada do recurso DATASHOW 1 com horário final às 18:00 para Kaue. (falha)
+Fazer a retirada do recurso DATASHOW 1 com horário final às 17:00 para Fábio. (sucesso)

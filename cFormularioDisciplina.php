@@ -83,7 +83,7 @@ if(isset($_GET['codigo']) or isset($_GET['cod'])){
     }
 
     $lMensa = [
-        'Disciplina cadastrada com êxito.',
+        'Disciplina cadastrada com sucesso.',
         'O nome do curso informado é inválido.',
         'O nome da disciplina informado é inválido.',
         'Já existe uma disciplina com o mesmo nome e período.',

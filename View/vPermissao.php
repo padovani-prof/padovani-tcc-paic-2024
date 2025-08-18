@@ -101,8 +101,10 @@
                 <table class="table table-striped table-bordered table-hover text-center align-middle">
                   <thead class="table-primary">
                     <tr>
-                      <th>Nome</th>
+                      <th>Perfil</th>
                       <th>Horário</th>
+                      <th>Dia da Semana</th>
+                      <th>Data de Permição</th>
                       <th>Ação</th>
                   </tr>
                   

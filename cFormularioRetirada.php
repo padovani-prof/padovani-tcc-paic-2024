@@ -21,18 +21,7 @@ function optios($dados){
     return $opt;
 }
 
-function data_em_dia_semana($data){
-    $dias = [
-        'Sunday' => 1,
-        'Monday' => 2,
-        'Tuesday' => 3,
-        'Wednesday' => 4,
-        'Thursday' => 5,
-        'Friday' => 6,
-        'Saturday' => 7
-    ];
-    return $dias[date('l', strtotime($data))];
-}
+
 
 include_once 'Model/mVerificacao_acesso.php';
 include 'cGeral.php';
@@ -196,7 +185,6 @@ if (isset($_GET['cancela'])){
     $html = str_replace('{{retorno}}', $id_msg, $html);
     $html = str_replace('{{hora_fim}}', $mar_hora, $html);
     $html = str_replace('{{senha_usuario}}', $senha_usuario, $html);
-
     echo $html;
 }
 

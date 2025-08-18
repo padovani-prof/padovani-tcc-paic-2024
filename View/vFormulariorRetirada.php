@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Retirada </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+
 
   <style>
       .azul{
@@ -38,6 +41,7 @@
     </style>
 </head>
 <body class="bg-light">
+
    {{cabecario}}
 
   <section class="container mt-4 border rounded shadow p-4 mb-5 form-container">
@@ -45,15 +49,23 @@
     
         <form action="cFormularioRetirada.php" method="post">  
             <p>
-              <label for="">Recurso: </label>
-              <select class="form-select" name="recurso" id="">
+              <label  for="">Recurso: </label>
+              <select  class="selectpicker " data-live-search="true"  
+               name="recurso" id=""
+              data-none-selected-text="Pesquisar Recurso"
+              data-live-search-placeholder="Pesquisar Recurso">
+                 
               {{recursos}}
               
               </select>
             </p>
             
             <label for="">Retirante: </label>
-            <select class="form-select mb-3" name="retirante" id="">
+            <select class="selectpicker " data-live-search="true"
+              name="retirante" id=""
+             data-none-selected-text="Pesquisar retirante"
+             data-live-search-placeholder="Pesquisar retirante">
+             
               {{retirante}}
 
             </select>
@@ -97,6 +109,10 @@
     <div class="text-center">
       <a href="cFormularioRetirada.php?cancela=true" class="link-cancelar">Cancelar Retirada</a>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
 
 </body>
 </html>

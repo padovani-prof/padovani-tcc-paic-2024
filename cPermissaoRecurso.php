@@ -10,13 +10,25 @@ function opition($perfis){
     return $usua;
 }
 
+function lista_dias_da_semana($semana){
+    $dias = ['Dom','Seg','Ter', 'Quar', 'Qui','Sex','Saba'];
+    $apresentar = '';
+    for ($i=0; $i < 7; $i++){
+        $apresentar.= ($semana[$i] == 'S')? (($apresentar!='')?', ':'').$dias[$i] :'';
+    }
+    return $apresentar;
+}
+
 function Tabela_acesso_recurso_carrega($codigo){
     $lista = recurso_carrega($codigo);
     $informa = '';
     foreach($lista as $dados){
+        $semana = lista_dias_da_semana($dados['semana']);
         $informa .= '<tr>';
         $informa .= '<td>'. $dados["perfil"] .'</td>'; // coluna nome
         $informa .= '<td>'. $dados['ini'] .' - '. $dados['fim'] .'</td>'; // coluna horários
+        $informa .= '<td>'. $semana .'</td>'; // semana
+        $informa .= '<td>'. $dados['d_ini'].' até '.(($dados['d_fim']!=null)?$dados['d_fim']:'Indefinitivo').'</td>'; // datas
         $informa .= '<td>
                         <form action="cPermissaoRecurso.php">   
                             <input type="hidden" name="codigo_recurso" value="'. $codigo .'"> 

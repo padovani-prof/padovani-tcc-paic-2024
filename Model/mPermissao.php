@@ -30,7 +30,10 @@ function recurso_carrega($codigo)
     // Preparando a consulta SQL
     $sql = "SELECT perfil_usuario.nome AS 'perfil', 
                    acesso_recurso.hr_inicial AS 'ini', 
-                   acesso_recurso.hr_final AS 'fim', 
+                   acesso_recurso.hr_final AS 'fim',
+                   acesso_recurso.dias_semana AS 'semana',
+                   acesso_recurso.dt_inicial as 'd_ini',
+                   acesso_recurso.dt_final as 'd_fim',
                    acesso_recurso.codigo AS 'cod'
             FROM acesso_recurso 
             INNER JOIN perfil_usuario ON perfil_usuario.codigo = acesso_recurso.codigo_perfil

@@ -3,10 +3,7 @@
 // =========================
 // FUNÇÕES AUXILIARES
 // =========================
-function data_em_dia_semana($data){
-    // Retorna 1 (Segunda) até 7 (Domingo)
-    return date('N', strtotime($data));
-}
+
 
 function chaves($lista){
     return array_map(fn($item) => explode(',', $item)[0], $lista);
@@ -103,7 +100,6 @@ foreach($recurso_catego as $recurso){
     for($d = 0; $d < count($periodos); $d += 3){
         $livre = ta_livre($recurso['codigo_recurso'], $periodos[$d], $periodos[$d+1].':00', $periodos[$d+2].':00', $disponives);
         $permitido = verificar_permicao_recurso($periodos[$d], $periodos[$d+1], $periodos[$d+2], $recurso['codigo_recurso'], $utilizador, data_em_dia_semana($periodos[$d]));
-        
         if($livre && $permitido){
             $recurs_dados .= '<td><label><input type="checkbox" name="marcas[]" value="'.$recurso['codigo_recurso'].','.$recurso['nome_recurso'].','.$periodos[$d].','.$periodos[$d+1].','.$periodos[$d+2].'"></label></td>';
         }else{
