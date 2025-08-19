@@ -5,12 +5,11 @@ include 'cGeral.php';
 Esta_logado();
 
 include_once 'Model/mUsuario.php'; 
+$ultilazador = $_SESSION['codigo_usuario'];
+$dados_perfis = carrega_perfis_expecificos_do_dastrante_ou_adm($ultilazador);
 
-$perfil = possui_permicão_para_adicionar_perfis($_SESSION['codigo_usuario']);
-$titulo = ($perfil) ? 'Perfis: ' : '';
-
-$perfil = ($perfil) ? listar_perfil() : [];
-
+$titulo = $dados_perfis[1];
+$perfil = $dados_perfis[0];
 $nome = '';
 $email = '';
 $senha = '';
@@ -19,13 +18,14 @@ $perfis_selecionados = [];
 $mensagem = '';
 $id_resposta = 'danger';
 
-$tela = isset($_GET['codigo']) ? '<input type="hidden" name="codigo" value="'.$_GET['codigo'].'">' : '';
 
+$tela = '';
 $html = file_get_contents('View/vFormularioUsuario.php');
 
 if (isset($_GET['codigo']) && !isset($_POST['salvar'])) {
     // Carregar dados do usuário
     verificação_acesso($_SESSION['codigo_usuario'], 'alt_usuario', 2);
+    $tela = '<input type="hidden" name="codigo" value="'.$_GET['codigo'].'">';
     $codigo = $_GET['codigo'];
     Verificar_codigo('usuario', $codigo);
     $dados = carregar_dados($codigo);
@@ -34,6 +34,7 @@ if (isset($_GET['codigo']) && !isset($_POST['salvar'])) {
     $perfis_selecionados = carrega_perfil_do_usuario($codigo);
 } elseif (!isset($_GET['codigo']) && !isset($_POST['salvar'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'cad_usuario', 2);
+    
 }
 
 if (isset($_POST["salvar"])) {
@@ -47,6 +48,8 @@ if (isset($_POST["salvar"])) {
 
     if (isset($_POST['codigo'])) {
         // Atualização de usuário
+
+        $tela = '<input type="hidden" name="codigo" value="'.$_POST['codigo'].'">';
         $codigo = $_POST['codigo'];
         if (empty($nome)) {
             $mensagem = 'O campo "Nome" é obrigatório.';
@@ -58,11 +61,19 @@ if (isset($_POST["salvar"])) {
             $mensagem = 'Confirme a nova senha.';
         }  elseif ($senha !== $conf_senha) {
             $mensagem = 'As senhas informadas não correspondem.';
-        } else if(count($perfis_selecionados) == 0){
-            $mensagem = 'Selecione algun perfil de usuário.';
-        }
+        } 
          else {
-            $resposta = atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados);
+            $resposta = Validar_usuario_atualizado($codigo, $nome, $senha, $email);
+            if($dados_perfis[2] == true and $resposta == true){
+                // atualiza os perfis do usuario tambem
+                novo_usuario_atualizado($codigo, $nome, $email, $senha);
+                $resposta = atualizar_usuario_com_permicao($codigo, $perfis_selecionados);
+            }else if ($resposta==true){
+                novo_usuario_atualizado($codigo, $nome, $email, $senha);
+                $resposta = 3;
+            }
+
+            
             $men = [
                 'O nome informado é inválido. Deve ter entre 3 e 50 caracteres.',
                 'A senha está vazia.',
@@ -123,8 +134,9 @@ if (isset($_POST["salvar"])) {
 } 
 
 // Gera os checkboxes de perfis
+$perfis = '';
 if (is_array($perfil)) {
-    $perfis = "<tr>"; 
+    $perfis .= "<tr>"; 
     $cont = 1;
     foreach ($perfil as $linha) {
         $checked = in_array($linha['codigo'], $perfis_selecionados) ? "checked" : "";
@@ -132,8 +144,6 @@ if (is_array($perfil)) {
         <td title="'.$linha['descricao'].'" alt="'.$linha['descricao'].'"><input type="checkbox" name="perfis[]" '.$checked.' value="'. $linha['codigo'] .'"/>'.$linha['nome'].($cont%3==0?'<br>&nbsp;</td></tr>':'<br>&nbsp;</td>');
         $cont++;
     }
-} else { 
-    $perfis = "<input type='checkbox' name='perfis'> Não há perfis cadastrados no momento.<br>";
 }
 
 // Substitui variáveis no HTML
@@ -151,3 +161,4 @@ $html = str_replace('{{titulo}}', $titulo, $html);
 echo $html;
 
 ?>
+

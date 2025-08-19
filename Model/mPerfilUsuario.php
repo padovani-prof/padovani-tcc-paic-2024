@@ -113,7 +113,7 @@ function Validar_perfil($nome, $descricao){
 }
 
 
-function insere_perfil($nome, $descricao, $funcionalidades_selecionadas) {
+function insere_perfil($nome, $descricao, $funcionalidades_selecionadas, $criador) {
     // Validar os dados antes de inserir
     $validar = Validar_perfil($nome, $descricao);
 
@@ -124,8 +124,8 @@ function insere_perfil($nome, $descricao, $funcionalidades_selecionadas) {
         
         if(!verificar_existencia_nome_perfio($nome)) {
             // Inserir o perfil no banco
-            $stmt = $conexao->prepare("INSERT INTO perfil_usuario (nome, descricao) VALUES (?, ?)");
-            $stmt->bind_param("ss", $nome, $descricao);
+            $stmt = $conexao->prepare("INSERT INTO perfil_usuario (nome, descricao, codigo_criador_perfil) VALUES (?, ?, ?)");
+            $stmt->bind_param("ssi", $nome, $descricao, $criador);
 
             if ($stmt->execute()) {
                 $codigo_perfil = $conexao->insert_id; // Pega o ID do perfil inserido
@@ -202,7 +202,7 @@ function mandar_dados_da_tabela($chave)
     return $dados;
 }
 
-function atualizar_fucionalidade($codigo, $nome, $descricao, $lista_funcionalidades)
+function atualizar_fucionalidade($codigo, $nome, $descricao, $lista_funcionalidades, $associar_fucionalidades)
 {
     include 'confg_banco.php';
     $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
@@ -214,16 +214,18 @@ function atualizar_fucionalidade($codigo, $nome, $descricao, $lista_funcionalida
         $stmt->bind_param("ssi", $nome, $descricao, $codigo);
         $stmt->execute();
 
-        // Preparar a consulta para excluir as funcionalidades anteriores
-        $stmt = $conecxao->prepare("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = ?");
-        $stmt->bind_param("i", $codigo);
-        $stmt->execute();
+        if($associar_fucionalidades){
+            // Preparar a consulta para excluir as funcionalidades anteriores
+            $stmt = $conecxao->prepare("DELETE FROM funcionalidade_perfil WHERE codigo_perfil = ?");
+            $stmt->bind_param("i", $codigo);
+            $stmt->execute();
 
-        // Inserir as novas funcionalidades
-        foreach ($lista_funcionalidades as $fucionalidade) {
-            insere_funcionalidade_perfil($fucionalidade, $codigo);
+            // Inserir as novas funcionalidades
+            foreach ($lista_funcionalidades as $fucionalidade) {
+                insere_funcionalidade_perfil($fucionalidade, $codigo);
+            }
         }
-
+        
         // Fechar o statement e a conexão
         $stmt->close();
         $conecxao->close();

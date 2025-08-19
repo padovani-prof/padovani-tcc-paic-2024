@@ -37,20 +37,23 @@ include_once 'Model/mUsuario.php';
 // =========================
 // TRATAMENTO DE AÇÕES (APAGAR / ATUALIZAR)
 // =========================
-$msg = '';
-$id_msg = 'nada';
+$msg = (isset($_GET['msg']))?$_GET['msg']:'';
+$id_msg = 'danger';
 
 if (isset($_POST['apagar'])) {
     verificação_acesso($_SESSION['codigo_usuario'], 'apag_usuario', 2);
+    
 
     $l_msg = [
         'O usuário foi removido com sucesso.',
         'O usuário não pode ser excluído, pois possui retiradas vinculadas a ele.',
-        'O usuário não pode ser removido, pois há reservas associadas a ele.'
+        'O usuário não pode ser removido, pois há reservas associadas a ele.',
+        'O usuário não pode ser removido, pois possui o usuário em questão possui perfil(s) criado(s).',
+        'Não podemos remover o usuário administrador.'
     ];
 
     $cod_usuario = $_POST['codigo_do_usuario'];
-    $resultado = apagar_usuario($cod_usuario);
+    $resultado = ($cod_usuario != 1)? apagar_usuario($cod_usuario):4;
 
     $id_msg = ($resultado == 0) ? 'success' : 'danger';
     $msg = $l_msg[$resultado];

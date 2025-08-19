@@ -15,10 +15,13 @@ CREATE TABLE IF NOT EXISTS `sgrp`.`perfil_usuario` (
   `codigo` INT NOT NULL auto_increment,
   `nome` VARCHAR(30) NOT NULL,
   `descricao` VARCHAR(200) NOT NULL,
-  PRIMARY KEY (`codigo`))
+   `codigo_criador_perfil` int not null,
+   FOREIGN KEY (`codigo_criador_perfil`)
+   REFERENCES `sgrp`.`usuario` (`codigo`),
+   PRIMARY KEY (`codigo`))
 ENGINE = InnoDB;
 
-insert into `sgrp`.`perfil_usuario`(nome, descricao) values('Acesso total', 'Usuário master');
+insert into `sgrp`.`perfil_usuario`(nome, descricao, codigo_criador_perfil) values('Acesso total', 'Usuário master', 1);
 
 
 CREATE TABLE IF NOT EXISTS `sgrp`.`usuario_perfil` (

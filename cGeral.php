@@ -3,7 +3,16 @@ function cabecalho($html, $codigo){
     $cabecario = file_get_contents('View/vHeader.php');
     if (is_int($codigo)){
         include 'Model/mUsuario.php';
-        $nome = carregar_dados($codigo)['nome'] ;
+        $nome = carregar_dados($codigo);
+        if ($nome==null){
+            session_start();
+            session_destroy();
+            header('Location: cLogin.php?msg=Usuario Removido do sistema!');
+            exit();
+
+        }
+        $nome = $nome['nome'] ; // verificar se tem algun se não tiver joga para fora do sistema
+
     }else{
         $nome = $codigo;
     }
@@ -23,7 +32,7 @@ function verificação_acesso($chave_usu, $codi_categoria_de_acesso, $retorno=1,
     // retorno 1 e que se vc deseja retorna ou 2+ seja redirecionado para a tela de açesso negado
     // msg que vc que que apareça 
     // local para onde vc que que seja jogado
-    $acesso = lista_usuario_acesso($chave_usu);
+    $acesso = ('sem_acesso' == $codi_categoria_de_acesso)?[]: lista_usuario_acesso($chave_usu);
     foreach($acesso as $permicao)
     {
         if($permicao['sigla']== $codi_categoria_de_acesso)
@@ -113,6 +122,39 @@ function data_em_dia_semana($data){
     ];
     return $dias[date('l', strtotime($data))];
 }
+
+
+
+
+function carrega_perfis_expecificos_do_dastrante_ou_adm($ultilazador)
+{
+    $perfil = possui_permicão_para_adicionar_perfis($ultilazador);
+    $complimentar = ($perfil)?"":"where perfil_usuario.codigo_criador_perfil = $ultilazador";
+    
+    $perfis = listar_perfil($complimentar);
+    $titulo = (count($perfis)>0) ? 'Perfis: ' : '';
+    $perfis = ($perfil or (count($perfis)>0)) ? $perfis : [];
+
+
+
+    if (isset($_GET['codigo']) or isset($_POST['codigo'])) {
+        
+        $resposta = foi_esse_usuario_o_cadastrou($ultilazador,(isset($_GET['codigo']))? $_GET['codigo']: $_POST['codigo']);
+        $atualizar_perfil_de_usuario = (!$resposta and !$perfil )? false: true;
+        if ($atualizar_perfil_de_usuario == false){
+            $perfis = [];
+            $titulo = '';
+        }
+        return [$perfis, $titulo, $atualizar_perfil_de_usuario];    
+    }
+    else if(($titulo == '')){
+        var_dump($_GET['codigo'], $_POST['codigo']);
+         verificação_acesso($ultilazador, 'sem_acesso', $retorno=2, $msg='O usuário em questão não possui perfil cadastrado para associar a novos usuários.', $local='cUsuario.php');
+    }
+    
+    return [$perfis, $titulo];
+}
+
 
 
 ?>

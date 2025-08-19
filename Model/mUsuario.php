@@ -102,21 +102,21 @@ function Validar_usuario_atualizado($codigo, $nome, $senha, $email) {
 
 
 
-function atualizar_usuario($codigo, $nome, $email, $senha, $perfis_selecionados){
-    $valido = Validar_usuario_atualizado($codigo, $nome, $senha, $email);
-    if ($valido === true) {
-        novo_usuario_atualizado($codigo, $nome, $email, $senha);
-        apagar_perfio_relacionado($codigo);
-        foreach ($perfis_selecionados as $codigo_perfil) {
-            if (!insere_usuario_perfil($codigo, $codigo_perfil)) {
-                return 4; // Erro ao vincular perfil ao usuário
-            }
-        }
-        return 3; // Usuário cadastrado com sucesso
-           
-    }
+function atualizar_usuario_com_permicao($codigo, $perfis_selecionados){
     
-    return $valido; 
+    
+    
+    apagar_perfio_relacionado($codigo);
+    foreach ($perfis_selecionados as $codigo_perfil) {
+        if (!insere_usuario_perfil($codigo, $codigo_perfil)) {
+            return 4; // Erro ao vincular perfil ao usuário
+        }
+    }
+    return 3; // Usuário cadastrado com sucesso
+           
+    
+    
+    
 
 }
 function carregar_dados($codigo){
@@ -182,7 +182,7 @@ function listar_usuarios(){
     return $resultado;
 }
 
-function listar_perfil(){
+function listar_perfil($sql){
     include 'confg_banco.php';
     $conexao = new mysqli($servidor, $usuario, $senha, $banco);
     
@@ -190,7 +190,7 @@ function listar_perfil(){
         die("Falha na conexão: " . $conexao->connect_error);
     }
 
-    $resultado = $conexao->query("SELECT * FROM perfil_usuario ORDER BY nome ASC");
+    $resultado = $conexao->query("SELECT * FROM perfil_usuario $sql ORDER BY nome ASC;");
     $resultado = $resultado->fetch_all(MYSQLI_ASSOC);
     $conexao->close();
 
@@ -299,6 +299,17 @@ function apagar_usuario($chave_pri) {
     if ($conexao->connect_error) {
         return false; // Se a conexão falhar, retorna false
     }
+    // verifica se o usuario possui perfis relacionados
+    $stmt = $conexao->prepare("SELECT * FROM perfil_usuario WHERE perfil_usuario.codigo_criador_perfil = ?");
+    $stmt->bind_param("i", $chave_pri);
+    $stmt->execute();
+    $qdt_ultilizada = $stmt->get_result();
+
+    if ($qdt_ultilizada->num_rows > 0) {
+        $stmt->close();
+        $conexao->close();
+        return 3; // usuario criou um perfio
+    }
 
     // Verificar se o usuário tem retiradas ou devoluções
     $stmt = $conexao->prepare("SELECT * FROM retirada_devolucao WHERE codigo_usuario = ?");
@@ -393,3 +404,18 @@ function possui_permicão_para_adicionar_perfis($usua){
 }
 
 
+
+function foi_esse_usuario_o_cadastrou($cadastrante, $usuario_modificado){
+    include 'confg_banco.php';
+    $conecxao = new mysqli($servidor, $usuario, $senha, $banco);
+    
+    $stmt = $conecxao->prepare("SELECT * FROM perfil_usuario WHERE perfil_usuario.codigo_criador_perfil = ? and perfil_usuario.codigo in ( SELECT usuario_perfil.codigo_perfil from usuario_perfil WHERE  usuario_perfil.codigo_perfil = ?);");
+    $stmt->bind_param("ii", $cadastrante, $usuario_modificado);
+    $stmt->execute();
+    $resulta = $stmt->get_result();
+    //var_dump($resulta);
+    $stmt->close();
+    $conecxao->close();
+    return $resulta->num_rows > 0;
+
+} 

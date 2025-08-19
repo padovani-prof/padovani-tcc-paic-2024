@@ -8,6 +8,7 @@ Esta_logado();
 include_once 'Model/mPerfilUsuario.php';  
 
 $funcionalidades = possui_permicão_para_adicionar_permic($_SESSION['codigo_usuario']);
+$adicionar = $funcionalidades;
 $titulo = ($funcionalidades) ? 'Funcionalidades: ' : '';
 $funcionalidades = ($funcionalidades) ? listar_funcionalidade() : [];
 $id_resposta = 'danger';
@@ -46,7 +47,7 @@ if (isset($_GET["salvar"])) {
     } else {
         if(isset($_GET['codigo'])){
             // atualizar dados
-            $resposta = atualizar_fucionalidade($codigo, $nome, $descricao, $funcionalidades_selecionadas);
+            $resposta = atualizar_fucionalidade($codigo, $nome, $descricao, $funcionalidades_selecionadas, $adicionar);
             switch($resposta) {
                 case 3:
                     $mensagem = "O nome informado já existe. Por favor, insira um nome diferente.";
@@ -67,7 +68,7 @@ if (isset($_GET["salvar"])) {
             }
         } else {
             // cadastrar perfil
-            $resposta = insere_perfil($nome, $descricao, $funcionalidades_selecionadas);
+            $resposta = insere_perfil($nome, $descricao, $funcionalidades_selecionadas, $_SESSION['codigo_usuario'] );
             switch($resposta) {
                 case 3:
                     $mensagem = "O nome informado já existe. Por favor, insira um nome diferente.";
