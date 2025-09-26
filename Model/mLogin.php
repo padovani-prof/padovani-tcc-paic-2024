@@ -55,15 +55,15 @@ function verifificar_email($email){
 
 
 
-function nova_senha_usuario($email, $nova_senha){
+function nova_senha_usuario($email, $id_usuario,  $nova_senha ){
   // connecção com o Banco
   include 'confg_banco.php';
   $connecxao = new mysqli($servidor, $usuario, $senha, $banco);
 
   // Consulta o banco 
   $nova_senha = hash('sha256', $nova_senha);
-  $resultado_da_consulta = $connecxao->prepare("UPDATE usuario set usuario.senha = ? WHERE usuario.email = ?;");
-  $resultado_da_consulta->bind_param('ss', $nova_senha, $email);
+  $resultado_da_consulta = $connecxao->prepare("UPDATE usuario set usuario.senha = ? WHERE usuario.email = ? or  usuario.codigo = ?;");
+  $resultado_da_consulta->bind_param('ssi', $nova_senha, $email, $id_usuario);
   $resultado_da_consulta->execute();
   $connecxao->close();
 
