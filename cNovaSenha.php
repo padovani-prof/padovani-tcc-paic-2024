@@ -46,7 +46,9 @@ if (isset($_POST['mandar'])) {
             $msg = 'As senhas informadas não correspondem. Por favor, digite novamente.';
         } else {
             // Atualizar senha
+            nova_senha_usuario('null', $usuario,  $senha_atual);
             $msg = 'Senha alterada com sucesso.';
+            
             header("Location: cNovaSenha.php?msg=".urlencode($msg));
             exit();
         }
