@@ -62,7 +62,7 @@ if(isset($_GET['mandar'])){
         $nova_senha = randomizar_senha();
         
         // Atualiza a senha no banco de dados
-        nova_senha_usuario($email, $nova_senha);
+        nova_senha_usuario($email, null, $nova_senha);
 
         // Envia e-mail com a nova senha
         enviar_email($nova_senha, $email);
